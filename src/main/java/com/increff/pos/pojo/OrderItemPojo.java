@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"id","orderId"}) })
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"orderId","productId"}) })
 public class OrderItemPojo extends AbstractVersionPojo{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -21,6 +21,6 @@ public class OrderItemPojo extends AbstractVersionPojo{
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
     @Column(name = "sellingPrice", nullable = false)
-    private double sellingPrice;
+    private Double sellingPrice;
 
 }

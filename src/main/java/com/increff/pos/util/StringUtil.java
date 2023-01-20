@@ -1,7 +1,5 @@
 package com.increff.pos.util;
 
-import com.increff.pos.pojo.BrandPojo;
-
 public class StringUtil {
 
 	public static boolean isEmpty(String s) {
@@ -10,6 +8,10 @@ public class StringUtil {
 
 	public static String toLowerCase(String s) {
 		return s == null ? null : s.trim().toLowerCase();
+	}
+
+	public static String doTrim(String s) {
+		return s == null ? null : s.trim();
 	}
 
 }

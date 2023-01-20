@@ -62,31 +62,31 @@ public class OrderApiController {
 
     @ApiOperation(value="Adds Order Items")
     @RequestMapping(path="/items", method = RequestMethod.POST)
-    public OrderData add1(@RequestBody List<OrderItemForm> form) throws ApiException{
-        return dto.add1(form);
+    public OrderData addOrderItem(@RequestBody List<OrderItemForm> orderItemFormList) throws ApiException{
+        return dto.addOrderItem(orderItemFormList);
     }
 
     @ApiOperation(value="Adds Order Items to exisiting order")
     @RequestMapping(path="/{id}/items", method = RequestMethod.PUT)
-    public void add1(@PathVariable Integer id,@RequestBody OrderItemForm form) throws ApiException{
-        dto.addToExisitingOrder1(id,form);
+    public void addItemToExisitingOrder(@PathVariable Integer id,@RequestBody OrderItemForm orderItemForm) throws ApiException{
+        dto.addItemToExisitingOrder(id,orderItemForm);
     }
 
     @ApiOperation(value="Get Order Items")
     @RequestMapping(path="/items/{id}", method = RequestMethod.GET)
-    public OrderItemData get1(@PathVariable Integer id) throws ApiException{
-        return dto.getById1(id);
+    public OrderItemData getItemById(@PathVariable Integer id) throws ApiException{
+        return dto.getItemById(id);
     }
 
     @ApiOperation(value="Get Order Items by order id")
     @RequestMapping(path="/{id}/items", method = RequestMethod.GET)
-    public List<OrderItemData> getByOrderId1(@PathVariable Integer id) throws ApiException{
-        return dto.getByOrderId1(id);
+    public List<OrderItemData> getItemByOrderId(@PathVariable Integer id) throws ApiException{
+        return dto.getItemByOrderId(id);
     }
 
     @ApiOperation(value="Updates order item by item id")
     @RequestMapping(path="/items/{id}", method = RequestMethod.PUT)
-    public void update1(@PathVariable Integer id, @RequestBody OrderItemForm f) throws ApiException{
-        dto.update1(id, f);
+    public void updateOrderItem(@PathVariable Integer id, @RequestBody OrderItemForm f) throws ApiException{
+        dto.updateOrderItem(id, f);
     }
 }

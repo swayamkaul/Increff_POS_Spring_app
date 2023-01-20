@@ -37,7 +37,8 @@ public class OrderItemService {
         return order;
     }
 
-    public void add(OrderItemPojo item) {
+    public void add(OrderItemPojo item) throws ApiException {
+        inventoryService.reduceQuantity(item.getProductId(), item.getQuantity());
         dao.insert(item);
     }
 
