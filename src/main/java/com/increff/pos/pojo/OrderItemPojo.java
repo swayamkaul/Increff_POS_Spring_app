@@ -1,9 +1,11 @@
 package com.increff.pos.pojo;
 
+import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 @Entity
 @Getter
@@ -12,15 +14,16 @@ import javax.persistence.*;
 public class OrderItemPojo extends AbstractVersionPojo{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Integer id;
-    @Column(name = "orderId", nullable = false)
+    @NotNull
     private Integer orderId;
-    @Column(name = "productId", nullable = false)
+    @NotNull
     private Integer productId;
-    @Column(name = "quantity", nullable = false)
+    @NotNull
+    @Min(value = 1)
     private Integer quantity;
-    @Column(name = "sellingPrice", nullable = false)
+    @NotNull
+    @Min(value = 0)
     private Double sellingPrice;
 
 }

@@ -4,10 +4,12 @@ import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+
 @Getter
 @Setter
 public class OrderItemForm {
-    @NotNull
+    @NotBlank
     private String barCode;
     @NotNull
     private Integer quantity;

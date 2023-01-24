@@ -144,6 +144,9 @@ function displayInventoryList(data){
 		var buttonHtml = '<button type="button" class="btn btn-secondary" onclick="deleteInventory(' + e.id + ')">delete</button>'
 		buttonHtml += ' <button type="button" class="btn btn-secondary" onclick="displayEditInventory(' + e.id + ')">edit</button>'
 		var row = '<tr>'
+		+ '<td>' + e.brand + '</td>'
+		+ '<td>' + e.category + '</td>'
+		+ '<td>' + e.name + '</td>'
 		+ '<td>' + e.barCode + '</td>'
 		+ '<td>' + e.quantity + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
@@ -210,7 +213,6 @@ function init(){
 	$('#process-data').click(processData);
 	$('#download-errors').click(downloadErrors);
     $('#inventoryFile').on('change', updateFileName);
-
 }
 
 $(document).ready(init);

@@ -7,6 +7,7 @@ import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandService;
 import com.increff.pos.util.ConvertorUtil;
 import com.increff.pos.util.NormaliseUtil;
+import com.increff.pos.util.ValidateUtil;
 import com.increff.pos.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,9 +21,9 @@ public class BrandDto {
     @Autowired
     BrandService service;
     public void add(BrandForm f) throws ApiException {
+        ValidateUtil.validateForms(f);
         BrandPojo p= ConvertorUtil.convert(f);
         NormaliseUtil.normalise(p);
-        ValidationUtil.validate(p);
         try{
             service.getCheck(p.getId());
         }
@@ -36,11 +37,11 @@ public class BrandDto {
     }
 
     public BrandData get(int id) throws ApiException {
-       BrandPojo p=service.get(id);
+       BrandPojo p=service.getCheck(id);
        return ConvertorUtil.convert(p);
     }
     public BrandData get(String brand,String category) throws ApiException {
-        BrandPojo p=service.get(brand,category);
+        BrandPojo p=service.getCheck(brand,category);
         return ConvertorUtil.convert(p);
     }
 
@@ -54,12 +55,9 @@ public class BrandDto {
     }
 
     public void update(int id, BrandForm f) throws ApiException {
+        ValidateUtil.validateForms(f);
         BrandPojo p= ConvertorUtil.convert(f);
         NormaliseUtil.normalise(p);
-        ValidationUtil.validate(p);
         service.update(id,p);
     }
-
-    //TODO create helper class, move all convert functions to the helper class. MOVED TO UTIL DONE
-
 }

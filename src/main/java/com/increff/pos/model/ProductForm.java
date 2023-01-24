@@ -4,16 +4,18 @@ import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+
 @Getter
 @Setter
 public class ProductForm {
-    @NotNull
+    @NotBlank
     private String barCode;
-    @NotNull
+    @NotBlank
     private String brand;
-    @NotNull
+    @NotBlank
     private String category;
-    @NotNull
+    @NotBlank
     private String name;
     @NotNull
     private Double mrp;

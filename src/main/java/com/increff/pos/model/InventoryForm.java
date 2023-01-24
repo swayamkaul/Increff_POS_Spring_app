@@ -5,10 +5,12 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotBlank;
+
 @Getter
 @Setter
 public class InventoryForm {
-    @NotNull
+    @NotBlank
     private String barCode;
     @NotNull
     private int quantity;

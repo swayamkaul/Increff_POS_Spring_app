@@ -10,13 +10,10 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"id"}) })
 public class OrderPojo extends AbstractVersionPojo{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="id",nullable = false)
     private int id;
-    @Column(name = "editable", nullable = false)
-    private boolean editable;
+    private boolean editable;//To be removed
 
 }

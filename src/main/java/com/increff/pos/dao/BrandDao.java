@@ -13,14 +13,12 @@ import org.springframework.stereotype.Repository;
 import com.increff.pos.pojo.BrandPojo;
 
 @Repository
-//TODO add transactional on class in every dao	DONE
 @Transactional
 public class BrandDao extends AbstractDao {
 
 	private static String delete_id = "delete from BrandPojo p where id=:id";
 	private static String select_id = "select p from BrandPojo p where id=:id";
 	private static String select_all = "select p from BrandPojo p";
-
 	private static String select_brand_category = "select p from BrandPojo p where brand=:brand and category=:category";
 
 	@PersistenceContext
@@ -54,11 +52,7 @@ public class BrandDao extends AbstractDao {
 		TypedQuery<BrandPojo> query = getQuery(select_all, BrandPojo.class);
 		return query.getResultList();
 	}
-
-
 	public void update(BrandPojo p) {
 	}
-
-
 
 }

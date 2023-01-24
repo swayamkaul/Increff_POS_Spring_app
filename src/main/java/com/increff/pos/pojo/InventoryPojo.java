@@ -1,19 +1,21 @@
 package com.increff.pos.pojo;
 
+import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 @Entity
 @Getter
 @Setter
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"id"}) })
+//TODO clean annotations
 public class InventoryPojo extends AbstractVersionPojo{
     @Id
-    @Column(name="id",nullable = false)
     private int id;
-    @Column(name = "quantity",nullable = false)
+    @NotNull
+    @Min(value = 1)
     private int quantity;
 
 }

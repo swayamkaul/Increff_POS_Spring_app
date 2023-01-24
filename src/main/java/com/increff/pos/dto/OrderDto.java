@@ -13,6 +13,7 @@ import com.increff.pos.service.OrderService;
 import com.increff.pos.service.ProductService;
 import com.increff.pos.util.ConvertorUtil;
 import com.increff.pos.util.NormaliseUtil;
+import com.increff.pos.util.ValidateUtil;
 import com.increff.pos.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -40,7 +41,6 @@ public class OrderDto {
         OrderData data = ConvertorUtil.convert(orderService.add(p));
         return data;
     }
-
     public OrderData get(int id) throws ApiException {
         OrderPojo p = orderService.get(id);
         OrderData data = ConvertorUtil.convert(p);
@@ -55,15 +55,11 @@ public class OrderDto {
         }
         return list;
     }
-
-
     public OrderData update(int id, OrderForm f) throws ApiException {
         OrderPojo p = orderService.update(id, null);
         OrderData data = ConvertorUtil.convert(p);
         return data;
     }
-
-
     public void finaliseOrder(int id) throws ApiException {
         orderService.finaliseOrder(id);
     }
@@ -72,13 +68,10 @@ public class OrderDto {
 
     public OrderData addOrderItem(List<OrderItemForm> orderItemFormList) throws ApiException {
         List<OrderItemPojo> list1 = new ArrayList<OrderItemPojo>();
-
         HashSet<String> barcodeSet = new HashSet<String>();
-        NormaliseUtil.normalise(orderItemFormList);
-        ValidationUtil.validate(orderItemFormList);
-
         for (OrderItemForm f : orderItemFormList) {
-
+            ValidateUtil.validateForms(f);
+            NormaliseUtil.normalise(orderItemFormList);
             if(barcodeSet.contains(f.getBarCode())){
                 throw new ApiException("Multiple entries of same Product in the order.");
             }
@@ -88,9 +81,7 @@ public class OrderDto {
             OrderItemPojo p = ConvertorUtil.convert(f,product.getId());
             list1.add(p);
         }
-
         OrderPojo order = orderItemService.add(list1);
-
         OrderData data = ConvertorUtil.convert(order);
         return data;
 
@@ -134,7 +125,6 @@ public class OrderDto {
         return list;
 
     }
-
     public void updateOrderItem(int id, OrderItemForm orderItemForm) throws ApiException {
         ValidationUtil.validate(orderItemForm);
         ProductPojo product = productService.get(orderItemForm.getBarCode());

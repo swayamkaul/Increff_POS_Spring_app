@@ -51,12 +51,12 @@ public class OrderApiController {
     public OrderData put(@PathVariable Integer id, @RequestBody OrderForm form) throws ApiException {
         return dto.update(id, form);
     }
-
-    @ApiOperation(value = "Sets order non editable")
-    @RequestMapping(path = "/{id}/finalise", method = RequestMethod.PUT)
-    public void finaliseOrder(@PathVariable Integer id) throws ApiException {
-        dto.finaliseOrder(id);
-    }
+//
+//    @ApiOperation(value = "Sets order non editable")
+//    @RequestMapping(path = "/{id}/finalise", method = RequestMethod.PUT)
+//    public void finaliseOrder(@PathVariable Integer id) throws ApiException {
+//        dto.finaliseOrder(id);
+//    }
 
     //OrderItem APIs
 

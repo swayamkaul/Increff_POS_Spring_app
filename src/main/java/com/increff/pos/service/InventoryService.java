@@ -5,7 +5,6 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import com.increff.pos.dao.InventoryDao;
-import com.increff.pos.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,14 +23,6 @@ public class InventoryService {
 
     public void delete(int id) {
         dao.delete(id);
-    }
-
-    public InventoryPojo get(int id) throws ApiException {
-        return getCheck(id);
-    }
-
-    public InventoryPojo get(String barCode) throws ApiException {
-        return getCheck(barCode);
     }
 
     public List<InventoryPojo> getAll() {

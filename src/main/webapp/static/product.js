@@ -144,10 +144,10 @@ function displayProductList(data){
 		var buttonHtml = '<button type="button" class="btn btn-secondary" onclick="deleteProduct(' + e.id + ')">delete</button>'
 		buttonHtml += ' <button type="button" class="btn btn-secondary" onclick="displayEditProduct(' + e.id + ')">edit</button>'
 		var row = '<tr>'
-		+ '<td>' + e.name + '</td>'
-		+ '<td>' + e.barCode + '</td>'
 		+ '<td>' + e.brand + '</td>'
 		+ '<td>'  + e.category + '</td>'
+		+ '<td>' + e.name + '</td>'
+		+ '<td>' + e.barCode + '</td>'
 		+ '<td>' + e.mrp + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';

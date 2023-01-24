@@ -21,7 +21,6 @@ import io.swagger.annotations.ApiOperation;
 @Api
 @RestController
 @RequestMapping(path = "/api/brands")
-//TODO move /api/brands on class level DONE
 public class BrandApiController {
 
 	@Autowired

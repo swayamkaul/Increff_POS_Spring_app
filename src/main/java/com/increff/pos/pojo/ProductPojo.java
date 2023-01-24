@@ -1,28 +1,32 @@
 package com.increff.pos.pojo;
 
+import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Getter
 @Setter
-//TODO add unique constraint
 //TODO add indexes depending on the select queries you're running
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"barCode"}) })
+//TODO hibernate snakecase naming stg
+@Table(indexes={@Index(columnList = "barcode", unique = true)},
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"barcode"})})
 public class ProductPojo extends AbstractVersionPojo{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
-    @Column(name = "barCode",nullable = false)
+    @NotBlank
     private String barCode;
-
     //TODO change it to camelCase, db column should  be in snakeCase DONE
     @Column(name = "brand_category",nullable = false)
     private int brandCategory;
-    @Column(name = "name",nullable = false)
+    @NotBlank
     private String name;
-    @Column(name = "mrp",nullable = false)
+    @NotNull
+    @Min(value = 0)
     private Double mrp;
 }

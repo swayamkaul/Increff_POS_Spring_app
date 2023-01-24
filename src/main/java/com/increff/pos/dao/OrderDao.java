@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import com.increff.pos.pojo.OrderPojo;
 
 @Repository
-//TODO add transactional on class in every dao	DONE
+
 @Transactional
 public class OrderDao extends AbstractDao {
 

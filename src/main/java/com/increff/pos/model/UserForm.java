@@ -3,13 +3,15 @@ import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+
 @Getter
 @Setter
 public class UserForm {
-	@NotNull
+	@NotBlank
 	private String email;
-	@NotNull
+	@NotBlank
 	private String password;
-	@NotNull
+	@NotBlank
 	private String role;
 }

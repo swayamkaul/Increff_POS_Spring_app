@@ -1,15 +1,16 @@
 package com.increff.pos.model;
 
-import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
 //TODO Add @NotNull on form variables	DONE
 public class BrandForm {
-	@NotNull
+	@NotBlank
 	private String brand;
-	@NotNull
+	@NotBlank
 	private String category;
 }

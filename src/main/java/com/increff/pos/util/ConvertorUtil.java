@@ -37,9 +37,12 @@ public class ConvertorUtil {
         return p;
     }
 
-    public static InventoryData convert(InventoryPojo p,String barCode)  {
+    public static InventoryData convert(InventoryPojo p,String barCode,String name,String brand, String category)  {
         InventoryData d = new InventoryData();
         d.setBarCode(barCode);
+        d.setName(name);
+        d.setBrand(brand);
+        d.setCategory(category);
         d.setId(p.getId());
         d.setQuantity(p.getQuantity());
         return d;

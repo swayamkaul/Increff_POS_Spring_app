@@ -1,5 +1,6 @@
 package com.increff.pos.pojo;
 
+import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +16,10 @@ public class UserPojo extends AbstractVersionPojo{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@NotNull
 	private String email;
+	@NotNull
 	private String password;
+	@NotNull
 	private String role;
 }
