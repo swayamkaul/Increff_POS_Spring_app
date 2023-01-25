@@ -146,9 +146,10 @@ function displayOrderList(data){
 	for(var i in data){
 		var e = data[i];
 		var buttonHtml = ' <button type="button" class="btn btn-secondary" onclick="displayOrder(' + e.id + ')">View Order</button>'
+		var date = new Date(e.updated)
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
-		+ '<td>' + e.updated + '</td>'
+		+ '<td>' + date.toLocaleDateString("en-US") +" "+date.toLocaleTimeString("en-US")+ '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
         $tbody.append(row);

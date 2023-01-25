@@ -1,7 +1,18 @@
-
+var brandData = {};
 function getProductUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/products";
+}
+
+function getBrandUrl(){
+	var baseUrl = $("meta[name=baseUrl]").attr("content")
+	return baseUrl + "/api/brands";
+}
+
+function getBrandOption() {
+        selectElement = document.querySelector('#inputBrand');
+        output = selectElement.options[selectElement.selectedIndex].value;
+        return output;
 }
 
 //BUTTON ACTIONS
@@ -154,8 +165,10 @@ function displayProductList(data){
         $tbody.append(row);
 	}
 }
+var editProduct=null;
 function displayEditProduct(id){
 	var url = getProductUrl() + "/" + id;
+	editProduct=id;
 	$.ajax({
 	   url: url,
 	   type: 'GET',
@@ -196,6 +209,63 @@ function displayUploadData(){
 	$('#upload-product-modal').modal('toggle');
 }
 
+function getBrandList()
+{
+   var url = getBrandUrl();
+   $.ajax({
+      url: url,
+      type: 'GET',
+      success: function(data) {
+            StoreBrandOptions(data);
+      },
+      error: handleAjaxError
+   });
+}
+
+function StoreBrandOptions(data)
+{
+   console.log(data);
+   for(var i in data)
+      {
+         var a = data[i].brand;
+         var b = data[i].category;
+         if(!brandData.hasOwnProperty(a))
+               Object.assign(brandData, {[a]:[]});
+         brandData[a].push(b);
+      }
+   console.log(brandData);
+   var $elB = $("#inputBrand");
+   $elB.empty();
+
+   $elB.append(`<option value="none" selected disabled hidden>Select Brand</option>`);
+
+
+   $.each(brandData, function(key,value) {
+            $elB.append($("<option></option>")
+               .attr("value", key).text(key));
+            });
+
+   displayCategoryOptions();
+}
+
+function displayCategoryOptions()
+{
+    var $elC = $("#inputCategory");
+
+    $elC.empty();
+    $elC.append(`<option value="none" selected disabled hidden>Select Category</option>`);
+    var a = getBrandOption();
+    var len = brandData[a].length;
+    for(var i=0; i<len; i++)
+        {
+            $elC.append($("<option></option>")
+                .attr("value", brandData[a][i]).text(brandData[a][i]));
+
+        }
+}
+
+
+
 function displayProduct(data){
 	$("#product-edit-form input[name=name]").val(data.name);
 	$("#product-edit-form input[name=barCode]").val(data.barCode);
@@ -217,9 +287,11 @@ function init(){
 	$('#process-data').click(processData);
 	$('#download-errors').click(downloadErrors);
     $('#productFile').on('change', updateFileName);
+    $('#inputBrand').change(displayCategoryOptions);
 
 }
 
 $(document).ready(init);
 $(document).ready(getProductList);
+$(document).ready(getBrandList);
 
