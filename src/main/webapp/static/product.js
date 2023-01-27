@@ -14,7 +14,11 @@ function getBrandOption() {
         output = selectElement.options[selectElement.selectedIndex].value;
         return output;
 }
-
+function getBrandEditOption() {
+        selectElement = document.querySelector('#inputBrandEdit');
+        output = selectElement.options[selectElement.selectedIndex].value;
+        return output;
+}
 //BUTTON ACTIONS
 function addProduct(event){
 	//Set the values to update
@@ -216,7 +220,38 @@ function getBrandList()
       url: url,
       type: 'GET',
       success: function(data) {
+
             StoreBrandOptions(data);
+
+      },
+      error: handleAjaxError
+   });
+}
+
+function displayCategoryOptions()
+{
+    var $elC = $("#inputCategory");
+
+    $elC.empty();
+    $elC.append(`<option value="none" selected disabled hidden>Select Category</option>`);
+    var a = getBrandOption();
+    var len = brandData[a].length;
+    for(var i=0; i<len; i++)
+        {
+            $elC.append($("<option></option>")
+                .attr("value", brandData[a][i]).text(brandData[a][i]));
+
+        }
+}
+//Edit modal dropdown functions
+function getEditBrandList()
+{
+   var url = getBrandUrl();
+   $.ajax({
+      url: url,
+      type: 'GET',
+      success: function(data) {
+            StoreBrandEditOptions(data);
       },
       error: handleAjaxError
    });
@@ -246,15 +281,42 @@ function StoreBrandOptions(data)
             });
 
    displayCategoryOptions();
+
 }
 
-function displayCategoryOptions()
+function StoreBrandEditOptions(data)
 {
-    var $elC = $("#inputCategory");
+   console.log(data);
+   for(var i in data)
+      {
+         var a = data[i].brand;
+         var b = data[i].category;
+         if(!brandData.hasOwnProperty(a))
+               Object.assign(brandData, {[a]:[]});
+         brandData[a].push(b);
+      }
+   console.log(brandData);
+   var $elB = $("#inputBrandEdit");
+   $elB.empty();
+
+   $elB.append(`<option value="none" selected disabled hidden>Select Brand</option>`);
+
+
+   $.each(brandData, function(key,value) {
+            $elB.append($("<option></option>")
+               .attr("value", key).text(key));
+            });
+
+   displayCategoryEditOptions();
+}
+
+function displayCategoryEditOptions()
+{
+    var $elC = $("#inputCategoryEdit");
 
     $elC.empty();
     $elC.append(`<option value="none" selected disabled hidden>Select Category</option>`);
-    var a = getBrandOption();
+    var a = getBrandEditOption();
     var len = brandData[a].length;
     for(var i=0; i<len; i++)
         {
@@ -270,8 +332,8 @@ function displayProduct(data){
 	$("#product-edit-form input[name=name]").val(data.name);
 	$("#product-edit-form input[name=barCode]").val(data.barCode);
 	$("#product-edit-form input[name=id]").val(data.id);
-	$("#product-edit-form input[name=brand]").val(data.brand);
-	$("#product-edit-form input[name=category]").val(data.category);
+//	$("#product-edit-form input[name=brand]").val(data.brand);
+//	$("#product-edit-form input[name=category]").val(data.category);
 	$("#product-edit-form input[name=mrp]").val(data.mrp);
 	$('#edit-product-modal').modal('toggle');
 }
@@ -288,10 +350,12 @@ function init(){
 	$('#download-errors').click(downloadErrors);
     $('#productFile').on('change', updateFileName);
     $('#inputBrand').change(displayCategoryOptions);
+    $('#inputBrandEdit').change(displayCategoryEditOptions);
 
 }
 
 $(document).ready(init);
 $(document).ready(getProductList);
 $(document).ready(getBrandList);
+$(document).ready(getEditBrandList);
 
