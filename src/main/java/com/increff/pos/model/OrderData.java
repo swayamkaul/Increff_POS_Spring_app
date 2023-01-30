@@ -1,18 +1,17 @@
 package com.increff.pos.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 @Getter
 @Setter
 public class OrderData extends OrderForm{
     private Integer id;
-    private Date updated;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime updated;
 }
 

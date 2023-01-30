@@ -1,43 +1,32 @@
 package com.increff.pos.pojo;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Version;
-
-import com.sun.istack.NotNull;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 
 @MappedSuperclass
 @Getter
 @Setter
-public abstract class AbstractVersionPojo {
+public abstract class AbstractVersionPojo implements Serializable {
+    @CreationTimestamp
+    @Column
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdAt;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @NotNull
-    private Date created;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @NotNull
-    private Date updated;
+    @UpdateTimestamp
+    @Column
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime updatedAt;
 
     @Version
-    private long version;
-
-    @PrePersist
-    protected void onCreate() {
-        updated = created = new Date();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updated = new Date();
-    }
-
+    @Column
+    private Integer version;
 }

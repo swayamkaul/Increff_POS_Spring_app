@@ -1,9 +1,6 @@
 package com.increff.pos.dto;
 
-import com.increff.pos.model.OrderData;
-import com.increff.pos.model.OrderForm;
-import com.increff.pos.model.OrderItemData;
-import com.increff.pos.model.OrderItemForm;
+import com.increff.pos.model.*;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.pojo.ProductPojo;
@@ -16,13 +13,14 @@ import com.increff.pos.util.NormaliseUtil;
 import com.increff.pos.util.ValidateUtil;
 import com.increff.pos.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-
+import java.util.*;
 
 
 @Component
@@ -131,5 +129,53 @@ public class OrderDto {
         ProductPojo product = productService.get(orderItemForm.getBarCode());
         OrderItemPojo p = ConvertorUtil.convert(orderItemForm,product.getId(), orderItemService.selectById(id).getOrderId());
         orderItemService.update(id, p);
+    }
+
+    public ResponseEntity<byte[]> getPDF(int id) throws Exception {
+        InvoiceForm invoiceForm = generateInvoiceForOrder(id);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        //TODO this url in properties file
+        String url = "http://localhost:8085/fop/api/invoice";
+
+        byte[] contents = Base64.getDecoder().decode(restTemplate.postForEntity(url, invoiceForm, byte[].class).getBody());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+
+        String filename = "invoice.pdf";
+        headers.setContentDispositionFormData(filename, filename);
+
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        ResponseEntity<byte[]> response = new ResponseEntity<>(contents, headers, HttpStatus.OK);
+        return response;
+    }
+
+    public InvoiceForm generateInvoiceForOrder(int orderId) throws ApiException
+    {
+        InvoiceForm invoiceForm = new InvoiceForm();
+        OrderPojo orderPojo = orderService.get(orderId);
+
+        invoiceForm.setOrderId(orderPojo.getId());
+        invoiceForm.setPlaceDate(orderPojo.getCreatedAt().toString());
+
+        List<OrderItemPojo> orderItemPojoList = orderItemService.selectByOrderId(orderPojo.getId());
+        List<OrderItem> orderItemList = new ArrayList<>();
+
+        for(OrderItemPojo p: orderItemPojoList)
+        {
+            OrderItem orderItem = new OrderItem();
+            orderItem.setOrderItemId(p.getId());
+            String productName = productService.get(p.getProductId()).getName();
+            orderItem.setProductName(productName);
+            orderItem.setQuantity(p.getQuantity());
+            orderItem.setSellingPrice(p.getSellingPrice());
+            orderItemList.add(orderItem);
+        }
+
+        invoiceForm.setOrderItemList(orderItemList);
+
+        return invoiceForm;
     }
 }

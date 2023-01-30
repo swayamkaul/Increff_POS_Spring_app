@@ -66,6 +66,7 @@ public class ProductDto {
     }
 
     public void update(int id, ProductForm f) throws ApiException {
+        ValidateUtil.validateForms(f);
         BrandPojo brandPojo = brandService.getCheck(f.getBrand(),f.getCategory());
         ProductPojo p= ConvertorUtil.convert(f,brandPojo.getId());
         NormaliseUtil.normalise(p);

@@ -5,11 +5,8 @@ import java.util.List;
 import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.increff.pos.dto.OrderDto;
 import com.increff.pos.model.OrderData;
@@ -88,5 +85,11 @@ public class OrderApiController {
     @RequestMapping(path="/items/{id}", method = RequestMethod.PUT)
     public void updateOrderItem(@PathVariable Integer id, @RequestBody OrderItemForm f) throws ApiException{
         dto.updateOrderItem(id, f);
+    }
+
+    @ApiOperation(value = "Download Invoice")
+    @GetMapping(path = "/invoice/{id}")
+    public ResponseEntity<byte[]> getPDF(@PathVariable int id) throws Exception{
+        return dto.getPDF(id);
     }
 }

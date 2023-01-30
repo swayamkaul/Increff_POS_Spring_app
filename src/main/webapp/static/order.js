@@ -19,11 +19,17 @@ function getInventoryUrl() {
     var baseUrl = $("meta[name=baseUrl]").attr("content")
     return baseUrl + "/api/inventory";
 }
+function getInvoiceUrl() {
+    var baseUrl = $("meta[name=baseUrl]").attr("content")
+    console.log(baseUrl);
+    return baseUrl + "/api/orders/invoice";
+}
 
 function resetForm() {
     var element = document.getElementById("order-item-form");
     element.reset()
 }
+
 
 
 function deleteOrderItem(id) {
@@ -172,14 +178,18 @@ function displayOrderList(data){
 	for(var i in data){
 		var e = data[i];
 		var buttonHtml = ' <button type="button" class="btn btn-secondary" onclick="displayOrder(' + e.id + ')">View Order</button>'
-		var date = new Date(e.updated)
+            buttonHtml+= ' <button type="button" class="btn btn-secondary" onclick="printOrder(' + e.id + ')">Invoice</button>'
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
-		+ '<td>' + date.toLocaleDateString("en-US") +" "+date.toLocaleTimeString("en-US")+ '</td>'
+		+ '<td>' + e.updated + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
         $tbody.append(row);
 	}
+}
+
+function printOrder(id) {
+    window.location.href = getInvoiceUrl() + "/" + id;
 }
 
 function init() {

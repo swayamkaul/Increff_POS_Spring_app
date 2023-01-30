@@ -82,7 +82,7 @@ public class ConvertorUtil {
     public static OrderData convert(OrderPojo p)  {
         OrderData orderData = new OrderData();
         orderData.setId(p.getId());
-        orderData.setUpdated(p.getUpdated());
+        orderData.setUpdated(p.getUpdatedAt());
         return orderData;
     }
 }
