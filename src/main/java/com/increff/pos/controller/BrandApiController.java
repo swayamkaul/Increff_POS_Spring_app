@@ -1,6 +1,7 @@
 package com.increff.pos.controller;
 
 
+import java.io.IOException;
 import java.util.List;
 
 import com.increff.pos.dto.BrandDto;
@@ -17,6 +18,8 @@ import com.increff.pos.service.ApiException;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
+import javax.servlet.http.HttpServletResponse;
 
 @Api
 @RestController
@@ -58,6 +61,12 @@ public class BrandApiController {
 	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
 	public void update(@PathVariable int id, @RequestBody BrandForm f) throws ApiException {
 		dto.update(id, f);
+	}
+
+	@ApiOperation(value = "Exports to CSV")
+	@RequestMapping(path = "/exportcsv", method = RequestMethod.GET)
+	public void exportToCSV(HttpServletResponse response) throws IOException {
+		dto.generateCsv(response);
 	}
 
 

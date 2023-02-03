@@ -5,10 +5,12 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.hibernate.cfg.NamingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -34,7 +36,25 @@ public class DbConfig {
 	private String hibernateShowSql;
 	@Value("${hibernate.hbm2ddl.auto}")
 	private String hibernateHbm2ddl;
-	
+
+//	@Bean	//for naming strategy
+//	public LocalSessionFactoryBean sessionFactory() {
+//		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+//		sessionFactory.setDataSource(getDataSource());
+//		sessionFactory.setPackagesToScan("com.increff.pos");
+//		sessionFactory.setHibernateProperties(hibernateProperties());
+//		return sessionFactory;
+//	}
+//
+//	private Properties hibernateProperties() {
+//		Properties properties = new Properties();
+//		properties.put("hibernate.dialect", hibernateDialect);
+//		properties.put("hibernate.show_sql", hibernateShowSql);
+//		properties.put("hibernate.ejb.naming_strategy", "com.increff.pos.spring.SnakeCaseNamingStrategy");
+//		properties.put("hibernate.hbm2ddl.auto", hibernateHbm2ddl);
+//
+//		return properties;
+//	}
 
 	@Bean(name = "dataSource")
 	public DataSource getDataSource() {

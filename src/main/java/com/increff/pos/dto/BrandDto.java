@@ -6,12 +6,15 @@ import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandService;
 import com.increff.pos.util.ConvertorUtil;
+import com.increff.pos.util.CsvFileGenerator;
 import com.increff.pos.util.NormaliseUtil;
 import com.increff.pos.util.ValidateUtil;
 import com.increff.pos.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +23,8 @@ import java.util.List;
 public class BrandDto {
     @Autowired
     BrandService service;
+    @Autowired
+    CsvFileGenerator csvFileGenerator;
     public void add(BrandForm f) throws ApiException {
         ValidateUtil.validateForms(f);
         BrandPojo p= ConvertorUtil.convert(f);
@@ -59,5 +64,11 @@ public class BrandDto {
         BrandPojo p= ConvertorUtil.convert(f);
         NormaliseUtil.normalise(p);
         service.update(id,p);
+    }
+
+    public void generateCsv(HttpServletResponse response) throws IOException {
+        response.setContentType("text/csv");
+        response.addHeader("Content-Disposition", "attachment; filename=\"BrandReport.csv\"");
+        csvFileGenerator.writeBrandsToCsv(service.getAll(), response.getWriter());
     }
 }

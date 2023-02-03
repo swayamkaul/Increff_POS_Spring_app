@@ -2,6 +2,9 @@ package com.increff.pos.util;
 
 import com.increff.pos.model.*;
 import com.increff.pos.pojo.*;
+import javafx.util.Pair;
+
+import java.util.Map;
 
 public class ConvertorUtil {
     public static BrandData convert(BrandPojo p) {
@@ -84,5 +87,14 @@ public class ConvertorUtil {
         orderData.setId(p.getId());
         orderData.setUpdated(p.getUpdatedAt());
         return orderData;
+    }
+
+    public static InventoryReportData convertMapToItem(Map.Entry<Pair<String,String>, Integer> mapElement) {
+        Pair<String, String> p = mapElement.getKey();
+        InventoryReportData inventoryItem = new InventoryReportData();
+        inventoryItem.setBrand(p.getKey());
+        inventoryItem.setCategory(p.getValue());
+        inventoryItem.setQuantity(mapElement.getValue());
+        return inventoryItem;
     }
 }

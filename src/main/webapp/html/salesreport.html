@@ -1,0 +1,109 @@
+<!doctype html>
+
+<html lang="en">
+
+<head th:replace="snippets.html :: name_head"></head>
+
+<body>
+
+<nav th:replace="snippets.html :: name_app_navbar"></nav>
+
+<div class="container">
+
+    <h3>Report</h3>
+    <hr>
+    <h5>
+        Brand Report
+    </h5>
+    <div class="row">
+
+    </div>
+
+    <div class="row">
+        &nbsp;
+        <div class="col-12">
+            <button type="button" class="btn btn-primary" id="downloadBrandCSV">Print CSV</button>
+        </div>
+    </div>
+    <hr>
+    <h5>
+        Inventory Report
+    </h5>
+    <div class="row">
+
+    </div>
+
+    <div class="row">
+
+        &nbsp;
+        <div class="col-12">
+            <button type="button" class="btn btn-primary" id="downloadInventoryCSV">Print CSV</button>
+        </div>
+    </div>
+    <hr>
+    <h5>Sales Report</h5>
+    <!-- Top row with form-->
+    <h6>Date Filters</h6>
+    <div class="row">
+        <div class="col-12">
+            <form class="form" id="sales-report-form">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="inputSD" class=" col-form-label">From</label>
+                        <div>
+                            <input type="date" id="inputSD" name="startDate" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="inputED" class=" col-form-label">To</label>
+                        <div>
+                            <input type="date" id="inputED" name="endDate" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+
+                    <div class="form-group col-md-4">
+                        <label for="inputBrand" class=" col-form-label">Brand</label>
+                        <div class="">
+                            <select type="text" class="form-control" name="brand" id="inputBrand" placeholder="enter brand">
+                                <option value="none" selected disabled hidden>Select a Brand</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="inputCategory" class=" col-form-label">Category</label>
+                        <div class="">
+                            <select type="text" class="form-control" name="category" id="inputCategory" placeholder="enter category">
+                                <option value="none" selected disabled hidden>Select a Category</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+            <button type="button" class="btn btn-primary" id="apply-filter">Apply</button>
+            &nbsp;
+            <button type="button" class="btn btn-primary" id="printCSV" disabled>Print CSV</button>
+
+        </div>
+    </div>
+
+
+    <!-- Blank Row -->
+    <div class="row">
+        &nbsp;
+    </div>
+
+
+
+
+</div> <!-- Container end-->
+
+<footer th:replace="snippets.html :: name_footer"></footer>
+
+<script th:src="@{/static/salesreport.js}"/></script>
+
+</body>
+
+</html>

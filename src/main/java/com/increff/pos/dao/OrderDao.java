@@ -1,5 +1,6 @@
 package com.increff.pos.dao;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -20,6 +21,9 @@ public class OrderDao extends AbstractDao {
     private static String delete_id = "delete from OrderPojo p where id=:id";
     private static String select_id = "select p from OrderPojo p where id=:id";
     private static String select_all = "select p from OrderPojo p";
+
+    private final String select_all_by_date_filter = "select p from OrderPojo p where createdAt>=:startDate and createdAt<=:endDate";
+
 
     @PersistenceContext
     private EntityManager em;
@@ -44,6 +48,13 @@ public class OrderDao extends AbstractDao {
 
     public List<OrderPojo> selectAll(Class<OrderPojo> orderPojoClass) {
         TypedQuery<OrderPojo> query = getQuery(select_all, OrderPojo.class);
+        return query.getResultList();
+    }
+
+    public List<OrderPojo> getOrderByDateFilter(LocalDateTime startDate, LocalDateTime endDate) {
+        TypedQuery<OrderPojo> query = getQuery(select_all_by_date_filter, OrderPojo.class);
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
         return query.getResultList();
     }
 

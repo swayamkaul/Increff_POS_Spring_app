@@ -1,6 +1,7 @@
 package com.increff.pos.controller;
 
 
+import java.io.IOException;
 import java.util.List;
 
 import com.increff.pos.dto.InventoryDto;
@@ -17,6 +18,8 @@ import com.increff.pos.service.ApiException;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
+import javax.servlet.http.HttpServletResponse;
 
 @Api
 @RestController
@@ -58,6 +61,12 @@ public class InventoryApiController {
     @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
     public void update(@PathVariable int id, @RequestBody InventoryForm f) throws ApiException {
         dto.update(id, f);
+    }
+
+    @ApiOperation(value = "Export Product Report to CSV")
+    @RequestMapping(path = "/exportcsv", method = RequestMethod.GET)
+    public void exportToCSV(HttpServletResponse response) throws IOException, ApiException {
+        dto.generateCsv(response);
     }
 
 

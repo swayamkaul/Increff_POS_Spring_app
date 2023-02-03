@@ -1,5 +1,6 @@
 package com.increff.pos.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -50,5 +51,9 @@ public class OrderService {
     public void finaliseOrder(Integer id) throws ApiException{
         OrderPojo p1 = getCheck(id);
         p1.setEditable(false);
+    }
+
+    public List<OrderPojo> getOrderByDateFilter(LocalDateTime startDate, LocalDateTime endDate)  {
+        return dao.getOrderByDateFilter(startDate,endDate);
     }
 }

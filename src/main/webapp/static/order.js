@@ -61,11 +61,54 @@ function displayOrderItemList(data) {
 
 }
 
-function addOrderItem(event) {
-    var $form = $("#order-item-form");
-    var json = JSON.parse(toJson($form));
-    console.log("check:")
-    console.log(json);
+function checkInventory(event){
+   var $form = $("#order-item-form");
+   var json = JSON.parse(toJson($form));
+   var url = getInventoryUrl() + "/b/"+json.barCode;
+
+$.ajax({
+        url: url,
+        type: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        success: function (response) {
+            if(response.quantity<json.quantity){
+            alert("Only "+ response.quantity+" units left of this product.");
+             return false;
+            }
+            checkMrp(json);
+        },
+        error: function (error) {
+            alert(error.responseJSON.message);
+        }
+    });
+}
+
+function checkMrp(json){
+     var url = getProductUrl() + "/b/"+json.barCode;
+
+    $.ajax({
+            url: url,
+            type: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            success: function (response) {
+                if(response.mrp<json.sellingPrice){
+                alert("Selling Price (Rs. "+json.sellingPrice+") cannot be greater than MRP (Rs. "+response.mrp+")." );
+                return false;
+                }
+                addOrderItem(json);
+            },
+            error: function (error) {
+                alert(error.responseJSON.message);
+            }
+        });
+}
+
+function addOrderItem(json) {
+
     if (processedItems[json.barCode]) {
         if (processedItems[json.barCode].sellingPrice !== json.sellingPrice) {
         alert("Error: MRP mismatch for item with Barcode: "+ json.barCode);
@@ -198,7 +241,7 @@ function init() {
         processedItems = Object.assign({});
     });
     $('#add-order').click(displayCart);
-    $('#add-order-item').click(addOrderItem);
+    $('#add-order-item').click(checkInventory);
     $('#place-order').click(placeOrder);
     $('#refresh-data').click(getOrderList);
 }
