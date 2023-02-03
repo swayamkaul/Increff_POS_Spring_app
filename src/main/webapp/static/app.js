@@ -13,9 +13,19 @@ function toJson($form){
 }
 
 
+//function handleAjaxError(response){
+//	var response = JSON.parse(response.responseText);
+//	alert(response.message);
+//}
 function handleAjaxError(response){
-	var response = JSON.parse(response.responseText);
-	alert(response.message);
+    console.log(response);
+   var response = JSON.parse(response.responseText);
+   console.log(response);
+   toastr.error(response.message, "Error: ", {
+       "closeButton": true,
+       "timeOut": "0",
+       "extendedTimeOut": "0"
+   });
 }
 
 function readFileData(file, callback){

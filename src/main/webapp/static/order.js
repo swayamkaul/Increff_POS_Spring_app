@@ -64,6 +64,10 @@ function displayOrderItemList(data) {
 function checkInventory(event){
    var $form = $("#order-item-form");
    var json = JSON.parse(toJson($form));
+   if(json.barCode=="" || json.sellingPrice=="" || json.quantity==""){
+        alert("All fields are mandatory!");
+        return false;
+   }
    var url = getInventoryUrl() + "/b/"+json.barCode;
 
 $.ajax({
