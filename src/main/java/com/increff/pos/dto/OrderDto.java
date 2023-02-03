@@ -13,6 +13,7 @@ import com.increff.pos.util.NormaliseUtil;
 import com.increff.pos.util.ValidateUtil;
 import com.increff.pos.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,6 +35,9 @@ public class OrderDto {
 
     @Autowired
     private ProductService productService;
+
+    @Value("${invoice.url}")
+    private String url;
 
     public OrderData add(OrderForm f) {
         OrderPojo p = new OrderPojo();
@@ -68,18 +72,32 @@ public class OrderDto {
     public OrderData addOrderItem(List<OrderItemForm> orderItemFormList) throws ApiException {
         List<OrderItemPojo> list1 = new ArrayList<OrderItemPojo>();
         HashSet<String> barcodeSet = new HashSet<String>();
+        List<String> errorList = new ArrayList<String>();
         for (OrderItemForm f : orderItemFormList) {
-            ValidateUtil.validateForms(f);
+            ValidationUtil.validate(f,errorList);
             NormaliseUtil.normalise(orderItemFormList);
             if(barcodeSet.contains(f.getBarCode())){
-                throw new ApiException("Multiple entries of same Product in the order.");
+                errorList.add(f.getBarCode()+ ": Multiple entries of same Product in the order.");
             }
+
             barcodeSet.add(f.getBarCode());
             ProductPojo product = new ProductPojo();
-            product = productService.get(f.getBarCode());
-            OrderItemPojo p = ConvertorUtil.convert(f,product.getId());
-            list1.add(p);
+            try {
+                product = productService.get(f.getBarCode());
+                if(f.getSellingPrice()>product.getMrp()){
+                    throw new ApiException("Selling Price cannot be greater than MRP");
+                }
+                OrderItemPojo p = ConvertorUtil.convert(f, product.getId());
+                list1.add(p);
+            }catch(ApiException e){
+                errorList.add(e.toString());
+            }
         }
+
+        if(errorList.size()>0){
+            throw new ApiException(errorList.toString());
+        }
+
         OrderPojo order = orderItemService.add(list1);
         OrderData data = ConvertorUtil.convert(order);
         return data;
@@ -89,7 +107,8 @@ public class OrderDto {
     public void addItemToExisitingOrder(int orderId, OrderItemForm orderItemForm) throws ApiException {
         orderService.getCheck(orderId);
         NormaliseUtil.normalise(orderItemForm);
-        ValidationUtil.validate(orderItemForm);
+        List<String>errorList=new ArrayList<>();
+        ValidationUtil.validate(orderItemForm,errorList);
         ProductPojo product = productService.get(orderItemForm.getBarCode());
         List<OrderItemData> list1 = getItemByOrderId(orderId);
         for(OrderItemData orderItemData: list1){
@@ -125,7 +144,8 @@ public class OrderDto {
 
     }
     public void updateOrderItem(int id, OrderItemForm orderItemForm) throws ApiException {
-        ValidationUtil.validate(orderItemForm);
+        List<String> errorList=new ArrayList<>();
+        ValidationUtil.validate(orderItemForm,errorList);
         ProductPojo product = productService.get(orderItemForm.getBarCode());
         OrderItemPojo p = ConvertorUtil.convert(orderItemForm,product.getId(), orderItemService.selectById(id).getOrderId());
         orderItemService.update(id, p);
@@ -136,8 +156,6 @@ public class OrderDto {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        //TODO this url in properties file
-        String url = "http://localhost:8085/fop/api/invoice";
 
         byte[] contents = Base64.getDecoder().decode(restTemplate.postForEntity(url, invoiceForm, byte[].class).getBody());
 

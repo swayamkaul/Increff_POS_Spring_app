@@ -68,6 +68,10 @@ function checkInventory(event){
         alert("All fields are mandatory!");
         return false;
    }
+   if(json.quantity<1){
+           alert("Quantity should be greater than 0.");
+           return false;
+      }
    var url = getInventoryUrl() + "/b/"+json.barCode;
 
 $.ajax({

@@ -40,13 +40,13 @@ public class ValidationUtil {
         }
     }
 
-    public static void validate(OrderItemForm orderItemForm)throws ApiException{
+    public static void validate(OrderItemForm orderItemForm,List<String> errorList)throws ApiException{
         if((orderItemForm.getQuantity() == null) ||
            (orderItemForm.getBarCode() == null) ){
-                throw new ApiException("All Fields are mandatory!");
+                errorList.add(errorList.size()+" All Fields are mandatory!");
             }
             if(orderItemForm.getQuantity()<1){
-                throw new ApiException("Quantity should be greater than 1.");
+                errorList.add("Quantity should be greater than 1.");
             }
     }
 
