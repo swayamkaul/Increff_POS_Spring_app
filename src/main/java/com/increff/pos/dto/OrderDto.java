@@ -70,6 +70,10 @@ public class OrderDto {
     //Order Item DTO
 
     public OrderData addOrderItem(List<OrderItemForm> orderItemFormList) throws ApiException {
+        if(orderItemFormList.isEmpty()){
+            throw new ApiException("Atleast 1 item needs to be added before placing an order.");
+        }
+
         List<OrderItemPojo> list1 = new ArrayList<OrderItemPojo>();
         HashSet<String> barcodeSet = new HashSet<String>();
         List<String> errorList = new ArrayList<String>();
@@ -93,15 +97,20 @@ public class OrderDto {
                 errorList.add(e.toString());
             }
         }
+        OrderData orderData = null;
+        OrderPojo orderPojo;
+        try {
+            orderPojo = orderItemService.add(list1);
+            orderData = ConvertorUtil.convert(orderPojo);
+        }catch(ApiException e){
+            errorList.add(e.toString());
+        }
 
         if(errorList.size()>0){
             throw new ApiException(errorList.toString());
         }
 
-        OrderPojo order = orderItemService.add(list1);
-        OrderData data = ConvertorUtil.convert(order);
-        return data;
-
+        return orderData;
     }
 
     public void addItemToExisitingOrder(int orderId, OrderItemForm orderItemForm) throws ApiException {

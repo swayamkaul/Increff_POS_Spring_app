@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.increff.pos.model.MessageData;
 import com.increff.pos.service.ApiException;
 
+import javax.validation.ConstraintViolationException;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestControllerAdvice
 public class AppRestControllerAdvice {
 
@@ -24,6 +28,20 @@ public class AppRestControllerAdvice {
 	public MessageData handle(Throwable e) {
 		MessageData data = new MessageData();
 		data.setMessage("An unknown error has occurred - " + e.getMessage());
+		return data;
+	}
+
+	@ExceptionHandler(ConstraintViolationException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public final MessageData handleConstraintViolation(ConstraintViolationException ex) {
+		List<String> details = ex.getConstraintViolations()
+				.parallelStream()
+				.map(e -> e.getPropertyPath() +" "	+ e.getMessage())
+				.collect(Collectors.toList());
+
+		MessageData data = new MessageData();
+
+		data.setMessage(details.toString());
 		return data;
 	}
 }
