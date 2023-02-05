@@ -1,17 +1,14 @@
 package com.increff.pos.dto;
 
 import com.increff.pos.model.*;
+import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.pojo.ProductPojo;
-import com.increff.pos.service.ApiException;
-import com.increff.pos.service.OrderItemService;
-import com.increff.pos.service.OrderService;
-import com.increff.pos.service.ProductService;
+import com.increff.pos.service.*;
 import com.increff.pos.util.ConvertorUtil;
 import com.increff.pos.util.NormaliseUtil;
 import com.increff.pos.util.ValidateUtil;
-import com.increff.pos.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -35,6 +32,8 @@ public class OrderDto {
 
     @Autowired
     private ProductService productService;
+    @Autowired
+    private InventoryService inventoryService;
 
     @Value("${invoice.url}")
     private String url;
@@ -44,11 +43,7 @@ public class OrderDto {
         OrderData data = ConvertorUtil.convert(orderService.add(p));
         return data;
     }
-    public OrderData get(int id) throws ApiException {
-        OrderPojo p = orderService.get(id);
-        OrderData data = ConvertorUtil.convert(p);
-        return data;
-    }
+
     public List<OrderData> getAll() {
         List<OrderData> list = new ArrayList<OrderData>();
         List<OrderPojo> list1 = orderService.getAll();
@@ -58,106 +53,31 @@ public class OrderDto {
         }
         return list;
     }
-    public OrderData update(int id, OrderForm f) throws ApiException {
-        OrderPojo p = orderService.update(id, null);
-        OrderData data = ConvertorUtil.convert(p);
-        return data;
-    }
-    public void finaliseOrder(int id) throws ApiException {
-        orderService.finaliseOrder(id);
-    }
 
     //Order Item DTO
 
     public OrderData addOrderItem(List<OrderItemForm> orderItemFormList) throws ApiException {
-        if(orderItemFormList.isEmpty()){
-            throw new ApiException("Atleast 1 item needs to be added before placing an order.");
-        }
-
-        List<OrderItemPojo> list1 = new ArrayList<OrderItemPojo>();
-        HashSet<String> barcodeSet = new HashSet<String>();
         List<String> errorList = new ArrayList<String>();
-        for (OrderItemForm f : orderItemFormList) {
-            ValidationUtil.validate(f,errorList);
-            NormaliseUtil.normalise(orderItemFormList);
-            if(barcodeSet.contains(f.getBarCode())){
-                errorList.add(f.getBarCode()+ ": Multiple entries of same Product in the order.");
-            }
+        checkDuplicates(orderItemFormList);
 
-            barcodeSet.add(f.getBarCode());
-            ProductPojo product = new ProductPojo();
-            try {
-                product = productService.get(f.getBarCode());
-                if(f.getSellingPrice()>product.getMrp()){
-                    throw new ApiException("Selling Price cannot be greater than MRP");
-                }
-                OrderItemPojo p = ConvertorUtil.convert(f, product.getId());
-                list1.add(p);
-            }catch(ApiException e){
-                errorList.add(e.toString());
-            }
-        }
-        OrderData orderData = null;
-        OrderPojo orderPojo;
-        try {
-            orderPojo = orderItemService.add(list1);
-            orderData = ConvertorUtil.convert(orderPojo);
-        }catch(ApiException e){
-            errorList.add(e.toString());
-        }
+        List<OrderItemPojo> orderItemPojoList =checkSellingPriceAndInventory(orderItemFormList,errorList);
+        throwErrorsIfAny(errorList);
 
-        if(errorList.size()>0){
-            throw new ApiException(errorList.toString());
-        }
+        OrderPojo orderPojo = orderItemService.add(orderItemPojoList);
+
+        OrderData orderData = ConvertorUtil.convert(orderPojo);
 
         return orderData;
     }
-
-    public void addItemToExisitingOrder(int orderId, OrderItemForm orderItemForm) throws ApiException {
-        orderService.getCheck(orderId);
-        NormaliseUtil.normalise(orderItemForm);
-        List<String>errorList=new ArrayList<>();
-        ValidationUtil.validate(orderItemForm,errorList);
-        ProductPojo product = productService.get(orderItemForm.getBarCode());
-        List<OrderItemData> list1 = getItemByOrderId(orderId);
-        for(OrderItemData orderItemData: list1){
-            if(orderItemData.getBarCode().equals(orderItemForm.getBarCode())){
-                throw new ApiException("Product already exists in the order! Barcode: "+orderItemForm.getBarCode());
-            }
-        }
-        OrderItemPojo item = ConvertorUtil.convert(orderItemForm,product.getId(),orderId);
-
-        orderItemService.add(item);
-
-    }
-
-    public OrderItemData getItemById(int id) throws ApiException {
-        OrderItemPojo p = orderItemService.selectById(id);
-        ProductPojo product = productService.get(p.getProductId());
-        OrderItemData data = ConvertorUtil.convert(p, product.getBarCode());
-        data.setBarCode(product.getBarCode());
-        return data;
-    }
-
     public List<OrderItemData> getItemByOrderId(int orderId) throws ApiException {
         List<OrderItemData> list = new ArrayList<OrderItemData>();
         List<OrderItemPojo> list1 = orderItemService.selectByOrderId(orderId);
-
         for (OrderItemPojo p : list1) {
-            ProductPojo product = productService.get(p.getProductId());
+            ProductPojo product = productService.getCheck(p.getProductId());
             OrderItemData data = ConvertorUtil.convert(p, product.getBarCode());
             list.add(data);
         }
-
         return list;
-
-    }
-    public void updateOrderItem(int id, OrderItemForm orderItemForm) throws ApiException {
-        List<String> errorList=new ArrayList<>();
-        ValidationUtil.validate(orderItemForm,errorList);
-        ProductPojo product = productService.get(orderItemForm.getBarCode());
-        OrderItemPojo p = ConvertorUtil.convert(orderItemForm,product.getId(), orderItemService.selectById(id).getOrderId());
-        orderItemService.update(id, p);
     }
 
     public ResponseEntity<byte[]> getPDF(int id) throws Exception {
@@ -194,7 +114,7 @@ public class OrderDto {
         {
             OrderItem orderItem = new OrderItem();
             orderItem.setOrderItemId(p.getId());
-            String productName = productService.get(p.getProductId()).getName();
+            String productName = productService.getCheck(p.getProductId()).getName();
             orderItem.setProductName(productName);
             orderItem.setQuantity(p.getQuantity());
             orderItem.setSellingPrice(p.getSellingPrice());
@@ -205,4 +125,46 @@ public class OrderDto {
 
         return invoiceForm;
     }
+    void checkDuplicates(List<OrderItemForm> forms) throws ApiException {
+        if(forms.isEmpty()){
+            throw new ApiException("Cart Empty!");
+        }
+        Set<String> set = new HashSet<>();
+        for(OrderItemForm f : forms) {
+            ValidateUtil.validateForms(f);
+            NormaliseUtil.normalizeOrderItem(f);
+            if(set.contains(f.getBarCode())) {
+                throw new ApiException("Duplicate Barcode Detected, Barcode: "+f.getBarCode());
+            }
+            set.add(f.getBarCode());
+        }
+    }
+
+    List<OrderItemPojo>  checkSellingPriceAndInventory(List<OrderItemForm> forms,List<String> errorList) throws ApiException {
+        List<OrderItemPojo> orderItemPojoList=new ArrayList<>();
+        for(OrderItemForm orderItemForm : forms) {
+            try {
+                ProductPojo productPojo = productService.getCheck(orderItemForm.getBarCode());
+                InventoryPojo inventoryPojo=inventoryService.getCheck(productPojo.getId());
+                if(productPojo.getMrp()<orderItemForm.getSellingPrice()){
+                    errorList.add("Selling Price more than MRP for Barcode: "+orderItemForm.getBarCode());
+                }
+                if(inventoryPojo.getQuantity()<orderItemForm.getQuantity()){
+                    errorList.add("Insufficient Inventory for Barcode: "+orderItemForm.getBarCode());
+                }
+                OrderItemPojo p = ConvertorUtil.convert(orderItemForm, productPojo.getId());
+                orderItemPojoList.add(p);
+            }catch (ApiException e){
+                errorList.add(orderItemForm.getBarCode()+": "+e.getMessage());
+            }
+        }
+        return orderItemPojoList;
+    }
+
+    void throwErrorsIfAny(List<String> errorlist) throws ApiException {
+        if(!errorlist.isEmpty()){
+            throw new ApiException(errorlist.toString());
+        }
+    }
+
 }

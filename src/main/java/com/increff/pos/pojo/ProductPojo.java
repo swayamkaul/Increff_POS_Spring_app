@@ -22,11 +22,11 @@ public class ProductPojo extends AbstractVersionPojo{
     @NotBlank
     private String barCode;
     //TODO change it to camelCase, db column should  be in snakeCase DONE
-    @Column(name = "brand_category",nullable = false)
+    @Column(nullable = false)
     private int brandCategory;
     @NotBlank
     private String name;
-    @NotNull
+    @Column(nullable = false)
     @Min(value = 0)
     private Double mrp;
 }

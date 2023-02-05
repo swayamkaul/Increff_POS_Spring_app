@@ -24,12 +24,10 @@ public class OrderItemService {
     @Autowired
     private OrderService orderService;
 
-
+//TODO combine orderitem service and orderservice
     public OrderPojo add(List<OrderItemPojo> list) throws ApiException {
         OrderPojo order = orderService.add(new OrderPojo());
-        int totalQuantity = 0;
         for (OrderItemPojo p : list) {
-            totalQuantity += p.getQuantity();
             inventoryService.reduceQuantity(p.getProductId(), p.getQuantity());
             p.setOrderId(order.getId());
             dao.insert(p);
@@ -60,12 +58,6 @@ public class OrderItemService {
 
         if (p1.getProductId() != p.getProductId()) {
             throw new ApiException("Mismatch in product barcode provided");
-        }
-
-        OrderPojo op = orderService.update(p1.getOrderId(), null);
-
-        if (!op.isEditable()) {
-            throw new ApiException("Order is no longer editable");
         }
 
         if (p1.getQuantity() > p.getQuantity()) {

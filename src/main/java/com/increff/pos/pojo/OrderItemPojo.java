@@ -15,14 +15,14 @@ public class OrderItemPojo extends AbstractVersionPojo{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
-    @NotNull
+    @Column(nullable = false)
     private Integer orderId;
-    @NotNull
+    @Column(nullable = false)
     private Integer productId;
-    @NotNull
+    @Column(nullable = false)
     @Min(value = 1)
     private Integer quantity;
-    @NotNull
+    @Column(nullable = false)
     @Min(value = 0)
     private Double sellingPrice;
 

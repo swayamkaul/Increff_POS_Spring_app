@@ -9,7 +9,6 @@ import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.*;
 import com.increff.pos.util.CsvFileGenerator;
 import com.increff.pos.util.ValidateUtil;
-import com.increff.pos.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -62,7 +61,7 @@ public class SalesReportDto {
         for(OrderPojo orderPojo: list){
             List<OrderItemPojo> orderItemPojoList = orderItemService.selectByOrderId(orderPojo.getId());
             for (OrderItemPojo orderItemPojo: orderItemPojoList) {
-                ProductPojo productPojo = productService.get(orderItemPojo.getProductId());
+                ProductPojo productPojo = productService.getCheck(orderItemPojo.getProductId());
                 BrandPojo brandPojo = brandService.getCheck(productPojo.getBrandCategory());
                 if(!map.containsKey(brandPojo.getId())) {
                     map.put(brandPojo.getId(), new SalesReportData());

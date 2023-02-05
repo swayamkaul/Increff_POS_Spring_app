@@ -21,8 +21,9 @@ public class NormaliseUtil {
         }
 
     }
-    public static void normalise(OrderItemForm orderItemForm){
-        orderItemForm.setBarCode(StringUtil.doTrim(orderItemForm.getBarCode()));
+    public static void normalizeOrderItem(OrderItemForm orderItemForm) {
+        orderItemForm.setBarCode(StringUtil.toLowerCase(orderItemForm.getBarCode()).trim());
     }
+
 
 }

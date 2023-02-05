@@ -9,7 +9,6 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-//TODO add snakeCaseNamingStratergy for hibernate
 @Entity
 @Getter
 @Setter

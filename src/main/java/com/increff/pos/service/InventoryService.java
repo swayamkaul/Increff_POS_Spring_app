@@ -41,13 +41,6 @@ public class InventoryService {
         }
         return p;
     }
-    public InventoryPojo getCheck(String barCode) throws ApiException {
-        InventoryPojo p = dao.select(barCode);
-        if (p == null) {
-            throw new ApiException("Inventory with given barcode does not exist,Barcode : " + barCode);
-        }
-        return p;
-    }
     public void reduceQuantity(int id, int quantity) throws ApiException{
         InventoryPojo p = getCheck(id);
         if(p.getQuantity() < quantity){

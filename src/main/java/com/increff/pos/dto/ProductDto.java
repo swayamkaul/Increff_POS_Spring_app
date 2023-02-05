@@ -44,13 +44,13 @@ public class ProductDto {
         productService.delete(id);
     }
     public ProductData get(int id) throws ApiException {
-        ProductPojo productPojo= productService.get(id);
+        ProductPojo productPojo= productService.getCheck(id);
         BrandPojo brandPojo=brandService.getCheck(productPojo.getBrandCategory());
         return ConvertorUtil.convert(productPojo,brandPojo.getBrand(),brandPojo.getCategory());
     }
 
     public ProductData get(String barCode) throws ApiException {
-        ProductPojo productPojo= productService.get(barCode);
+        ProductPojo productPojo= productService.getCheck(barCode);
         BrandPojo brandPojo=brandService.getCheck(productPojo.getBrandCategory());
         return ConvertorUtil.convert(productPojo,brandPojo.getBrand(),brandPojo.getCategory());
     }

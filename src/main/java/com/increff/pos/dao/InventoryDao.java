@@ -19,7 +19,6 @@ public class InventoryDao extends AbstractDao {
 
     private static String delete_id = "delete from InventoryPojo p where id=:id";
     private static String select_id = "select p from InventoryPojo p where id=:id";
-    private static String select_bar_code = "select p from InventoryPojo p where barCode=:barCode";
     private static String select_all = "select p from InventoryPojo p";
 
     @PersistenceContext
@@ -38,11 +37,6 @@ public class InventoryDao extends AbstractDao {
     public InventoryPojo select(int id) {
         TypedQuery<InventoryPojo> query = getQuery(select_id, InventoryPojo.class);
         query.setParameter("id", id);
-        return getSingle(query);
-    }
-    public InventoryPojo select(String barCode) {
-        TypedQuery<InventoryPojo> query = getQuery(select_bar_code, InventoryPojo.class);
-        query.setParameter("barCode", barCode);
         return getSingle(query);
     }
 

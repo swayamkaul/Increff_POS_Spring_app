@@ -1,5 +1,7 @@
 var completeOrder = []
 let processedItems = {};
+
+
 function getOrderItemUrl() {
     var baseUrl = $("meta[name=baseUrl]").attr("content")
     return baseUrl + "/api/orders";
@@ -73,7 +75,10 @@ function checkInventory(event){
            return false;
       }
    var url = getInventoryUrl() + "/b/"+json.barCode;
-
+    let prevQuantity=0;
+    if(processedItems[json.barCode]){
+     prevQuantity= parseInt(processedItems[json.barCode].quantity);
+    }
 $.ajax({
         url: url,
         type: 'GET',
@@ -81,8 +86,9 @@ $.ajax({
             'Content-Type': 'application/json'
         },
         success: function (response) {
-            if(response.quantity<json.quantity){
-            alert("Only "+ response.quantity+" units left of this product.");
+            if(response.quantity-prevQuantity<json.quantity){
+            console.log(response.quantity-prevQuantity);
+            alert("Only "+ (response.quantity-prevQuantity).toString()+" units left of this product.");
              return false;
             }
             checkMrp(json);
@@ -119,7 +125,8 @@ function addOrderItem(json) {
 
     if (processedItems[json.barCode]) {
         if (processedItems[json.barCode].sellingPrice !== json.sellingPrice) {
-        alert("Error: MRP mismatch for item with Barcode: "+ json.barCode);
+        alert("Error: Selling Price mismatch for item with Barcode: "+ json.barCode);
+        return false;
         }else{
         let qty= parseInt(processedItems[json.barCode].quantity) + parseInt(json.quantity);
         processedItems[json.barCode].quantity=qty.toString();
