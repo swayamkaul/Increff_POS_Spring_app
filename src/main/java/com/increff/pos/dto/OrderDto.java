@@ -26,10 +26,6 @@ public class OrderDto {
 
     @Autowired
     private OrderService orderService;
-
-    @Autowired
-    private OrderItemService orderItemService;
-
     @Autowired
     private ProductService productService;
     @Autowired
@@ -58,12 +54,12 @@ public class OrderDto {
 
     public OrderData addOrderItem(List<OrderItemForm> orderItemFormList) throws ApiException {
         List<String> errorList = new ArrayList<String>();
-        checkDuplicates(orderItemFormList);
+        checkConstraintsAndDuplicates(orderItemFormList);
 
         List<OrderItemPojo> orderItemPojoList =checkSellingPriceAndInventory(orderItemFormList,errorList);
         throwErrorsIfAny(errorList);
 
-        OrderPojo orderPojo = orderItemService.add(orderItemPojoList);
+        OrderPojo orderPojo = orderService.addOrderItemListToOrder(orderItemPojoList);
 
         OrderData orderData = ConvertorUtil.convert(orderPojo);
 
@@ -71,7 +67,7 @@ public class OrderDto {
     }
     public List<OrderItemData> getItemByOrderId(int orderId) throws ApiException {
         List<OrderItemData> list = new ArrayList<OrderItemData>();
-        List<OrderItemPojo> list1 = orderItemService.selectByOrderId(orderId);
+        List<OrderItemPojo> list1 = orderService.selectByOrderId(orderId);
         for (OrderItemPojo p : list1) {
             ProductPojo product = productService.getCheck(p.getProductId());
             OrderItemData data = ConvertorUtil.convert(p, product.getBarCode());
@@ -107,7 +103,7 @@ public class OrderDto {
         invoiceForm.setOrderId(orderPojo.getId());
         invoiceForm.setPlaceDate(orderPojo.getCreatedAt().toString());
 
-        List<OrderItemPojo> orderItemPojoList = orderItemService.selectByOrderId(orderPojo.getId());
+        List<OrderItemPojo> orderItemPojoList = orderService.selectByOrderId(orderPojo.getId());
         List<OrderItem> orderItemList = new ArrayList<>();
 
         for(OrderItemPojo p: orderItemPojoList)
@@ -125,7 +121,7 @@ public class OrderDto {
 
         return invoiceForm;
     }
-    void checkDuplicates(List<OrderItemForm> forms) throws ApiException {
+    void checkConstraintsAndDuplicates(List<OrderItemForm> forms) throws ApiException {
         if(forms.isEmpty()){
             throw new ApiException("Cart Empty!");
         }
@@ -154,7 +150,7 @@ public class OrderDto {
                 }
                 OrderItemPojo p = ConvertorUtil.convert(orderItemForm, productPojo.getId());
                 orderItemPojoList.add(p);
-            }catch (ApiException e){
+            }catch (Exception e){
                 errorList.add(orderItemForm.getBarCode()+": "+e.getMessage());
             }
         }

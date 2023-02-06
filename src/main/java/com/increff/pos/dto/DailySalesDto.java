@@ -21,8 +21,6 @@ public class DailySalesDto {
     SalesService salesService;
     @Autowired
     OrderService orderService;
-    @Autowired
-    OrderItemService orderItemService;
 
     public void createReport() throws ApiException {
         SalesPojo salesPojo = new SalesPojo();
@@ -40,7 +38,7 @@ public class DailySalesDto {
 
         for (OrderPojo orderPojo : orderPojoList) {
             Integer id = orderPojo.getId();
-            List<OrderItemPojo> orderItemPojoList = orderItemService.selectByOrderId(id);
+            List<OrderItemPojo> orderItemPojoList = orderService.selectByOrderId(id);
             for (OrderItemPojo orderItemPojo: orderItemPojoList) {
                 totalItems += orderItemPojo.getQuantity();
                 totalRevenue += (orderItemPojo.getQuantity() * orderItemPojo.getSellingPrice());

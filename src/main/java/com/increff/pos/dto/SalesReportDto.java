@@ -23,14 +23,9 @@ public class SalesReportDto {
     @Autowired
     private OrderService orderService;
     @Autowired
-    private OrderItemService orderItemService;
-
-    @Autowired
     private BrandService brandService;
-
     @Autowired
     private ProductService productService;
-
     @Autowired
     private CsvFileGenerator csvGenerator;
 
@@ -59,7 +54,7 @@ public class SalesReportDto {
     public List<SalesReportData> getFilterSalesReport(List<OrderPojo> list, String brand, String category) throws ApiException {
         HashMap<Integer, SalesReportData> map = new HashMap<Integer, SalesReportData>();
         for(OrderPojo orderPojo: list){
-            List<OrderItemPojo> orderItemPojoList = orderItemService.selectByOrderId(orderPojo.getId());
+            List<OrderItemPojo> orderItemPojoList = orderService.selectByOrderId(orderPojo.getId());
             for (OrderItemPojo orderItemPojo: orderItemPojoList) {
                 ProductPojo productPojo = productService.getCheck(orderItemPojo.getProductId());
                 BrandPojo brandPojo = brandService.getCheck(productPojo.getBrandCategory());
@@ -90,7 +85,6 @@ public class SalesReportDto {
     public void generateCsv(HttpServletResponse response) throws  IOException {
         response.setContentType("text/csv");
         response.addHeader("Content-Disposition", "attachment; filename=\"salesReport.csv\"");
-
         csvGenerator.writeSalesToCsv(salesList, response.getWriter());
         salesList.clear();
     }

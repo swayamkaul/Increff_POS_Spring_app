@@ -8,41 +8,41 @@
 
 <nav th:replace="snippets.html :: name_app_navbar"></nav>
 
-<div class="container">
+<div class="container" col-12>
   <h3>Products</h3>
   <!-- Top row with form-->
   <div class="row col-12">
       <form id="product-form">
         <div class="form-row">
-          <div class="form-group col-md-2">
+          <div class="form-group col-2">
             <label for="inputBrand">Brand</label>
             <select type="text" class="form-control" name="brand" id="inputBrand" placeholder="Enter brand">
               <option value="none" selected disabled hidden>Select Brand</option>
             </select>
           </div>
-          <div class="form-group col-md-2">
+          <div class="form-group col-2.5">
             <label for="inputCategory">Category</label>
             <select type="text" class="form-control" name="category" id="inputCategory" placeholder="Enter category">
               <option value="none" selected disabled hidden>Select Category</option>
             </select>
           </div>
 
-          <div class="form-group col-md-2" >
+          <div class="form-group col-2" >
             <label for="inputProduct" class="col-md-3 ">Product</label>
             <div >
               <input type="text" class="form-control" name="name" placeholder="Enter name">
             </div>
           </div>
 
-        <div class="form-group col-md-2">
-          <label for="inputBarcode" class="col-md-3 ">Barcode</label>
+        <div class="form-group col-2">
+          <label for="inputBarcode" class="col-3 ">Barcode</label>
           <div >
             <input type="text" class="form-control" name="barCode" placeholder="Enter barcode">
           </div>
         </div>
 
         <div class="form-group">
-          <label for="inputMrp" class="col-md-2 ">MRP</label>
+          <label for="inputMrp" class="col-2 ">MRP</label>
           <div>
             <input type="text" class="form-control" name="mrp" placeholder="Enter MRP">
           </div>
@@ -106,14 +106,14 @@
           <form  id="product-edit-form">
 
             <div class="form-group">
-              <div class="form-group col-md-4">
+              <div class="form-group col-5">
                 <label for="inputBrand" class=" ">Brand</label>
                 <select type="text" class="form-control" name="brand" id="inputBrandEdit" placeholder="Enter brand">
                   <option value="none" selected disabled hidden>Select a Brand</option>
                 </select>
 
               </div>
-              <div class="form-group col-md-4">
+              <div class="form-group col-5">
                 <label for="inputCategory" class="">Category</label>
 
                 <select type="text" class="form-control" name="category" id="inputCategoryEdit" placeholder="Enter category">
@@ -132,18 +132,6 @@
                 <input type="text" class="form-control" name="barCode" placeholder="Enter barcode">
               </div>
             </div>
-<!--            <div class="form-group">-->
-<!--              <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>-->
-<!--              <div class="col-sm-10">-->
-<!--                <input type="text" class="form-control" name="brand" placeholder="Enter brand">-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <div class="form-group">-->
-<!--              <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>-->
-<!--              <div class="col-sm-10">-->
-<!--                <input type="text" class="form-control" name="category" placeholder="Enter category">-->
-<!--              </div>-->
-<!--            </div>-->
             <div class="form-group">
               <label for="inputMrp" class="col-md-4 ">MRP</label>
               <div class="col-sm-10">

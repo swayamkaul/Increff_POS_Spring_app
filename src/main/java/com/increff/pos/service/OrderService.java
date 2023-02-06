@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.increff.pos.dao.OrderItemDao;
+import com.increff.pos.pojo.OrderItemPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +18,18 @@ import com.increff.pos.pojo.OrderPojo;
 public class OrderService {
 
     @Autowired
-    private OrderDao dao;
+    private OrderDao orderDao;
+    @Autowired
+    private OrderItemDao orderItemDao;
+    @Autowired
+    private InventoryService inventoryService;
+
+
 
 
     public OrderPojo add(OrderPojo p){
         p.setEditable(true);
-        p.setId(dao.insert(p));
+        p.setId(orderDao.insert(p));
         return p;
     }
 
@@ -32,7 +40,7 @@ public class OrderService {
 
 
     public OrderPojo getCheck(Integer id) throws ApiException{
-        OrderPojo p =dao.select(id);
+        OrderPojo p = orderDao.select(id);
         if(p == null){
             throw new ApiException("Order does not exists");
         }
@@ -41,19 +49,30 @@ public class OrderService {
 
 
     public List<OrderPojo> getAll(){
-        return dao.selectAll(OrderPojo.class);
+        return orderDao.selectAll(OrderPojo.class);
     }
 
     public OrderPojo update(Integer id,OrderPojo p) throws ApiException{
         return getCheck(id);
     }
 
-    public void finaliseOrder(Integer id) throws ApiException{
-        OrderPojo p1 = getCheck(id);
-        p1.setEditable(false);
-    }
 
     public List<OrderPojo> getOrderByDateFilter(LocalDateTime startDate, LocalDateTime endDate)  {
-        return dao.getOrderByDateFilter(startDate,endDate);
+        return orderDao.getOrderByDateFilter(startDate,endDate);
+    }
+
+    public OrderPojo addOrderItemListToOrder(List<OrderItemPojo> list) throws ApiException {
+        OrderPojo order = add(new OrderPojo());
+        for (OrderItemPojo p : list) {
+            inventoryService.reduceQuantity(p.getProductId(), p.getQuantity());
+            p.setOrderId(order.getId());
+            orderItemDao.insert(p);
+        }
+        return order;
+    }
+
+
+    public List<OrderItemPojo> selectByOrderId(int orderId) {
+        return orderItemDao.selectByOrderId(orderId);
     }
 }

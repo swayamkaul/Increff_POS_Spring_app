@@ -79,6 +79,7 @@ public class InventoryDto {
     }
 
     public void update(int id, InventoryForm f) throws ApiException {
+        ValidateUtil.validateForms(f);
         ProductPojo productPojo = productService.getCheck(f.getBarCode());
         InventoryPojo inventoryPojo= ConvertorUtil.convert(f,productPojo.getId());
         ValidationUtil.validate(inventoryPojo);
