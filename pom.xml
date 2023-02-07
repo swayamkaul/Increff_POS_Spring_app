@@ -31,6 +31,7 @@
 		<javax.servlet.version>3.1.0</javax.servlet.version>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
 		<lombok.version>1.18.24</lombok.version>
+		<json.version>20210307</json.version>
 
 		<!-- Jetty configuration -->
 		<jetty.version>9.4.21.v20190926</jetty.version>
@@ -75,6 +76,13 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
 			<version>${spring.version}</version>
+		</dependency>
+
+		<!-- JSON Dependencies-->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>${json.version}</version>
 		</dependency>
 
 

@@ -1,5 +1,8 @@
 package com.increff.pos.dto;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.increff.pos.model.BrandForm;
+import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.model.ProductData;
 import com.increff.pos.model.ProductForm;
 import com.increff.pos.pojo.BrandPojo;
@@ -7,13 +10,13 @@ import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandService;
 import com.increff.pos.service.ProductService;
-import com.increff.pos.util.ConvertorUtil;
-import com.increff.pos.util.NormaliseUtil;
-import com.increff.pos.util.ValidateUtil;
-import com.increff.pos.util.ValidationUtil;
+import com.increff.pos.util.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,20 +27,27 @@ public class ProductDto {
     @Autowired
     BrandService brandService ;
 
-    public void add(ProductForm f) throws ApiException {
-        //TODO getCheckBrandPojo
-        //TODO validation before conversion generinc validation function using annotations
-        ValidateUtil.validateForms(f);
-        BrandPojo brandPojo = brandService.getCheck(f.getBrand(),f.getCategory());
-        ProductPojo p=ConvertorUtil.convert(f,brandPojo.getId());
-        NormaliseUtil.normalise(p);
-        ValidationUtil.validate(p);
-        try{
-            productService.getCheck(p.getId());
+    public void add(List<ProductForm> productForms) throws ApiException{
+        JSONArray errorList=new JSONArray();
+        Integer errorCount=0;
+        for(ProductForm form: productForms) {
+            JSONObject error= initialiseBrandErrorObject(form);
+            try{
+                ValidateUtil.validateForms(form);
+                NormaliseUtil.normalise(form);
+                BrandPojo brandPojo = brandService.getCheck(form.getBrand(), form.getCategory());
+                productService.checkExist(form.getBarCode());
+            }
+            catch (Exception e) {
+                errorCount++;
+                error.put("message",e.getMessage());
+            }
+            errorList.put(error);
         }
-        catch(ApiException e){
-            productService.add(p);
+        if(errorCount>0){
+            throw new ApiException(errorList.toString());
         }
+        bulkAdd(productForms);
     }
 
     public void delete(int id) {
@@ -67,11 +77,28 @@ public class ProductDto {
 
     public void update(int id, ProductForm f) throws ApiException {
         ValidateUtil.validateForms(f);
+        NormaliseUtil.normalise(f);
         BrandPojo brandPojo = brandService.getCheck(f.getBrand(),f.getCategory());
         ProductPojo p= ConvertorUtil.convert(f,brandPojo.getId());
-        NormaliseUtil.normalise(p);
-        ValidationUtil.validate(p);
         productService.update(id,p);
+    }
+    @Transactional(rollbackOn = ApiException.class)
+    private void bulkAdd(List<ProductForm> forms) throws ApiException {
+        for(ProductForm form: forms) {
+            productService.add(ConvertorUtil.convert(form, brandService.getCheck(form.getBrand(),
+                    form.getCategory()).getId()));
+        }
+    }
+
+    JSONObject initialiseBrandErrorObject(ProductForm productForm){
+        JSONObject error=new JSONObject();
+        error.put("barCode",productForm.getBarCode());
+        error.put("brand",productForm.getBrand());
+        error.put("category",productForm.getCategory());
+        error.put("name",productForm.getName());
+        error.put("mrp",productForm.getMrp());
+        error.put("message","");
+        return error;
     }
 
 }

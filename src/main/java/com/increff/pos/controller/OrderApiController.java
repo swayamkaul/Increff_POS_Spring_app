@@ -2,6 +2,7 @@ package com.increff.pos.controller;
 
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class OrderApiController {
 
     @ApiOperation(value="Adds Order Items")
     @RequestMapping(path="/items", method = RequestMethod.POST)
-    public OrderData addOrderItem(@RequestBody List<OrderItemForm> orderItemFormList) throws ApiException{
+    public OrderData addOrderItem(@RequestBody List<OrderItemForm> orderItemFormList) throws ApiException, JsonProcessingException {
         return dto.addOrderItem(orderItemFormList);
     }
 

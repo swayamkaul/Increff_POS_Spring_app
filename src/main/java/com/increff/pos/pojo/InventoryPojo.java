@@ -15,7 +15,7 @@ public class InventoryPojo extends AbstractVersionPojo{
     @Id
     private int id;
     @Column(nullable = false)
-    @Min(value = 1)
+    @Min(value = 0)
     private int quantity;
 
 }

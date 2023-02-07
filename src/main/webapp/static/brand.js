@@ -1,27 +1,72 @@
-
+var wholeBrand = []
 function getBrandUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/brands";
 }
+function resetForm() {
+    var element = document.getElementById("brand-form");
+    element.reset()
+}
 
+function arrayToJson() {
+    let json = [];
+    for(i in wholeBrand) {
+        let data = {};
+        data["brand"]=JSON.parse(wholeBrand[i]).brand;
+        data["category"]=JSON.parse(wholeBrand[i]).category;
+        json.push(data);
+    }
+    return JSON.stringify(json);
+}
+function isJson(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
 //BUTTON ACTIONS
 function addBrand(event){
 	//Set the values to update
 	var $form = $("#brand-form");
 	var json = toJson($form);
+	wholeBrand.push(json)
 	var url = getBrandUrl();
-
+		var jsonObj = arrayToJson();
+    console.log(url);
 	$.ajax({
 	   url: url,
 	   type: 'POST',
-	   data: json,
+	   data: jsonObj,
 	   headers: {
        	'Content-Type': 'application/json'
        },
-	   success: function(response) {
-			getBrandList();
+		success: function (response) {
+		    wholeBrand=[];
+			resetForm();
+	   		getBrandList();
+			toastr.success("Brand Added Successfully", "Success : ");
 	   },
-	   error: handleAjaxError
+	   error: function (response) {
+	       console.log(response);
+	       if(response.status == 403) {
+	            toastr.error("Error: 403 unauthorized");
+	       }
+	       else {
+	        var resp = JSON.parse(response.responseText);
+	        if(isJson(resp.message) == true){
+	            var jsonObj = JSON.parse(resp.message);
+      		    console.log(jsonObj);
+                toastr.error(jsonObj[0].message, "Error : ");
+	        }
+	        else {
+	        handleAjaxError(response);
+	        }
+	       }
+           wholeBrand=[];
+           resetForm();
+	   }
 	});
 
 	return false;
@@ -45,6 +90,7 @@ function updateBrand(event){
        	'Content-Type': 'application/json'
        },
 	   success: function(response) {
+	        toastr.success("Brand Updated Successfully", "Success : ");
 			getBrandList();
 	   },
 	   error: handleAjaxError
@@ -86,28 +132,37 @@ var processCount = 0;
 
 
 function processData(){
-	var file = $('#brandFile')[0].files[0];
-	readFileData(file, readFileDataCallback);
+		var file = $('#brandFile')[0].files[0];
+    	console.log(file);
+    	if(file.name.split('.').pop() != "tsv"){
+    	    toastr.error("file format is not tsv, Not Allowed");
+    	}
+    	else {
+    	readFileData(file, readFileDataCallback);
+    	}
 }
 
 function readFileDataCallback(results){
 	fileData = results.data;
-	uploadRows();
+	var filelen = fileData.length;
+    if(filelen > 5000) {
+    	 toastr.error("file length exceeds 5000, Not Allowed");
+    }
+    else {
+
+    	 uploadRows();
+    }
 }
+
 
 function uploadRows(){
 	//Update progress
 	updateUploadDialog();
-	//If everything processed then return
-	if(processCount==fileData.length){
-		return;
-	}
 
-	//Process next row
-	var row = fileData[processCount];
-	processCount++;
+     $("#process-data").prop('disabled', true);
 
-	var json = JSON.stringify(row);
+	var json = JSON.stringify(fileData);
+	console.log(json);
 	var url = getBrandUrl();
 
 	//Make ajax call
@@ -119,16 +174,32 @@ function uploadRows(){
        	'Content-Type': 'application/json'
        },
 	   success: function(response) {
-	   		uploadRows();
+	   		console.log(response);
+            errorData = response;
+            processCount=fileData.length
+            resetForm();
+            getBrandList();
+            toastr.success("Brand.tsv uploaded Successfully");
 	   },
-	   error: function(response){
-	   		row.error=response.responseText
-	   		errorData.push(row);
-	   		uploadRows();
+		error: function (response) {
+		    if(response.status == 403){
+                toastr.error("403 Forbidden");
+            }
+            else {
+			var resp = JSON.parse(response.responseText);
+			var jsonObj = JSON.parse(resp.message);
+			console.log(jsonObj);
+	        errorData = jsonObj;
+			console.log(response);
+			toastr.error("Error in uploading TSV file, Download Error File");
+			$("#download-errors").prop('disabled', false);
+			resetForm();
+			}
 	   }
 	});
-
+	$("#brandFile").prop('disabled', true);
 }
+
 
 function downloadErrors(){
 	writeFileData(errorData);
@@ -191,15 +262,20 @@ function updateFileName(){
 function displayUploadData(){
  	resetUploadDialog();
 	$('#upload-brand-modal').modal('toggle');
+	$("#download-errors").prop('disabled', true);
+    $("#process-data").prop('disabled', true);
+    $("#brandFile").prop('disabled', false);
 }
 
 function displayBrand(data){
-	$("#brand-edit-form input[name=name]").val(data.name);
-	$("#brand-edit-form input[name=age]").val(data.age);
+	$("#brand-edit-form input[name=brand]").val(data.brand);
+	$("#brand-edit-form input[name=category]").val(data.category);
 	$("#brand-edit-form input[name=id]").val(data.id);
 	$('#edit-brand-modal').modal('toggle');
 }
-
+function activateUpload() {
+    $("#process-data").prop('disabled', false);
+}
 
 //INITIALIZATION CODE
 function init(){
@@ -211,6 +287,7 @@ function init(){
 	$('#process-data').click(processData);
 	$('#download-errors').click(downloadErrors);
     $('#brandFile').on('change', updateFileName);
+    $('#brandFile').click(activateUpload);
 
 }
 

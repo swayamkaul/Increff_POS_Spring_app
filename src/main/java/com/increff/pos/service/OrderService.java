@@ -65,9 +65,11 @@ public class OrderService {
         OrderPojo order = add(new OrderPojo());
         for (OrderItemPojo p : list) {
             inventoryService.reduceQuantity(p.getProductId(), p.getQuantity());
+
             p.setOrderId(order.getId());
             orderItemDao.insert(p);
         }
+
         return order;
     }
 

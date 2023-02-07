@@ -1,5 +1,6 @@
 package com.increff.pos.dto;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.increff.pos.model.*;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
@@ -7,6 +8,7 @@ import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.*;
 import com.increff.pos.util.ConvertorUtil;
+import com.increff.pos.util.ErrorUtil;
 import com.increff.pos.util.NormaliseUtil;
 import com.increff.pos.util.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,17 +54,14 @@ public class OrderDto {
 
     //Order Item DTO
 
-    public OrderData addOrderItem(List<OrderItemForm> orderItemFormList) throws ApiException {
+    public OrderData addOrderItem(List<OrderItemForm> orderItemFormList) throws ApiException, JsonProcessingException {
         List<String> errorList = new ArrayList<String>();
         checkConstraintsAndDuplicates(orderItemFormList);
 
         List<OrderItemPojo> orderItemPojoList =checkSellingPriceAndInventory(orderItemFormList,errorList);
         throwErrorsIfAny(errorList);
-
         OrderPojo orderPojo = orderService.addOrderItemListToOrder(orderItemPojoList);
-
         OrderData orderData = ConvertorUtil.convert(orderPojo);
-
         return orderData;
     }
     public List<OrderItemData> getItemByOrderId(int orderId) throws ApiException {
@@ -128,7 +127,8 @@ public class OrderDto {
         Set<String> set = new HashSet<>();
         for(OrderItemForm f : forms) {
             ValidateUtil.validateForms(f);
-            NormaliseUtil.normalizeOrderItem(f);
+            NormaliseUtil.normalise(f);
+
             if(set.contains(f.getBarCode())) {
                 throw new ApiException("Duplicate Barcode Detected, Barcode: "+f.getBarCode());
             }
@@ -136,7 +136,7 @@ public class OrderDto {
         }
     }
 
-    List<OrderItemPojo>  checkSellingPriceAndInventory(List<OrderItemForm> forms,List<String> errorList) throws ApiException {
+    List<OrderItemPojo>  checkSellingPriceAndInventory(List<OrderItemForm> forms,List<String> errorList) {
         List<OrderItemPojo> orderItemPojoList=new ArrayList<>();
         for(OrderItemForm orderItemForm : forms) {
             try {
@@ -154,12 +154,13 @@ public class OrderDto {
                 errorList.add(orderItemForm.getBarCode()+": "+e.getMessage());
             }
         }
+
         return orderItemPojoList;
     }
 
-    void throwErrorsIfAny(List<String> errorlist) throws ApiException {
+    void throwErrorsIfAny(List<String> errorlist) throws ApiException, JsonProcessingException {
         if(!errorlist.isEmpty()){
-            throw new ApiException(errorlist.toString());
+            ErrorUtil.throwErrors(errorlist);
         }
     }
 

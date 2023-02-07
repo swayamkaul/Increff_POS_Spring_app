@@ -1,8 +1,7 @@
 package com.increff.pos.dto;
 
-import com.increff.pos.model.InventoryData;
-import com.increff.pos.model.InventoryForm;
-import com.increff.pos.model.InventoryReportData;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.increff.pos.model.*;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.ProductPojo;
@@ -10,15 +9,15 @@ import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandService;
 import com.increff.pos.service.InventoryService;
 import com.increff.pos.service.ProductService;
-import com.increff.pos.util.ConvertorUtil;
-import com.increff.pos.util.CsvFileGenerator;
-import com.increff.pos.util.ValidateUtil;
-import com.increff.pos.util.ValidationUtil;
+import com.increff.pos.util.*;
 import javafx.util.Pair;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,16 +35,27 @@ public class InventoryDto {
     @Autowired
     CsvFileGenerator csvFileGenerator;
 
-    public void add(InventoryForm f) throws ApiException {
-        ValidateUtil.validateForms(f);
-        ProductPojo productPojo = productService.getCheck(f.getBarCode());
-        InventoryPojo inventoryPojo=ConvertorUtil.convert(f,productPojo.getId());
-        try{
-            inventoryService.getCheck(inventoryPojo.getId());
+    public void add(List<InventoryForm> inventoryForms) throws ApiException{
+        JSONArray errorList=new JSONArray();
+        Integer errorCount=0;
+        for(InventoryForm form: inventoryForms) {
+            JSONObject error= initialiseBrandErrorObject(form);
+            try{
+                ValidateUtil.validateForms(form);
+                NormaliseUtil.normalise(form);
+                ProductPojo productPojo= productService.getCheck(form.getBarCode());
+                inventoryService.checkAlreadyExist(productPojo.getId(),form.getBarCode());
+            }
+            catch (Exception e) {
+                errorCount++;
+                error.put("message",e.getMessage());
+            }
+            errorList.put(error);
         }
-        catch(ApiException e){
-            inventoryService.add(inventoryPojo);
+        if(errorCount>0){
+            throw new ApiException(errorList.toString());
         }
+        bulkAdd(inventoryForms);
     }
 
     public void delete(int id) {
@@ -82,7 +92,6 @@ public class InventoryDto {
         ValidateUtil.validateForms(f);
         ProductPojo productPojo = productService.getCheck(f.getBarCode());
         InventoryPojo inventoryPojo= ConvertorUtil.convert(f,productPojo.getId());
-        ValidationUtil.validate(inventoryPojo);
         inventoryService.update(id,inventoryPojo);
     }
 
@@ -105,6 +114,21 @@ public class InventoryDto {
             inventoryItemList.add(ConvertorUtil.convertMapToItem(entry));
         }
         return inventoryItemList;
+    }
+
+    @Transactional(rollbackOn = ApiException.class)
+    private void bulkAdd(List<InventoryForm> forms) throws ApiException {
+        for(InventoryForm form: forms) {
+            InventoryPojo inventoryPojo = ConvertorUtil.convert(form, productService.getCheck(form.getBarCode()).getId());
+            inventoryService.add(inventoryPojo);
+        }
+    }
+    JSONObject initialiseBrandErrorObject(InventoryForm inventoryForm){
+        JSONObject error=new JSONObject();
+        error.put("barCode",inventoryForm.getBarCode());
+        error.put("quantity",inventoryForm.getQuantity());
+        error.put("message","");
+        return error;
     }
 
 }

@@ -37,8 +37,6 @@ function resetForm() {
 function deleteOrderItem(id) {
     let keys = Object.keys(processedItems);
     let barCode = keys[id];
-    console.log("delete:");
-    console.log(processedItems[barCode]);
     delete processedItems[barCode];
     displayOrderItemList();
 }
@@ -67,13 +65,21 @@ function checkInventory(event){
    var $form = $("#order-item-form");
    var json = JSON.parse(toJson($form));
    if(json.barCode=="" || json.sellingPrice=="" || json.quantity==""){
-        alert("All fields are mandatory!");
+        toastr.error("All fields are mandatory!");
         return false;
    }
    if(json.quantity<1){
-           alert("Quantity should be greater than 0.");
+           toastr.error("Quantity should be greater than 0.");
            return false;
       }
+   if(json.sellingPrice<1){
+              toastr.error("Selling Price should be greater than 0.");
+              return false;
+         }
+   if(parseFloat(json.quantity)-parseInt(json.quantity)>0){
+                 toastr.error("Quantity cannot be in fractions.");
+                 return false;
+            }
    var url = getInventoryUrl() + "/b/"+json.barCode;
     let prevQuantity=0;
     if(processedItems[json.barCode]){
@@ -88,13 +94,13 @@ $.ajax({
         success: function (response) {
             if(response.quantity-prevQuantity<json.quantity){
             console.log(response.quantity-prevQuantity);
-            alert("Only "+ (response.quantity-prevQuantity).toString()+" units left of this product.");
+            toastr.error( (response.quantity-prevQuantity).toString()+" units left of this product.");
              return false;
             }
             checkMrp(json);
         },
         error: function (error) {
-            alert(error.responseJSON.message);
+            toastr.error(error.responseJSON.message);
         }
     });
 }
@@ -110,13 +116,13 @@ function checkMrp(json){
             },
             success: function (response) {
                 if(response.mrp<json.sellingPrice){
-                alert("Selling Price (Rs. "+json.sellingPrice+") cannot be greater than MRP (Rs. "+response.mrp+")." );
+                toastr.error("Selling Price (Rs. "+json.sellingPrice+") cannot be greater than MRP (Rs. "+response.mrp+")." );
                 return false;
                 }
                 addOrderItem(json);
             },
             error: function (error) {
-                alert(error.responseJSON.message);
+                toastr.error(error.responseJSON.message);
             }
         });
 }
@@ -125,7 +131,7 @@ function addOrderItem(json) {
 
     if (processedItems[json.barCode]) {
         if (processedItems[json.barCode].sellingPrice !== json.sellingPrice) {
-        alert("Error: Selling Price mismatch for item with Barcode: "+ json.barCode);
+        toastr.error("Error: Selling Price mismatch for item with Barcode: "+ json.barCode);
         return false;
         }else{
         let qty= parseInt(processedItems[json.barCode].quantity) + parseInt(json.quantity);
@@ -181,15 +187,15 @@ function displayOrder(id) {
             response.forEach(element => {
                 var row = '<tr>' +
                     '<td>' + element.barCode + '</td>' +
-                    '<td>' + element.quantity + '</td>' +
-                    '<td>' + element.sellingPrice + '</td>' +
+                    '<td>' + parseInt(element.quantity) + '</td>' +
+                    '<td>' + parseFloat(element.sellingPrice).toFixed(2) + '</td>' +
                     '</tr>';
 
                 $tbody.append(row);
             });
         },
         error: function (error) {
-            alert(error.responseJSON.message);
+            toastr.error(error.responseJSON.message);
         }
     });
 }
@@ -198,6 +204,8 @@ function displayOrder(id) {
 function placeOrder() {
     var url = getOrderItemUrl();
     completeOrder=Object.values(processedItems);
+    console.log("CompleteOrder: ");
+    console.log(completeOrder);
     $.ajax({
         url: url+"/items",
         type: 'POST',

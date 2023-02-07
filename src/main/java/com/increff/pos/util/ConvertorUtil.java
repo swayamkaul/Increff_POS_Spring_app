@@ -56,14 +56,7 @@ public class ConvertorUtil {
         p.setId(id);
         return p;
     }
-    public static OrderItemPojo convert(OrderItemForm f, int productId,int orderId)  {
-        OrderItemPojo orderItemPojo = new OrderItemPojo();
-        orderItemPojo.setQuantity(f.getQuantity());
-        orderItemPojo.setProductId(productId);
-        orderItemPojo.setOrderId(orderId);
-        orderItemPojo.setSellingPrice(f.getSellingPrice());
-        return orderItemPojo;
-    }
+
     public static OrderItemPojo convert(OrderItemForm f, int productId)  {
         OrderItemPojo orderItemPojo = new OrderItemPojo();
         orderItemPojo.setQuantity(f.getQuantity());

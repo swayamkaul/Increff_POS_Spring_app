@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import com.increff.pos.dao.InventoryDao;
+import com.increff.pos.pojo.BrandPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,15 +44,16 @@ public class InventoryService {
     }
     public void reduceQuantity(int id, int quantity) throws ApiException{
         InventoryPojo p = getCheck(id);
+
         if(p.getQuantity() < quantity){
             throw new ApiException(quantity+" units not available."+"\nOnly "+ p.getQuantity() + " units left");
         }
         p.setQuantity(p.getQuantity()-quantity);
     }
-    public void increaseQuantity(int id, int quantity) throws ApiException{
-        InventoryPojo p = getCheck(id);
-        p.setQuantity(p.getQuantity()+quantity);
+    public void checkAlreadyExist(Integer id,String barCode) throws ApiException {
+        InventoryPojo p = dao.select(id);
+        if (p != null) {
+            throw new ApiException("Inventory for Barcode: "+barCode+" Already Exists.");
+        }
     }
-
-
 }

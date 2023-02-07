@@ -4,6 +4,7 @@ package com.increff.pos.controller;
 import java.io.IOException;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.increff.pos.dto.InventoryDto;
 import com.increff.pos.model.InventoryData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class InventoryApiController {
 
     @ApiOperation(value = "Adds a Inventory")
     @RequestMapping(path = "", method = RequestMethod.POST)
-    public void add(@RequestBody InventoryForm form) throws ApiException {
+    public void add(@RequestBody List<InventoryForm> form) throws ApiException, JsonProcessingException {
         dto.add(form);
     }
     @ApiOperation(value = "Deletes a Inventory")

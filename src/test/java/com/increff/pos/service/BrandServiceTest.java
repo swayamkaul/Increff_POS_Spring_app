@@ -3,6 +3,7 @@ package com.increff.pos.service;
 import static org.junit.Assert.assertEquals;
 
 import com.increff.pos.dto.BrandDto;
+import com.increff.pos.model.BrandForm;
 import com.increff.pos.util.NormaliseUtil;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	@Test
 	public void testNormalize() {
-		BrandPojo p = new BrandPojo();
+		BrandForm p = new BrandForm();
 		p.setBrand(" Swayam Kaul ");
 		NormaliseUtil.normalise(p);
 		assertEquals("swayam kaul", p.getBrand());

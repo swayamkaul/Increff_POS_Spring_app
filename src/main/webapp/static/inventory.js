@@ -1,8 +1,35 @@
-
+var wholeInventory = []
 function getInventoryUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/inventory";
 }
+
+
+function resetForm() {
+    var element = document.getElementById("inventory-form");
+    element.reset()
+}
+
+function arrayToJson() {
+    let json = [];
+    for(i in wholeInventory) {
+        let data = {};
+        data["barCode"]=JSON.parse(wholeInventory[i]).barCode;
+        data["quantity"]=JSON.parse(wholeInventory[i]).quantity;
+        json.push(data);
+    }
+    return JSON.stringify(json);
+}
+
+function isJson(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
 
 //BUTTON ACTIONS
 function addInventory(event){
@@ -10,18 +37,42 @@ function addInventory(event){
 	var $form = $("#inventory-form");
 	var json = toJson($form);
 	var url = getInventoryUrl();
-
+	wholeInventory.push(json);
+	var jsonObj = arrayToJson();
+	console.log(wholeInventory);
+    console.log(url);
 	$.ajax({
 	   url: url,
 	   type: 'POST',
-	   data: json,
+	   data: jsonObj,
 	   headers: {
        	'Content-Type': 'application/json'
        },
 	   success: function(response) {
-			getInventoryList();
+	        wholeInventory=[];
+		   resetForm();
+		   toastr.success("Inventory Added Successfully", "Success : ");
+	   		getInventoryList();
 	   },
-	   error: handleAjaxError
+	   error: function (response) {
+		console.log(response);
+        	       if(response.status == 403) {
+        	            toastr.error("Error: 403 unauthorized");
+        	       }
+        	       else {
+        	        var resp = JSON.parse(response.responseText);
+        	        if(isJson(resp.message) == true){
+        	            var jsonObj = JSON.parse(resp.message);
+              		    console.log(jsonObj);
+                        toastr.error(jsonObj[0].message, "Error : ");
+        	        }
+        	        else {
+        	        handleAjaxError(response);
+        	        }
+        	       }
+                   wholeInventory=[];
+                   resetForm();
+		}
 	});
 
 	return false;
@@ -37,6 +88,7 @@ function updateInventory(event){
 	var $form = $("#inventory-edit-form");
 	var json = toJson($form);
 
+
 	$.ajax({
 	   url: url,
 	   type: 'PUT',
@@ -44,8 +96,9 @@ function updateInventory(event){
 	   headers: {
        	'Content-Type': 'application/json'
        },
-	   success: function(response) {
-			getInventoryList();
+		success: function (response) {
+			toastr.success("Inventory updated Successfully", "Success : ");
+	   		getInventoryList();
 	   },
 	   error: handleAjaxError
 	});
@@ -92,22 +145,25 @@ function processData(){
 
 function readFileDataCallback(results){
 	fileData = results.data;
-	uploadRows();
+	var filelen = fileData.length;
+    	if(filelen > 5000) {
+    	    toastr.error("file length exceeds 5000, Not Allowed");
+    	}
+    	else {
+    	    uploadRows();
+    	}
 }
+
 
 function uploadRows(){
 	//Update progress
 	updateUploadDialog();
 	//If everything processed then return
-	if(processCount==fileData.length){
-		return;
-	}
 
-	//Process next row
-	var row = fileData[processCount];
-	processCount++;
+	$("#process-data").prop('disabled', true);
 
-	var json = JSON.stringify(row);
+	var json = JSON.stringify(fileData);
+	console.log(json);
 	var url = getInventoryUrl();
 
 	//Make ajax call
@@ -119,15 +175,30 @@ function uploadRows(){
        	'Content-Type': 'application/json'
        },
 	   success: function(response) {
-	   		uploadRows();
-	   },
-	   error: function(response){
-	   		row.error=response.responseText
-	   		errorData.push(row);
-	   		uploadRows();
+	        console.log(response);
+	   		errorData = response;
+	   		resetForm();
+	   		getInventoryList();
+	   		toastr.success("Inventory Added Successfully", "Success : ");
+		},
+		error: function (response) {
+		    if(response.status == 403){
+                toastr.error("403 FOrbidden");
+            }
+            else {
+			var resp = JSON.parse(response.responseText);
+			var jsonObj = JSON.parse(resp.message);
+			console.log(jsonObj);
+	        errorData = jsonObj;
+			processCount = fileData.length;
+			console.log(response);
+			toastr.error("Error in uploading TSV file, Download Error File");
+			$("#download-errors").prop('disabled', false);
+			resetForm();
+			}
 	   }
 	});
-
+	$("#inventoryFile").prop('disabled', true);
 }
 
 function downloadErrors(){
@@ -194,6 +265,9 @@ function updateFileName(){
 function displayUploadData(){
  	resetUploadDialog();
 	$('#upload-inventory-modal').modal('toggle');
+	$("#download-errors").prop('disabled', true);
+    $("#process-data").prop('disabled', true);
+     $("#inventoryFile").prop('disabled', false);
 }
 
 function displayInventory(data){
@@ -202,8 +276,9 @@ function displayInventory(data){
 	$("#inventory-edit-form input[name=quantity]").val(data.quantity);
 	$('#edit-inventory-modal').modal('toggle');
 }
-
-
+function activateUpload() {
+    $("#process-data").prop('disabled', false);
+}
 //INITIALIZATION CODE
 function init(){
 	$('#add-inventory').click(addInventory);
@@ -213,6 +288,7 @@ function init(){
 	$('#process-data').click(processData);
 	$('#download-errors').click(downloadErrors);
     $('#inventoryFile').on('change', updateFileName);
+    $('#inventoryFile').click(activateUpload);
 }
 
 $(document).ready(init);

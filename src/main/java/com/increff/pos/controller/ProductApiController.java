@@ -3,6 +3,7 @@ package com.increff.pos.controller;
 
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.increff.pos.dto.ProductDto;
 import com.increff.pos.model.ProductData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class ProductApiController {
 
     @ApiOperation(value = "Adds a Product")
     @RequestMapping(path = "", method = RequestMethod.POST)
-    public void add(@RequestBody ProductForm form) throws ApiException {
+    public void add(@RequestBody List<ProductForm> form) throws ApiException, JsonProcessingException {
         dto.add(form);
     }
     @ApiOperation(value = "Deletes a Product")

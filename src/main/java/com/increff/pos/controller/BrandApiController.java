@@ -4,6 +4,7 @@ package com.increff.pos.controller;
 import java.io.IOException;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.increff.pos.dto.BrandDto;
 import com.increff.pos.model.BrandData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,46 +28,46 @@ import javax.servlet.http.HttpServletResponse;
 public class BrandApiController {
 
 	@Autowired
-	private BrandDto dto;
+	private BrandDto brandDto;
 
 	@ApiOperation(value = "Adds a Brand")
 	@RequestMapping(path = "", method = RequestMethod.POST)
-	public void add(@RequestBody BrandForm form) throws ApiException {
-		dto.add(form);
+	public void add(@RequestBody List<BrandForm> form) throws ApiException, JsonProcessingException {
+		brandDto.add(form);
 	}
 	@ApiOperation(value = "Deletes a brand")
 	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
 	// /api/1
 	public void delete(@PathVariable int id) {
-		dto.delete(id);
+		brandDto.delete(id);
 	}
 
 	@ApiOperation(value = "Gets a brand by ID")
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	public BrandData get(@PathVariable int id) throws ApiException {
-		return dto.get(id);
+		return brandDto.get(id);
 	}
 	@ApiOperation(value = "Gets a brand by brand and category")
 	@RequestMapping(path = "/{brand}/{category}", method = RequestMethod.GET)
 	public BrandData get(@PathVariable String brand, @PathVariable String category) throws ApiException {
-		return dto.get(brand,category);
+		return brandDto.get(brand,category);
 	}
 	@ApiOperation(value = "Gets list of all brand")
 	@RequestMapping(path = "", method = RequestMethod.GET)
 	public List<BrandData> getAll() {
-		return dto.getAll();
+		return brandDto.getAll();
 	}
 
 	@ApiOperation(value = "Updates an brand")
 	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
 	public void update(@PathVariable int id, @RequestBody BrandForm f) throws ApiException {
-		dto.update(id, f);
+		brandDto.update(id, f);
 	}
 
 	@ApiOperation(value = "Exports to CSV")
 	@RequestMapping(path = "/exportcsv", method = RequestMethod.GET)
 	public void exportToCSV(HttpServletResponse response) throws IOException {
-		dto.generateCsv(response);
+		brandDto.generateCsv(response);
 	}
 
 

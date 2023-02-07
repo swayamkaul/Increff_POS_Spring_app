@@ -50,5 +50,11 @@ public class BrandService {
 		return p;
 	}
 
+	public void checkAlreadyExist(String brand,String category) throws ApiException {
+		BrandPojo p = dao.select(brand,category);
+		if (p != null) {
+			throw new ApiException("Given Brand and Category already exist, Brand: " + brand+", Category: "+category);
+		}
+	}
 
 }
