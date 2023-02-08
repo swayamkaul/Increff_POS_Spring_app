@@ -1,9 +1,6 @@
 package com.increff.pos.util;
 
-import com.increff.pos.model.BrandForm;
-import com.increff.pos.model.InventoryForm;
-import com.increff.pos.model.OrderItemForm;
-import com.increff.pos.model.ProductForm;
+import com.increff.pos.model.*;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.ProductPojo;
 
@@ -29,6 +26,9 @@ public class NormaliseUtil {
     }
     public static void normalise(InventoryForm inventoryForm) {
         inventoryForm.setBarCode(StringUtil.toLowerCase(inventoryForm.getBarCode()).trim());
+    }
+    public static void normalise(UserForm userForm) {
+        userForm.setEmail(StringUtil.toLowerCase(userForm.getEmail()).trim());
     }
 
 

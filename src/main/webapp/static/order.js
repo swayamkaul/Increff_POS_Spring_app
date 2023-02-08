@@ -52,7 +52,7 @@ function displayOrderItemList(data) {
         var row = '<tr>' +
             '<td>' + e.barCode + '</td>' +
             '<td>' + e.quantity + '</td>' +
-            '<td>' + e.sellingPrice + '</td>' +
+            '<td>' + parseFloat(e.sellingPrice).toFixed(2) + '</td>' +
             '<td>' + buttonHtml + '</td>' +
             '</tr>';
 

@@ -4,11 +4,18 @@ function getUserUrl(){
 	return baseUrl + "/api/admin/user";
 }
 
+function resetForm() {
+    var element = document.getElementById("user-form");
+    element.reset()
+}
+
 //BUTTON ACTIONS
 function addUser(event){
 	//Set the values to update
 	var $form = $("#user-form");
 	var json = toJson($form);
+	if(json.role=="")
+	json.role="operator"
 	var url = getUserUrl();
 
 	$.ajax({
@@ -19,7 +26,8 @@ function addUser(event){
        	'Content-Type': 'application/json'
        },	   
 	   success: function(response) {
-	   		getUserList();    
+	   		getUserList();
+	   		   resetForm();
 	   },
 	   error: handleAjaxError
 	});
@@ -46,7 +54,7 @@ function deleteUser(id){
 	   url: url,
 	   type: 'DELETE',
 	   success: function(data) {
-	   		getUserList();    
+	   		getUserList();
 	   },
 	   error: handleAjaxError
 	});
@@ -60,13 +68,19 @@ function displayUserList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button onclick="deleteUser(' + e.id + ')">delete</button>'
-		buttonHtml += ' <button onclick="displayEditUser(' + e.id + ')">edit</button>'
+		var buttonHtml = '<button type="button" class="btn btn-secondary" onclick="deleteUser(' + e.id + ')">Delete</button>';
+		var buttonDisabledHtml = '<button type="button" class="btn btn-secondary" onclick="deleteUser(' + e.id + ')" disabled>Delete</button>'
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.email + '</td>'
-		+ '<td>' + buttonHtml + '</td>'
-		+ '</tr>';
+		+ '<td>' + e.role + '</td>'
+		if(e.role == 'supervisor'){
+            row += '<td>' + buttonDisabledHtml + '</td>';
+        }
+        else{
+        	row += '<td>' + buttonHtml + '</td>';
+        }
+        row+= '</tr>';
         $tbody.append(row);
 	}
 }

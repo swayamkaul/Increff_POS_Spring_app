@@ -15,9 +15,11 @@ public class InfoData implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String message;
 	private String email;
+	private String role;
 	public InfoData() {
 		message = "No message";
 		email = "No email";
+		role = "operator";
 	}
 
 }
