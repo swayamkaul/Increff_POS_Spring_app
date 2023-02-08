@@ -1,4 +1,5 @@
 var brandData = {};
+var brandEditData = {};
 var wholeProduct = [];
 function getProductUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
@@ -312,6 +313,34 @@ function getBrandList()
    });
 }
 
+function StoreBrandOptions(data)
+{
+   console.log(data);
+   for(var i in data)
+      {
+         var a = data[i].brand;
+         var b = data[i].category;
+         if(!brandData.hasOwnProperty(a))
+               Object.assign(brandData, {[a]:[]});
+         brandData[a].push(b);
+      }
+   console.log(brandData);
+   var $elB = $("#inputBrand");
+   $elB.empty();
+
+   $elB.append(`<option value="none" selected disabled hidden>Select Brand</option>`);
+
+
+   $.each(brandData, function(key,value) {
+            $elB.append($("<option></option>")
+               .attr("value", key).text(key));
+            });
+
+   displayCategoryOptions();
+
+}
+
+
 function displayCategoryOptions()
 {
     var $elC = $("#inputCategory");
@@ -343,33 +372,6 @@ function getEditBrandList()
    });
 }
 
-function StoreBrandOptions(data)
-{
-   console.log(data);
-   for(var i in data)
-      {
-         var a = data[i].brand;
-         var b = data[i].category;
-         if(!brandData.hasOwnProperty(a))
-               Object.assign(brandData, {[a]:[]});
-         brandData[a].push(b);
-      }
-   console.log(brandData);
-   var $elB = $("#inputBrand");
-   $elB.empty();
-
-   $elB.append(`<option value="none" selected disabled hidden>Select Brand</option>`);
-
-
-   $.each(brandData, function(key,value) {
-            $elB.append($("<option></option>")
-               .attr("value", key).text(key));
-            });
-
-   displayCategoryOptions();
-
-}
-
 function StoreBrandEditOptions(data)
 {
    console.log(data);
@@ -377,18 +379,18 @@ function StoreBrandEditOptions(data)
       {
          var a = data[i].brand;
          var b = data[i].category;
-         if(!brandData.hasOwnProperty(a))
-               Object.assign(brandData, {[a]:[]});
-         brandData[a].push(b);
+         if(!brandEditData.hasOwnProperty(a))
+               Object.assign(brandEditData, {[a]:[]});
+         brandEditData[a].push(b);
       }
-   console.log(brandData);
+   console.log(brandEditData);
    var $elB = $("#inputBrandEdit");
    $elB.empty();
 
    $elB.append(`<option value="none" selected disabled hidden>Select Brand</option>`);
 
 
-   $.each(brandData, function(key,value) {
+   $.each(brandEditData, function(key,value) {
             $elB.append($("<option></option>")
                .attr("value", key).text(key));
             });
@@ -403,11 +405,11 @@ function displayCategoryEditOptions()
     $elC.empty();
     $elC.append(`<option value="none" selected disabled hidden>Select Category</option>`);
     var a = getBrandEditOption();
-    var len = brandData[a].length;
+    var len = brandEditData[a].length;
     for(var i=0; i<len; i++)
         {
             $elC.append($("<option></option>")
-                .attr("value", brandData[a][i]).text(brandData[a][i]));
+                .attr("value", brandEditData[a][i]).text(brandEditData[a][i]));
 
         }
 }

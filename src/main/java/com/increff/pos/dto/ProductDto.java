@@ -35,7 +35,7 @@ public class ProductDto {
             try{
                 ValidateUtil.validateForms(form);
                 NormaliseUtil.normalise(form);
-                BrandPojo brandPojo = brandService.getCheck(form.getBrand(), form.getCategory());
+                brandService.getCheck(form.getBrand(), form.getCategory());
                 productService.checkExist(form.getBarCode());
             }
             catch (Exception e) {
