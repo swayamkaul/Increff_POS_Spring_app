@@ -83,6 +83,7 @@ function updateInventory(event){
 	//Get the ID
 	var id = $("#inventory-edit-form input[name=id]").val();
 	var url = getInventoryUrl() + "/" + id;
+	 $("#inventory-edit-form input[name=barCode]").prop('disabled', false);
 
 	//Set the values to update
 	var $form = $("#inventory-edit-form");
@@ -146,6 +147,9 @@ function processData(){
 function readFileDataCallback(results){
 	fileData = results.data;
 	var filelen = fileData.length;
+	    if(filelen == 0) {
+           	    toastr.error("file is empty, Not Allowed");
+        }
     	if(filelen > 5000) {
     	    toastr.error("file length exceeds 5000, Not Allowed");
     	}
@@ -163,6 +167,21 @@ function uploadRows(){
 	$("#process-data").prop('disabled', true);
 
 	var json = JSON.stringify(fileData);
+	  var headers = ["barCode", "quantity"];
+      var jsonq = JSON.parse(json);
+        	console.log(jsonq[0]);
+        	console.log(Object.keys(jsonq).length);
+        	console.log(Object.keys(jsonq[0]));
+        	if(Object.keys(jsonq[0]).length != headers.length){
+        	    toastr.error("File column number do not match. Please check the file and try again");
+                return;
+        	}
+        	for(var i in headers){
+                if(!jsonq[0].hasOwnProperty(headers[i])){
+                    toastr.error('File columns do not match. Please check the file and try again');
+                    return;
+                }
+            }
 	console.log(json);
 	var url = getInventoryUrl();
 
@@ -212,8 +231,7 @@ function displayInventoryList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button type="button" class="btn btn-secondary" onclick="deleteInventory(' + e.id + ')">delete</button>'
-		buttonHtml += ' <button type="button" class="btn btn-secondary" onclick="displayEditInventory(' + e.id + ')">edit</button>'
+        var buttonHtml = ' <button type="button" class="btn btn-secondary" onclick="displayEditInventory(' + e.id + ')">Edit</button>'
 		var row = '<tr>'
 		+ '<td>' + e.brand + '</td>'
 		+ '<td>' + e.category + '</td>'
@@ -275,6 +293,7 @@ function displayInventory(data){
 	$("#inventory-edit-form input[name=id]").val(data.id);
 	$("#inventory-edit-form input[name=quantity]").val(data.quantity);
 	$('#edit-inventory-modal').modal('toggle');
+	 $("#inventory-edit-form input[name=barCode]").prop('disabled', true);
 }
 function activateUpload() {
     $("#process-data").prop('disabled', false);

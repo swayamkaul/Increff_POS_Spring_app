@@ -16,8 +16,6 @@ import com.increff.pos.pojo.InventoryPojo;
 @Repository
 @Transactional
 public class InventoryDao extends AbstractDao {
-
-    private static String delete_id = "delete from InventoryPojo p where id=:id";
     private static String select_id = "select p from InventoryPojo p where id=:id";
     private static String select_all = "select p from InventoryPojo p";
 
@@ -26,12 +24,6 @@ public class InventoryDao extends AbstractDao {
 
     public void insert(InventoryPojo p) {
         em.persist(p);
-    }
-
-    public int delete(int id) {
-        Query query = em.createQuery(delete_id);
-        query.setParameter("id", id);
-        return query.executeUpdate();
     }
 
     public InventoryPojo select(int id) {

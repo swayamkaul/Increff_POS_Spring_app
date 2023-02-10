@@ -26,10 +26,6 @@ public class ProductService {
         productDao.insert(p);
     }
 
-    public void delete(int id) {
-        productDao.delete(id);
-    }
-
     public List<ProductPojo> getAll() {
         return productDao.selectAll();
     }

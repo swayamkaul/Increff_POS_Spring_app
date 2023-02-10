@@ -46,8 +46,7 @@ function getFilteredList(event) {
             'Content-Type': 'application/json'
         },
          success: function (response) {
-            $('#apply-filter').prop('disabled', true);
-            $('#printCSV').prop('disabled', false);
+            printCSV()
         },
         error: handleAjaxError
      });
@@ -188,10 +187,22 @@ function printInventoryCSV() {
 
 function printCSV() {
 resetForm();
-    $('#apply-filter').prop('disabled', false);
-    $('#printCSV').prop('disabled', true);
     window.location.href = printCSVUrl();
 
+}
+
+function validateDate(input) {
+  var dateFormat = /^\d{4}-\d{2}-\d{2}$/;
+  var today = new Date();
+  var thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(today.getDate() - 31);
+  var inputDate = new Date(input.value);
+     if (inputDate < thirtyDaysAgo || inputDate > today) {
+    toastr.error("Date must be within the last 30 days to today.");
+    input.value = "";
+  } else {
+    input.setCustomValidity("");
+  }
 }
 
 function init() {
@@ -200,7 +211,17 @@ function init() {
     $('#inputBrand').on('change', displayCategoryOptions);
     $('#downloadBrandCSV').click(printBrandCSV);
     $('#downloadInventoryCSV').click(printInventoryCSV);
-    $('#printCSV').click(printCSV);
+
+    var dateInput = document.getElementById("inputSD");
+     var dateInput2 = document.getElementById("inputED");
+    var today = new Date();
+    var thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(today.getDate() - 30);
+
+    dateInput.setAttribute("min", thirtyDaysAgo.toISOString().substring(0, 10));
+    dateInput.setAttribute("max", today.toISOString().substring(0, 10));
+    dateInput2.setAttribute("min", thirtyDaysAgo.toISOString().substring(0, 10));
+    dateInput2.setAttribute("max", today.toISOString().substring(0, 10));
 }
 
 $(document).ready(init);

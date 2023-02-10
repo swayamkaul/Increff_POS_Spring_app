@@ -50,16 +50,13 @@
 				<article class="card-body">
 					<h3 class="card-title text-center mb-4 mt-1">Sign Up</h3>
 					<hr>
-					<div class="card-footer text-danger">
-						[[${info.getMessage()}]]
-					</div>
 					<form class="form" id="init-form" method="POST" th:action="@{/site/init}">
 						<div class="form-group">
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<span class="input-group-text"> <i class="fa fa-user"></i> </span>
 								</div>
-								<input type="text" class="form-control" name="email" id="email" placeholder="enter email">
+								<input type="text" class="form-control" name="email" id="email" placeholder="Enter email">
 							</div> <!-- input-group.// -->
 						</div> <!-- form-group// -->
 						<div class="form-group">
@@ -75,6 +72,10 @@
 						</div> <!-- form-group// -->
 					</form>
 				</article>
+				<div class="card-footer text-danger">
+					[[${info.getMessage()}]]
+				</div>
+
 			</div> <!-- card.// -->
 
 		</div> <!-- Col -->

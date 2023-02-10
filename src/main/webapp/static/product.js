@@ -171,6 +171,9 @@ function processData(){
 function readFileDataCallback(results){
    fileData = results.data;
    var filelen = fileData.length;
+   	if(filelen == 0) {
+   	    toastr.error("file is empty, Not Allowed");
+   	}
    	if(filelen > 5000) {
    	    toastr.error("file length exceeds 5000, Not Allowed");
    	}
@@ -190,6 +193,23 @@ function uploadRows(){
    //Process next row
 
    var json = JSON.stringify(fileData);
+
+     var headers = ["barCode","brand", "category", "name", "mrp"];
+     	jsonq = JSON.parse(json);
+       	console.log(jsonq[0]);
+       	console.log(Object.keys(jsonq).length);
+       	console.log(Object.keys(jsonq[0]));
+       	if(Object.keys(jsonq[0]).length != headers.length){
+       	    toastr.error("File column number do not match. Please check the file and try again");
+               return;
+       	}
+     for(var i in headers){
+        if(!jsonq[0].hasOwnProperty(headers[i])){
+            toastr.error('File columns do not match. Please check the file and try again');
+            return;
+            }
+        }
+
    var url = getProductUrl();
 
    //Make ajax call
@@ -239,8 +259,7 @@ function displayProductList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button type="button" class="btn btn-secondary" onclick="deleteProduct(' + e.id + ')">delete</button>'
-		buttonHtml += ' <button type="button" class="btn btn-secondary" onclick="displayEditProduct(' + e.id + ')">edit</button>'
+        var buttonHtml = ' <button type="button" class="btn btn-secondary" onclick="displayEditProduct(' + e.id + ')">Edit</button>'
 		var row = '<tr>'
 		+ '<td>' + e.brand + '</td>'
 		+ '<td>'  + e.category + '</td>'

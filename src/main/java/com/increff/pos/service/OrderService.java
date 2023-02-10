@@ -28,7 +28,6 @@ public class OrderService {
 
 
     public OrderPojo add(OrderPojo p){
-        p.setEditable(true);
         p.setId(orderDao.insert(p));
         return p;
     }

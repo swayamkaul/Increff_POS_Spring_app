@@ -8,7 +8,7 @@ import java.util.List;
 @Setter
 public class InvoiceForm {
     private Integer orderId;
-    private String placeDate;
+    private String placedDate;
     private List<OrderItem> orderItemList;
     private Double amount;
 }

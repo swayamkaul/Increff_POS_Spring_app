@@ -35,13 +35,6 @@ public class InventoryApiController {
     public void add(@RequestBody List<InventoryForm> form) throws ApiException, JsonProcessingException {
         dto.add(form);
     }
-    @ApiOperation(value = "Deletes a Inventory")
-    @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-    // /api/1
-    public void delete(@PathVariable int id) {
-        dto.delete(id);
-    }
-
     @ApiOperation(value = "Gets a Inventory by ID")
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
     public InventoryData get(@PathVariable int id) throws ApiException {

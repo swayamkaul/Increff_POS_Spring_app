@@ -16,8 +16,6 @@ import com.increff.pos.pojo.ProductPojo;
 @Repository
 @Transactional
 public class ProductDao extends AbstractDao {
-
-    private static String delete_id = "delete from ProductPojo p where id=:id";
     private static String select_id = "select p from ProductPojo p where id=:id";
     private static String select_bar_code = "select p from ProductPojo p where barCode=:barCode";
     private static String select_all = "select p from ProductPojo p";
@@ -28,12 +26,6 @@ public class ProductDao extends AbstractDao {
 
     public void insert(ProductPojo p) {
         em.persist(p);
-    }
-
-    public int delete(int id) {
-        Query query = em.createQuery(delete_id);
-        query.setParameter("id", id);
-        return query.executeUpdate();
     }
 
     public ProductPojo select(int id) {

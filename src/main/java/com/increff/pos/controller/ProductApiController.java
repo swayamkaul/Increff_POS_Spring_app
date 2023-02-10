@@ -32,13 +32,6 @@ public class ProductApiController {
     public void add(@RequestBody List<ProductForm> form) throws ApiException, JsonProcessingException {
         dto.add(form);
     }
-    @ApiOperation(value = "Deletes a Product")
-    @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-    // /api/1
-    public void delete(@PathVariable int id) {
-        dto.delete(id);
-    }
-
     @ApiOperation(value = "Gets a Product by ID")
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
     public ProductData get(@PathVariable int id) throws ApiException {

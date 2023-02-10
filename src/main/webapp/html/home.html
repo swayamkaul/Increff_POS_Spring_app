@@ -3,46 +3,47 @@
 <html lang="en">
 
 <head th:replace="snippets.html :: name_head"></head>
+<title>Home</title>
 
 <body>
 
 <nav th:replace="snippets.html :: name_app_navbar"></nav>
 
-<div class="container">
+<div class="container py-5">
 
-<h3>Home</h3>
+	<div class="row">&nbsp;</div>
 
- <!-- Top row with form-->
-<div class="row">
-	 <div class="col-2">
-	 	<a th:href="@{/ui/brands}" title="Brands"> <i class="fas fa-cog" aria-valuetext="Brands"></i> </a>
-		 <h4>Brands</h4>
-	 </div>
-	<div class="col-2">
-		<a th:href="@{/ui/products}" title="Products"> <i class="fas fa-cog" aria-valuetext="Products"></i> </a>
-		<h4>Products</h4>
+	<!-- Top row with form-->
+	<div class="row">
+		<div class="col-sm d-flex flex-column align-items-center">
+			<a th:href="@{/ui/brands}" title="Brand"> <i class="fas fa-building"></i> </a>
+			<label class="icon-label">Brand</label>
+		</div>
+		<div class="col-sm d-flex flex-column align-items-center">
+			<a th:href="@{/ui/products}" title="Product"> <i class="fas fa-shopping-bag"></i> </a>
+			<label class="icon-label">Product</label>
+		</div>
+		<div class="col-sm d-flex flex-column align-items-center">
+			<a th:href="@{/ui/inventory}" title="Inventory"> <i class="fas fa-warehouse"></i> </a>
+			<label class="icon-label">Inventory</label>
+		</div>
+		<div class="col-sm d-flex flex-column align-items-center">
+			<a th:href="@{/ui/orders}" title="Order"> <i class="fa-solid fa-cart-shopping fas"></i> </a>
+			<label class="icon-label">Order</label>
+		</div>
+		<div class="supervisor col-sm d-flex flex-column align-items-center">
+			<a th:href="@{/ui/dailysales}" title="Daily-Sales"> <i class="fas fa-money-bill-alt supervisor"></i> </a>
+			<label class="icon-label supervisor">Daily Sales</label>
+		</div>
+		<div class="supervisor col-sm d-flex flex-column align-items-center">
+			<a th:href="@{/ui/salesreport}" title="Reports"> <i class="fas fa-chart-line supervisor"></i> </a>
+			<label class="icon-label supervisor">Reports</label>
+		</div>
+		<div class="supervisor col-sm d-flex flex-column align-items-center">
+			<a th:href="@{/ui/admin}" title="Admin"> <i class="fas fa-user-cog supervisor"></i> </a>
+			<label class="icon-label supervisor">Admin</label>
+		</div>
 	</div>
-	<div class="col-2">
-		<a th:href="@{/ui/inventory}" title="inventory"> <i class="fas fa-cog" aria-valuetext="Inventory"></i> </a>
-		<h4>Inventory</h4>
-	</div>
-	<div class="col-2">
-		<a th:href="@{/ui/orders}" title="Orders"> <i class="fas fa-cog" aria-valuetext="Orders"></i> </a>
-		<h4>Orders</h4>
-	</div>
-	<div class="supervisor col-2">
-		<a th:href="@{/ui/dailysales}" title="Daily Sales"> <i class="fas fa-cog" aria-valuetext="Daily Sales"></i> </a>
-		<h4>Daily Sales</h4>
-	</div>
-	<div class="supervisor col-2">
-		<a th:href="@{/ui/salesreport}" title="Daily Sales"> <i class="fas fa-cog" aria-valuetext="Daily Sales"></i> </a>
-		<h4>Sales Report</h4>
-	</div>
-	<div class="supervisor col-2">
-	 	<a th:href="@{/ui/admin}" title="Admin"> <i class="fas fa-users" aria-valuetext="Admin"></i> </a>
-		<h4>Admin</h4>
-	 </div>	
-</div> 
 
 
 
@@ -51,6 +52,6 @@
 <footer th:replace="snippets.html :: name_footer"></footer>
 
 
-</body>	
+</body>
 
 </html>

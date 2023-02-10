@@ -29,6 +29,7 @@ public class BrandDto {
     public void add(List<BrandForm> brandFormList) throws ApiException{
         JSONArray errorList=new JSONArray();
         Integer errorCount=0;
+        listEmptyCheck(brandFormList);
         for (BrandForm brandForm : brandFormList) {
             JSONObject error= initialiseBrandErrorObject(brandForm);
             try {
@@ -46,10 +47,6 @@ public class BrandDto {
             throw new ApiException(errorList.toString());
         }
         bulkAdd(brandFormList);
-    }
-
-    public void delete(int id) {
-        brandService.delete(id);
     }
 
     public BrandData get(int id) throws ApiException {
@@ -97,5 +94,10 @@ public class BrandDto {
         jsonObject.put("category",brandForm.getCategory());
         jsonObject.put("message","");
         return jsonObject;
+    }
+
+    private void listEmptyCheck(List<BrandForm> brandFormList) throws ApiException {
+        if(brandFormList.isEmpty())
+            throw new ApiException("Brand List is Empty!");
     }
 }

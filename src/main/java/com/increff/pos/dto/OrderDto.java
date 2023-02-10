@@ -100,7 +100,7 @@ public class OrderDto {
         OrderPojo orderPojo = orderService.get(orderId);
 
         invoiceForm.setOrderId(orderPojo.getId());
-        invoiceForm.setPlaceDate(orderPojo.getCreatedAt().toString());
+        invoiceForm.setPlacedDate(orderPojo.getCreatedAt().toString());
 
         List<OrderItemPojo> orderItemPojoList = orderService.selectByOrderId(orderPojo.getId());
         List<OrderItem> orderItemList = new ArrayList<>();

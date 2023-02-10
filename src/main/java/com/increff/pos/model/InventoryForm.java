@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 public class InventoryForm {
     @NotBlank
     private String barCode;
-    @Min(value=1)
+    @Min(value=0)
     @NotNull
     private Integer quantity;
 }

@@ -14,6 +14,4 @@ public class OrderPojo extends AbstractVersionPojo{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
-    private boolean editable;//To be removed
-
 }

@@ -111,20 +111,6 @@ function getBrandList(){
 	});
 }
 
-
-function deleteBrand(id){
-	var url = getBrandUrl() + "/" + id;
-
-	$.ajax({
-	   url: url,
-	   type: 'DELETE',
-	   success: function(data) {
-			getBrandList();
-	   },
-	   error: handleAjaxError
-	});
-}
-
 // FILE UPLOAD METHODS
 var fileData = [];
 var errorData = [];
@@ -145,8 +131,11 @@ function processData(){
 function readFileDataCallback(results){
 	fileData = results.data;
 	var filelen = fileData.length;
+		if(filelen == 0) {
+    	    toastr.error("File Empty!");
+    	}
     if(filelen > 5000) {
-    	 toastr.error("file length exceeds 5000, Not Allowed");
+    	 toastr.error("File length exceeds 5000, Not Allowed");
     }
     else {
 
@@ -162,6 +151,21 @@ function uploadRows(){
      $("#process-data").prop('disabled', true);
 
 	var json = JSON.stringify(fileData);
+		var headers = ["brand", "category"];
+    	jsonq = JSON.parse(json);
+    	console.log(jsonq[0]);
+    	console.log(Object.keys(jsonq).length);
+    	console.log(Object.keys(jsonq[0]));
+    	if(Object.keys(jsonq[0]).length != headers.length){
+    	    toastr.error("File column number do not match. Please check the file and try again");
+            return;
+    	}
+    	for(var i in headers){
+            if(!jsonq[0].hasOwnProperty(headers[i])){
+                toastr.error('File columns do not match. Please check the file and try again');
+                return;
+            }
+        }
 	console.log(json);
 	var url = getBrandUrl();
 
@@ -212,8 +216,7 @@ function displayBrandList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button type="button" class="btn btn-secondary" onclick="deleteBrand(' + e.id + ')">delete</button>'
-		buttonHtml += ' <button type="button" class="btn btn-secondary" onclick="displayEditBrand(' + e.id + ')">edit</button>'
+        var buttonHtml = ' <button type="button" class="btn btn-secondary" onclick="displayEditBrand(' + e.id + ')">Edit</button>'
 		var row = '<tr>'
 		+ '<td>' + e.brand + '</td>'
 		+ '<td>'  + e.category + '</td>'

@@ -50,9 +50,6 @@ public class ProductDto {
         bulkAdd(productForms);
     }
 
-    public void delete(int id) {
-        productService.delete(id);
-    }
     public ProductData get(int id) throws ApiException {
         ProductPojo productPojo= productService.getCheck(id);
         BrandPojo brandPojo=brandService.getCheck(productPojo.getBrandCategory());

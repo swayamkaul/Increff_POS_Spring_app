@@ -20,9 +20,6 @@ public class BrandService {
 	public void add(BrandPojo p) throws ApiException {
 		dao.insert(p);
 	}
-	public void delete(int id) {
-		dao.delete(id);
-	}
 
 	public List<BrandPojo> getAll() {
 		return dao.selectAll();

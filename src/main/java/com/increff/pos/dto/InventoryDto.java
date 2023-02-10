@@ -58,10 +58,6 @@ public class InventoryDto {
         bulkAdd(inventoryForms);
     }
 
-    public void delete(int id) {
-        inventoryService.delete(id);
-    }
-
     public InventoryData get(int id) throws ApiException {
         InventoryPojo inventoryPojo= inventoryService.getCheck(id);
         ProductPojo productPojo= productService.getCheck(id);

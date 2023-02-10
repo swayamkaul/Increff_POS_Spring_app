@@ -35,13 +35,6 @@ public class BrandApiController {
 	public void add(@RequestBody List<BrandForm> form) throws ApiException, JsonProcessingException {
 		brandDto.add(form);
 	}
-	@ApiOperation(value = "Deletes a brand")
-	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-	// /api/1
-	public void delete(@PathVariable int id) {
-		brandDto.delete(id);
-	}
-
 	@ApiOperation(value = "Gets a brand by ID")
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	public BrandData get(@PathVariable int id) throws ApiException {

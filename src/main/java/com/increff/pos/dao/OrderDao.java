@@ -20,7 +20,7 @@ public class OrderDao extends AbstractDao {
 
     private static String delete_id = "delete from OrderPojo p where id=:id";
     private static String select_id = "select p from OrderPojo p where id=:id";
-    private static String select_all = "select p from OrderPojo p";
+    private static String select_all = "select p from OrderPojo p order by createdAt desc";
 
     private final String select_all_by_date_filter = "select p from OrderPojo p where createdAt>=:startDate and createdAt<=:endDate";
 
