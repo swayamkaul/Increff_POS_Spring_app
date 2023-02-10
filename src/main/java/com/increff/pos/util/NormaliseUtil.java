@@ -31,5 +31,10 @@ public class NormaliseUtil {
         userForm.setEmail(StringUtil.toLowerCase(userForm.getEmail()).trim());
     }
 
+    public static void normalise(SalesReportForm salesReportForm) {
+        salesReportForm.setBrand(StringUtil.toLowerCase(salesReportForm.getBrand()).trim());
+        salesReportForm.setCategory(StringUtil.toLowerCase(salesReportForm.getCategory()).trim());
+    }
+
 
 }

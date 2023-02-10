@@ -4,6 +4,9 @@ import com.increff.pos.model.*;
 import com.increff.pos.pojo.*;
 import javafx.util.Pair;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ConvertorUtil {
@@ -104,6 +107,18 @@ public class ConvertorUtil {
         p.setRole(f.getRole());
         p.setPassword(f.getPassword());
         return p;
+    }
+
+    public static List<SalesReportData> convert(HashMap<Integer, SalesReportData> map, HashMap<Integer, BrandPojo> brandMap) {
+        List<SalesReportData> salesReportDataList = new ArrayList<>();
+        for(Map.Entry<Integer, SalesReportData> entry: map.entrySet()) {
+            BrandPojo bp = brandMap.get(entry.getKey());
+            SalesReportData d = entry.getValue();
+            d.setBrand(bp.getBrand());
+            d.setCategory(bp.getCategory());
+            salesReportDataList.add(d);
+        }
+        return salesReportDataList;
     }
 
 }

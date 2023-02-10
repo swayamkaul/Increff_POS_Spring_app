@@ -1,8 +1,5 @@
 package com.increff.pos.dto;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.increff.pos.model.BrandForm;
-import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.model.ProductData;
 import com.increff.pos.model.ProductForm;
 import com.increff.pos.pojo.BrandPojo;

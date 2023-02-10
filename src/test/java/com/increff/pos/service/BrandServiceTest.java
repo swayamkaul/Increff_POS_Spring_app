@@ -2,7 +2,7 @@ package com.increff.pos.service;
 
 import static org.junit.Assert.assertEquals;
 
-import com.increff.pos.dto.BrandDto;
+import com.increff.pos.AbstractUnitTest;
 import com.increff.pos.model.BrandForm;
 import com.increff.pos.util.NormaliseUtil;
 import org.junit.Test;

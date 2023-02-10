@@ -24,12 +24,6 @@ public class SalesReportApiController {
     @Autowired
     private OrderService orderService;
 
-    @ApiOperation(value = "get all the orders")
-    @RequestMapping(path = "", method = RequestMethod.GET)
-    public List<SalesReportData> getAll() throws ApiException {
-        return salesReportDto.getAll();
-    }
-
     @ApiOperation(value = "get data within filter")
     @RequestMapping(path = "/filter", method = RequestMethod.POST)
     public List<SalesReportData> getFilteredData(@RequestBody SalesReportForm salesReportForm) throws ApiException {

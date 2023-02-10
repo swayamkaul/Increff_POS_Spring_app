@@ -1,14 +1,11 @@
 package com.increff.pos.dto;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.increff.pos.model.BrandData;
 import com.increff.pos.model.BrandForm;
-import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandService;
 import com.increff.pos.util.*;
-import com.mysql.cj.xdevapi.JsonArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
