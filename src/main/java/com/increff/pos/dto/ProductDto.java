@@ -1,5 +1,6 @@
 package com.increff.pos.dto;
 
+import com.increff.pos.model.BrandForm;
 import com.increff.pos.model.ProductData;
 import com.increff.pos.model.ProductForm;
 import com.increff.pos.pojo.BrandPojo;
@@ -27,6 +28,7 @@ public class ProductDto {
     public void add(List<ProductForm> productForms) throws ApiException{
         JSONArray errorList=new JSONArray();
         Integer errorCount=0;
+        listEmptyCheck(productForms);
         for(ProductForm form: productForms) {
             JSONObject error= initialiseBrandErrorObject(form);
             try{
@@ -93,6 +95,11 @@ public class ProductDto {
         error.put("mrp",productForm.getMrp());
         error.put("message","");
         return error;
+    }
+
+    private void listEmptyCheck(List<ProductForm> productFormList) throws ApiException {
+        if(productFormList.isEmpty())
+            throw new ApiException("Product List is Empty!");
     }
 
 }

@@ -37,6 +37,7 @@ public class InventoryDto {
     public void add(List<InventoryForm> inventoryForms) throws ApiException{
         JSONArray errorList=new JSONArray();
         Integer errorCount=0;
+        listEmptyCheck(inventoryForms);
         for(InventoryForm form: inventoryForms) {
             JSONObject error= initialiseBrandErrorObject(form);
             try{
@@ -124,6 +125,10 @@ public class InventoryDto {
         error.put("quantity",inventoryForm.getQuantity());
         error.put("message","");
         return error;
+    }
+    private void listEmptyCheck(List<InventoryForm> inventoryFormList) throws ApiException {
+        if(inventoryFormList.isEmpty())
+            throw new ApiException("Inventory List is Empty!");
     }
 
 }
