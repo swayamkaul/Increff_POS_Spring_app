@@ -7,6 +7,7 @@ import com.increff.pos.model.SalesForm;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.pojo.SalesPojo;
+import com.increff.pos.util.DateValidatorUtil;
 import com.increff.pos.util.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -66,10 +67,11 @@ public class DailySalesDto {
         return salesService.getALL();
     }
 
-    public List<SalesPojo> getAllByDate(SalesForm salesForm){
+    public List<SalesPojo> getAllByDate(SalesForm salesForm) throws ApiException {
         ValidateUtil.validateForms(salesForm);
         LocalDate startDate = LocalDate.parse(salesForm.getStartDate());
         LocalDate endDate = LocalDate.parse(salesForm.getEndDate());
+        DateValidatorUtil.isValidDateRange(startDate,endDate);
         return  salesService.getAllByDate(startDate, endDate);
     }
 

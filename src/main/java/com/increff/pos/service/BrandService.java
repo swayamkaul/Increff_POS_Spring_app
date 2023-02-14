@@ -26,10 +26,11 @@ public class BrandService {
 	}
 
 	public void update(int id, BrandPojo p) throws ApiException {
-		BrandPojo ex = getCheck(id);
-		ex.setCategory(p.getCategory());
-		ex.setBrand(p.getBrand());
-		dao.update(ex);
+		BrandPojo brandPojo = getCheck(id);
+		checkAlreadyExist(p.getBrand(), p.getCategory());
+		brandPojo.setCategory(p.getCategory());
+		brandPojo.setBrand(p.getBrand());
+		dao.update(brandPojo);
 	}
 	public BrandPojo getCheck(int id) throws ApiException {
 		BrandPojo p = dao.select(id);

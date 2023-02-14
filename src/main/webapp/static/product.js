@@ -442,6 +442,8 @@ function activateUpload() {
 function displayProduct(data){
 	$("#product-edit-form input[name=name]").val(data.name);
 	$("#product-edit-form input[name=barCode]").val(data.barCode);
+	$("#product-edit-form input[name=brand]").val(data.brand);
+	$("#product-edit-form input[name=category]").val(data.category);
 	$("#product-edit-form input[name=id]").val(data.id);
 	$("#product-edit-form input[name=mrp]").val(data.mrp);
 	$('#edit-product-modal').modal('toggle');

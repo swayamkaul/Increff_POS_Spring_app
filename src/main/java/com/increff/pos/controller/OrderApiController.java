@@ -25,11 +25,11 @@ public class OrderApiController {
     @Autowired
     private OrderDto dto;
 
-    @ApiOperation(value = "Creates order")
-    @RequestMapping(path = "", method = RequestMethod.POST)
-    public OrderData add(@RequestBody OrderForm form) throws ApiException {
-        return dto.add(form);
-    }
+//    @ApiOperation(value = "Creates order")
+//    @RequestMapping(path = "", method = RequestMethod.POST)
+//    public OrderData add(@RequestBody OrderForm form) throws ApiException {
+//        return dto.add(form);
+//    }
 
 
     @ApiOperation(value = "Gets All orders")

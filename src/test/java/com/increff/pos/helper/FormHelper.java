@@ -1,9 +1,6 @@
 package com.increff.pos.helper;
 
-import com.increff.pos.model.BrandForm;
-import com.increff.pos.model.InventoryForm;
-import com.increff.pos.model.ProductForm;
-import com.increff.pos.model.UserForm;
+import com.increff.pos.model.*;
 
 public class FormHelper {
 
@@ -36,5 +33,13 @@ public class FormHelper {
         userForm.setPassword(password);
         userForm.setRole(role);
         return userForm;
+    }
+
+    public static OrderItemForm createOrderItem(String barCode, int quantity, double sellingPrice) {
+        OrderItemForm orderItemForm = new OrderItemForm();
+        orderItemForm.setQuantity(quantity);
+        orderItemForm.setBarCode(barCode);
+        orderItemForm.setSellingPrice(sellingPrice);
+        return orderItemForm;
     }
 }

@@ -20,9 +20,6 @@ public class ProductService {
     private ProductDao productDao;
 
     public void add(ProductPojo p) throws ApiException {
-        if(StringUtil.isEmpty(p.getName())) {
-            throw new ApiException("name cannot be empty");
-        }
         productDao.insert(p);
     }
 

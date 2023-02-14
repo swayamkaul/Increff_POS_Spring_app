@@ -25,8 +25,6 @@ public class OrderService {
     private InventoryService inventoryService;
 
 
-
-
     public OrderPojo add(OrderPojo p){
         p.setId(orderDao.insert(p));
         return p;
@@ -51,11 +49,6 @@ public class OrderService {
         return orderDao.selectAll(OrderPojo.class);
     }
 
-    public OrderPojo update(Integer id,OrderPojo p) throws ApiException{
-        return getCheck(id);
-    }
-
-
     public List<OrderPojo> getOrderByDateFilter(LocalDateTime startDate, LocalDateTime endDate)  {
         return orderDao.getOrderByDateFilter(startDate,endDate);
     }
@@ -68,11 +61,8 @@ public class OrderService {
             p.setOrderId(order.getId());
             orderItemDao.insert(p);
         }
-
         return order;
     }
-
-
     public List<OrderItemPojo> selectByOrderId(int orderId) {
         return orderItemDao.selectByOrderId(orderId);
     }

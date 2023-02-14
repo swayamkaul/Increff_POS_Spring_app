@@ -68,7 +68,6 @@ public class BrandDto {
         ValidateUtil.validateForms(f);
         NormaliseUtil.normalise(f);
         BrandPojo p= ConvertorUtil.convert(f);
-
         brandService.update(id,p);
     }
 

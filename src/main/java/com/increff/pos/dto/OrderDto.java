@@ -39,12 +39,6 @@ public class OrderDto {
     @Value("${invoice.url}")
     private String url;
 
-    public OrderData add(OrderForm f) {
-        OrderPojo p = new OrderPojo();
-        OrderData data = ConvertorUtil.convert(orderService.add(p));
-        return data;
-    }
-
     public List<OrderData> getAll() {
         List<OrderData> list = new ArrayList<OrderData>();
         List<OrderPojo> list1 = orderService.getAll();
@@ -54,15 +48,10 @@ public class OrderDto {
         }
         return list;
     }
-
-    //Order Item DTO
-
     public OrderData addOrderItem(List<OrderItemForm> orderItemFormList) throws ApiException, JsonProcessingException {
         List<String> errorList = new ArrayList<String>();
         checkConstraintsAndDuplicates(orderItemFormList);
-
         List<OrderItemPojo> orderItemPojoList =checkSellingPriceAndInventory(orderItemFormList,errorList);
-        throwErrorsIfAny(errorList);
         OrderPojo orderPojo = orderService.addOrderItemListToOrder(orderItemPojoList);
         OrderData orderData = ConvertorUtil.convert(orderPojo);
         return orderData;
@@ -77,39 +66,27 @@ public class OrderDto {
         }
         return list;
     }
-
     public ResponseEntity<byte[]> getPDF(int id) throws Exception {
         InvoiceForm invoiceForm = generateInvoiceForOrder(id);
-
         RestTemplate restTemplate = new RestTemplate();
-
-
         byte[] contents = Base64.getDecoder().decode(restTemplate.postForEntity(url, invoiceForm, byte[].class).getBody());
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-
         String filename = "invoice.pdf";
         headers.setContentDispositionFormData(filename, filename);
-
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
         ResponseEntity<byte[]> response = new ResponseEntity<>(contents, headers, HttpStatus.OK);
         return response;
     }
-
     public InvoiceForm generateInvoiceForOrder(int orderId) throws ApiException
     {
         InvoiceForm invoiceForm = new InvoiceForm();
         OrderPojo orderPojo = orderService.get(orderId);
-
         invoiceForm.setOrderId(orderPojo.getId());
         invoiceForm.setPlacedDate(orderPojo.getCreatedAt().toString());
-
         List<OrderItemPojo> orderItemPojoList = orderService.selectByOrderId(orderPojo.getId());
         List<OrderItem> orderItemList = new ArrayList<>();
-
-        for(OrderItemPojo p: orderItemPojoList)
-        {
+        for(OrderItemPojo p: orderItemPojoList) {
             OrderItem orderItem = new OrderItem();
             orderItem.setOrderItemId(p.getId());
             String productName = productService.getCheck(p.getProductId()).getName();
@@ -118,12 +95,10 @@ public class OrderDto {
             orderItem.setSellingPrice(p.getSellingPrice());
             orderItemList.add(orderItem);
         }
-
         invoiceForm.setOrderItemList(orderItemList);
-
         return invoiceForm;
     }
-    void checkConstraintsAndDuplicates(List<OrderItemForm> forms) throws ApiException {
+    private void checkConstraintsAndDuplicates(List<OrderItemForm> forms) throws ApiException {
         if(forms.isEmpty()){
             throw new ApiException("Cart Empty!");
         }
@@ -131,7 +106,6 @@ public class OrderDto {
         for(OrderItemForm f : forms) {
             ValidateUtil.validateForms(f);
             NormaliseUtil.normalise(f);
-
             if(set.contains(f.getBarCode())) {
                 throw new ApiException("Duplicate Barcode Detected, Barcode: "+f.getBarCode());
             }
@@ -139,7 +113,7 @@ public class OrderDto {
         }
     }
 
-    List<OrderItemPojo>  checkSellingPriceAndInventory(List<OrderItemForm> forms,List<String> errorList) {
+    private List<OrderItemPojo>  checkSellingPriceAndInventory(List<OrderItemForm> forms,List<String> errorList) throws JsonProcessingException, ApiException {
         List<OrderItemPojo> orderItemPojoList=new ArrayList<>();
         for(OrderItemForm orderItemForm : forms) {
             try {
@@ -157,14 +131,12 @@ public class OrderDto {
                 errorList.add(orderItemForm.getBarCode()+": "+e.getMessage());
             }
         }
-
+        throwErrorsIfAny(errorList);
         return orderItemPojoList;
     }
-
-    void throwErrorsIfAny(List<String> errorlist) throws ApiException, JsonProcessingException {
+    private void throwErrorsIfAny(List<String> errorlist) throws ApiException, JsonProcessingException {
         if(!errorlist.isEmpty()){
             ErrorUtil.throwErrors(errorlist);
         }
     }
-
 }
