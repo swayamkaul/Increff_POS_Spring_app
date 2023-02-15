@@ -26,7 +26,7 @@ public class ProductService {
     public List<ProductPojo> getAll() {
         return productDao.selectAll();
     }
-    public void update(int id, ProductPojo p) throws ApiException {
+    public void update(Integer id, ProductPojo p) throws ApiException {
         ProductPojo ex = getCheck(id);
         ex.setMrp(p.getMrp());
         ex.setBarCode(p.getBarCode());
@@ -34,7 +34,7 @@ public class ProductService {
         ex.setBrandCategory(p.getBrandCategory());
         productDao.update(ex);
     }
-    public ProductPojo getCheck(int id) throws ApiException {
+    public ProductPojo getCheck(Integer id) throws ApiException {
         ProductPojo p = productDao.select(id);
         if (p == null) {
             throw new ApiException("Product with given ID does not exist, id: " + id);

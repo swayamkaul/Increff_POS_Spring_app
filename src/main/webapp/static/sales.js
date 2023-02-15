@@ -1,6 +1,6 @@
 function getSalesUrl() {
   var baseUrl = $("meta[name=baseUrl]").attr("content");
-  return baseUrl + "/api/dailysales";
+  return baseUrl + "/api/daily-sales";
 }
 var last_run = null;
 function displaySalesList(data) {

@@ -34,7 +34,7 @@ public class ConvertorUtil {
         return d;
     }
 
-    public static  ProductPojo convert(ProductForm f, int brandCategory)  {
+    public static  ProductPojo convert(ProductForm f, Integer brandCategory)  {
         ProductPojo p = new ProductPojo();
         p.setBrandCategory(brandCategory);
         p.setName(f.getName());
@@ -53,14 +53,14 @@ public class ConvertorUtil {
         d.setQuantity(p.getQuantity());
         return d;
     }
-    public static  InventoryPojo convert(InventoryForm f, int id)  {
+    public static  InventoryPojo convert(InventoryForm f, Integer id)  {
         InventoryPojo p = new InventoryPojo();
         p.setQuantity(f.getQuantity());
         p.setId(id);
         return p;
     }
 
-    public static OrderItemPojo convert(OrderItemForm f, int productId)  {
+    public static OrderItemPojo convert(OrderItemForm f, Integer productId)  {
         OrderItemPojo orderItemPojo = new OrderItemPojo();
         orderItemPojo.setQuantity(f.getQuantity());
         orderItemPojo.setProductId(productId);

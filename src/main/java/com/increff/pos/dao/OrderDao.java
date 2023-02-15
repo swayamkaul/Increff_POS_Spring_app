@@ -29,18 +29,18 @@ public class OrderDao extends AbstractDao {
     private EntityManager em;
 
 
-    public int insert(OrderPojo p) {
+    public Integer insert(OrderPojo p) {
         em.persist(p);
         return p.getId();
     }
 
-    public int delete(int id) {
+    public Integer delete(Integer id) {
         Query query = em.createQuery(delete_id);
         query.setParameter("id", id);
         return query.executeUpdate();
     }
 
-    public OrderPojo select(int id) {
+    public OrderPojo select(Integer id) {
         TypedQuery<OrderPojo> query = getQuery(select_id, OrderPojo.class);
         query.setParameter("id", id);
         return getSingle(query);

@@ -2,7 +2,7 @@ var brandData = {};
 
 function getSalesReportUrl(){
     var baseUrl = $("meta[name=baseUrl]").attr("content")
-    return baseUrl + "/api/salesreport";
+    return baseUrl + "/api/sales-report";
 }
 
 function getBrandUrl() {
@@ -17,19 +17,19 @@ function resetForm() {
 
 function getInventoryReportUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
-	return baseUrl + "/api/inventory/exportcsv";
+	return baseUrl + "/api/inventory/export-csv";
 }
 
 function getBrandReportUrl() {
     var baseUrl = $("meta[name=baseUrl]").attr("content")
     console.log(baseUrl);
-    return baseUrl + "/api/brands/exportcsv";
+    return baseUrl + "/api/brands/export-csv";
 }
 
 function printCSVUrl() {
 var baseUrl = $("meta[name=baseUrl]").attr("content")
     console.log(baseUrl);
-    return baseUrl + "/api/salesreport/exportcsv";
+    return baseUrl + "/api/sales-report/export-csv";
 }
 
 function getFilteredList(event) {

@@ -17,10 +17,10 @@ import javax.validation.constraints.NotBlank;
 public class BrandPojo extends AbstractVersionPojo{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
-	@NotBlank
+	private Integer id;
+	@Column(nullable = false)
 	private String brand;
-	@NotBlank
+	@Column(nullable = false)
 	private String category;
 
 }

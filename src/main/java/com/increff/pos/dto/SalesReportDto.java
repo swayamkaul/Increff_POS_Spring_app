@@ -120,7 +120,7 @@ public class    SalesReportDto {
             BrandPojo brandPojo = brandMap.get(productPojo.getBrandCategory());
 
             if (isValidBrandAndCategory(brand, brandPojo.getBrand(), category, brandPojo.getCategory())) {
-                int brandId = brandPojo.getId();
+                Integer brandId = brandPojo.getId();
                 if (!map.containsKey(brandId)) {
                     map.put(brandId, new SalesReportData());
                 }

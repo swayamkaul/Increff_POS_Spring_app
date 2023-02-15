@@ -25,14 +25,14 @@ public class BrandService {
 		return dao.selectAll();
 	}
 
-	public void update(int id, BrandPojo p) throws ApiException {
+	public void update(Integer id, BrandPojo p) throws ApiException {
 		BrandPojo brandPojo = getCheck(id);
 		checkAlreadyExist(p.getBrand(), p.getCategory());
 		brandPojo.setCategory(p.getCategory());
 		brandPojo.setBrand(p.getBrand());
 		dao.update(brandPojo);
 	}
-	public BrandPojo getCheck(int id) throws ApiException {
+	public BrandPojo getCheck(Integer id) throws ApiException {
 		BrandPojo p = dao.select(id);
 		if (p == null) {
 			throw new ApiException("Brand with given ID does not exist, id: " + id);

@@ -19,7 +19,7 @@ public class ProductServiceTest extends AbstractUnitTest {
     BrandService brandService;
 
     @Test(expected = ApiException.class)
-    public void addTest() throws ApiException {
+    public void testProductAddition() throws ApiException {
         ProductPojo productPojo = new ProductPojo();
         productPojo.setBarCode("12345678");
         productPojo.setName("name");
@@ -27,7 +27,7 @@ public class ProductServiceTest extends AbstractUnitTest {
         productPojo.setMrp(23.00);
         productService.add(productPojo);
 
-        int expectedBrandCategory = 2;
+        Integer expectedBrandCategory = 2;
         String expectedName = "name";
         Double expectedMrp = 23.00;
         String expectedBarCode = "12345678";
@@ -41,7 +41,7 @@ public class ProductServiceTest extends AbstractUnitTest {
     }
 
     @Test
-    public void getAllTest() throws ApiException {
+    public void testGetAllProduct() throws ApiException {
         ProductPojo productPojo = new ProductPojo();
         productPojo.setBarCode("12345678");
         productPojo.setName("name");
@@ -62,7 +62,7 @@ public class ProductServiceTest extends AbstractUnitTest {
     }
 
     @Test
-    public void updateTest() throws ApiException {
+    public void testUpdate() throws ApiException {
         ProductPojo productPojo = new ProductPojo();
         productPojo.setBarCode("12345678");
         productPojo.setName("name");
@@ -76,7 +76,7 @@ public class ProductServiceTest extends AbstractUnitTest {
         productPojo1.setBrandCategory(2);
         productPojo1.setMrp(27.00);
 
-        int expectedBrandCategory = 2;
+        Integer expectedBrandCategory = 2;
         String expectedName = "name2";
         Double expectedMrp = 27.00;
         String expectedBarCode = "12345678";
@@ -92,7 +92,7 @@ public class ProductServiceTest extends AbstractUnitTest {
     }
 
     @Test(expected = ApiException.class)
-    public void checkId() throws ApiException {
+    public void testCheckId() throws ApiException {
         BrandPojo brandPojo = new BrandPojo();
         brandPojo.setBrand("brand");
         brandPojo.setCategory("category");
@@ -105,11 +105,11 @@ public class ProductServiceTest extends AbstractUnitTest {
         productPojo.setMrp(23.00);
         productService.add(productPojo);
 
-        int id = productService.getCheck("23456789").getId();
+        Integer id = productService.getCheck("23456789").getId();
     }
 
     @Test(expected = ApiException.class)
-    public void CheckIllegal() throws ApiException {
+    public void testCheckIllegal() throws ApiException {
         BrandPojo brandPojo = new BrandPojo();
         brandPojo.setBrand("brand");
         brandPojo.setCategory("category");
@@ -127,7 +127,7 @@ public class ProductServiceTest extends AbstractUnitTest {
 
 
     @Test
-    public void selectInBarCodeTest() throws ApiException {
+    public void testSelectInBarCode() throws ApiException {
         ProductPojo productPojo = new ProductPojo();
         productPojo.setBarCode("12345678");
         productPojo.setName("name");
@@ -151,7 +151,7 @@ public class ProductServiceTest extends AbstractUnitTest {
     }
 
     @Test(expected = ApiException.class)
-    public void selectInBarCodeIllegaTest() throws ApiException {
+    public void testSelectInBarCodeIllegal() throws ApiException {
         ProductPojo productPojo = new ProductPojo();
         productPojo.setBarCode("12345678");
         productPojo.setName("name");

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class OrderData extends OrderForm{
+public class OrderData{
     private Integer id;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updated;

@@ -46,7 +46,7 @@ public class BrandDto {
         bulkAdd(brandFormList);
     }
 
-    public BrandData get(int id) throws ApiException {
+    public BrandData get(Integer id) throws ApiException {
        BrandPojo p= brandService.getCheck(id);
        return ConvertorUtil.convert(p);
     }
@@ -64,7 +64,7 @@ public class BrandDto {
         return list2;
     }
 
-    public void update(int id, BrandForm f) throws ApiException {
+    public void update(Integer id, BrandForm f) throws ApiException {
         ValidateUtil.validateForms(f);
         NormaliseUtil.normalise(f);
         BrandPojo p= ConvertorUtil.convert(f);

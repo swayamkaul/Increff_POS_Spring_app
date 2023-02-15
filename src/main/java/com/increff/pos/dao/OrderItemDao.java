@@ -29,19 +29,19 @@ public class OrderItemDao extends AbstractDao {
         em.persist(p);
     }
 
-    public int delete(int id) {
+    public Integer delete(Integer id) {
         Query query = em.createQuery(delete_id);
         query.setParameter("id", id);
         return query.executeUpdate();
     }
 
-    public OrderItemPojo select(int id) {
+    public OrderItemPojo select(Integer id) {
         TypedQuery<OrderItemPojo> query = getQuery(select_id, OrderItemPojo.class);
         query.setParameter("id", id);
         return getSingle(query);
     }
 
-    public List<OrderItemPojo> selectByOrderId(int orderId) {
+    public List<OrderItemPojo> selectByOrderId(Integer orderId) {
         TypedQuery<OrderItemPojo> query = getQuery(select_oid, OrderItemPojo.class);
         query.setParameter("orderId", orderId);
         return query.getResultList();

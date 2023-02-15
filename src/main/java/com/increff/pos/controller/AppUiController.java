@@ -29,13 +29,13 @@ public class AppUiController extends AbstractUiController {
 	public ModelAndView order() {
 		return mav("order.html");
 	}
-	@RequestMapping(value = "/ui/dailysales")
+	@RequestMapping(value = "/ui/daily-sales")
 	public ModelAndView DailySales() {
-		return mav("dailysales.html");
+		return mav("daily-sales.html");
 	}
-	@RequestMapping(value = "/ui/salesreport")
+	@RequestMapping(value = "/ui/sales-report")
 	public ModelAndView SalesReport() {
-		return mav("salesreport.html");
+		return mav("sales-report.html");
 	}
 	@RequestMapping(value = "/ui/admin")
 	public ModelAndView admin() {

@@ -13,5 +13,5 @@ import java.util.Date;
 public class OrderPojo extends AbstractVersionPojo{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 }

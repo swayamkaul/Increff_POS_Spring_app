@@ -20,8 +20,8 @@ public class InventoryServiceTest extends AbstractUnitTest {
         inventoryPojo.setQuantity(3);
         inventoryService.add(inventoryPojo);
 
-        int expectedID = 1;
-        int expectedQuantity = 3;
+        Integer expectedID = 1;
+        Integer expectedQuantity = 3;
 
         InventoryPojo pojo = inventoryService.getCheck(expectedID);
         assertEquals(expectedID, pojo.getId());
@@ -57,7 +57,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
         inventoryPojo2.setQuantity(9);
 
         inventoryService.update(1, inventoryPojo2);
-        int expectedQuantity = 9;
+        Integer expectedQuantity = 9;
 
         InventoryPojo pojo = inventoryService.getCheck(1);
         assertEquals(expectedQuantity, pojo.getQuantity());
@@ -70,7 +70,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
         inventoryPojo.setId(1);
         inventoryPojo.setQuantity(3);
         inventoryService.add(inventoryPojo);
-        int expextedQuantity = 3;
+        Integer expextedQuantity = 3;
         InventoryPojo pojo = inventoryService.getCheck(1);
         assertEquals(expextedQuantity, pojo.getQuantity());
         InventoryPojo pojo2 = inventoryService.getCheck(3);

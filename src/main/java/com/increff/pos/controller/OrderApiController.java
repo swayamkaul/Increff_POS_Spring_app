@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.increff.pos.dto.OrderDto;
 import com.increff.pos.model.OrderData;
-import com.increff.pos.model.OrderForm;
 import com.increff.pos.service.ApiException;
 
 import io.swagger.annotations.Api;
@@ -24,13 +23,6 @@ public class OrderApiController {
 
     @Autowired
     private OrderDto dto;
-
-//    @ApiOperation(value = "Creates order")
-//    @RequestMapping(path = "", method = RequestMethod.POST)
-//    public OrderData add(@RequestBody OrderForm form) throws ApiException {
-//        return dto.add(form);
-//    }
-
 
     @ApiOperation(value = "Gets All orders")
     @RequestMapping(path = "/orders", method = RequestMethod.GET)
@@ -55,7 +47,7 @@ public class OrderApiController {
 
     @ApiOperation(value = "Download Invoice")
     @GetMapping(path = "/invoice/{id}")
-    public ResponseEntity<byte[]> getPDF(@PathVariable int id) throws Exception{
+    public ResponseEntity<byte[]> getPDF(@PathVariable Integer id) throws Exception{
         return dto.getPDF(id);
     }
 }

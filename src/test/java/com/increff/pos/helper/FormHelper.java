@@ -20,7 +20,7 @@ public class FormHelper {
         productForm.setMrp(productMrp);
         return productForm;
     }
-    public static InventoryForm createInventory(String productBarcode, int quantity) {
+    public static InventoryForm createInventory(String productBarcode, Integer quantity) {
         InventoryForm inventoryForm = new InventoryForm();
         inventoryForm.setBarCode(productBarcode);
         inventoryForm.setQuantity(quantity);
@@ -35,7 +35,7 @@ public class FormHelper {
         return userForm;
     }
 
-    public static OrderItemForm createOrderItem(String barCode, int quantity, double sellingPrice) {
+    public static OrderItemForm createOrderItem(String barCode, Integer quantity, double sellingPrice) {
         OrderItemForm orderItemForm = new OrderItemForm();
         orderItemForm.setQuantity(quantity);
         orderItemForm.setBarCode(barCode);

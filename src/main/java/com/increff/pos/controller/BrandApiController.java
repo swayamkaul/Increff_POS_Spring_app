@@ -37,7 +37,7 @@ public class BrandApiController {
 	}
 	@ApiOperation(value = "Gets a brand by ID")
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
-	public BrandData get(@PathVariable int id) throws ApiException {
+	public BrandData get(@PathVariable Integer id) throws ApiException {
 		return brandDto.get(id);
 	}
 	@ApiOperation(value = "Gets a brand by brand and category")
@@ -53,12 +53,12 @@ public class BrandApiController {
 
 	@ApiOperation(value = "Updates an brand")
 	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
-	public void update(@PathVariable int id, @RequestBody BrandForm f) throws ApiException {
+	public void update(@PathVariable Integer id, @RequestBody BrandForm f) throws ApiException {
 		brandDto.update(id, f);
 	}
 
 	@ApiOperation(value = "Exports to CSV")
-	@RequestMapping(path = "/exportcsv", method = RequestMethod.GET)
+	@RequestMapping(path = "/export-csv", method = RequestMethod.GET)
 	public void exportToCSV(HttpServletResponse response) throws IOException {
 		brandDto.generateCsv(response);
 	}

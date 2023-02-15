@@ -11,20 +11,17 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Getter
 @Setter
-//TODO add indexes depending on the select queries you're running
-//TODO hibernate snakecase naming stg
 @Table(indexes={@Index(columnList = "barcode", unique = true)},
         uniqueConstraints = {@UniqueConstraint(columnNames = {"barcode"})})
 public class ProductPojo extends AbstractVersionPojo{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int id;
-    @NotBlank
-    private String barCode;
-    //TODO change it to camelCase, db column should  be in snakeCase DONE
+    private Integer id;
     @Column(nullable = false)
-    private int brandCategory;
-    @NotBlank
+    private String barCode;
+    @Column(nullable = false)
+    private Integer brandCategory;
+    @Column(nullable = false)
     private String name;
     @Column(nullable = false)
     @Min(value = 0)

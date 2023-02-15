@@ -135,7 +135,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
 
 
         String expectedBarCode = "12345678";
-        int expectedQuantity = 6;
+        Integer expectedQuantity = 6;
 
         InventoryData inventoryData = inventoryDto.get(inventoryDto.get(expectedBarCode).getId());
         inventoryDto.update(inventoryData.getId(), inventoryForm1);

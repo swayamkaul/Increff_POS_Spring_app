@@ -49,7 +49,7 @@ public class ProductDto {
         bulkAdd(productForms);
     }
 
-    public ProductData get(int id) throws ApiException {
+    public ProductData get(Integer id) throws ApiException {
         ProductPojo productPojo= productService.getCheck(id);
         BrandPojo brandPojo=brandService.getCheck(productPojo.getBrandCategory());
         return ConvertorUtil.convert(productPojo,brandPojo.getBrand(),brandPojo.getCategory());
@@ -71,7 +71,7 @@ public class ProductDto {
         return list2;
     }
 
-    public void update(int id, ProductForm f) throws ApiException {
+    public void update(Integer id, ProductForm f) throws ApiException {
         ValidateUtil.validateForms(f);
         NormaliseUtil.normalise(f);
         BrandPojo brandPojo = brandService.getCheck(f.getBrand(),f.getCategory());

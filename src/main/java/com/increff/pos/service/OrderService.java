@@ -63,7 +63,7 @@ public class OrderService {
         }
         return order;
     }
-    public List<OrderItemPojo> selectByOrderId(int orderId) {
+    public List<OrderItemPojo> selectByOrderId(Integer orderId) {
         return orderItemDao.selectByOrderId(orderId);
     }
 }

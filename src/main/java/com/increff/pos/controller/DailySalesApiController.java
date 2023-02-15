@@ -13,7 +13,7 @@ import java.util.List;
 
 @Api
 @RestController
-@RequestMapping(path = "/api/dailysales")
+@RequestMapping(path = "/api/daily-sales")
 public class DailySalesApiController {
 
     @Autowired
@@ -34,6 +34,6 @@ public class DailySalesApiController {
     @ApiOperation(value = "Runs the scheduler")
     @RequestMapping(path = "/scheduler", method = RequestMethod.GET)
     public void runScheduler() throws ApiException {
-        dailySalesDto.createReport();
+        dailySalesDto.generateReport();
     }
 }

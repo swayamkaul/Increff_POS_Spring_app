@@ -14,7 +14,7 @@ public class SalesReportForm {
     private String startDate;
     @NotBlank
     private String endDate;
-    @NotNull    // Application Level constraint required not DB level Constraint
+    @NotNull
     private String brand;
     @NotNull
     private String category;

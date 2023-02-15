@@ -29,7 +29,7 @@ public class ProductDao extends AbstractDao {
         em.persist(p);
     }
 
-    public ProductPojo select(int id) {
+    public ProductPojo select(Integer id) {
         TypedQuery<ProductPojo> query = getQuery(select_id, ProductPojo.class);
         query.setParameter("id", id);
         return getSingle(query);

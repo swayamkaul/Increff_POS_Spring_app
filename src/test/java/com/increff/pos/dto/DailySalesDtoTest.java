@@ -65,7 +65,7 @@ public class DailySalesDtoTest extends AbstractUnitTest {
         OrderItemForm orderItemForm = FormHelper.createOrderItem("12345678", 2, 23.00);
         orderItemFormList.add(orderItemForm);
         orderDto.addOrderItem(orderItemFormList);
-        salesDto.createReport();
+        salesDto.generateReport();
         List<SalesPojo> salesPojoList1 = salesDto.getAll();
         assertEquals(1, salesPojoList1.size());
         int count1 = salesPojoList1.get(0).getInvoicedOrderCount();
@@ -76,11 +76,11 @@ public class DailySalesDtoTest extends AbstractUnitTest {
 
         orderDto.addOrderItem(orderItemFormList);
 
-        salesDto.createReport();
+        salesDto.generateReport();
         List<SalesPojo> salesPojoList2 = salesDto.getAll();
         assertEquals(1, salesPojoList2.size());
         int count2 = salesPojoList1.get(0).getInvoicedOrderCount();
-        assertEquals(2, count2);
+        assertEquals(2,count2);
     }
 
 
@@ -115,18 +115,18 @@ public class DailySalesDtoTest extends AbstractUnitTest {
         OrderItemForm orderItemForm = FormHelper.createOrderItem("12345678", 2, 23.00);
         orderItemFormList.add(orderItemForm);
         orderDto.addOrderItem(orderItemFormList);
-        salesDto.createReport();
+        salesDto.generateReport();
         List<SalesPojo> salesPojoList1 = salesDto.getAll();
         assertEquals(1, salesPojoList1.size());
-        int count1 = salesPojoList1.get(0).getInvoicedOrderCount();
-        assertEquals(1, count1);
+        Integer count1 = salesPojoList1.get(0).getInvoicedOrderCount();
+        assertEquals(1,(int) count1);
 
         OrderItemForm orderItemForm1 =FormHelper.createOrderItem("12345679", 3, 28.00);
         orderItemFormList.add(orderItemForm1);
 
         orderDto.addOrderItem(orderItemFormList);
 
-        salesDto.createReport();
+        salesDto.generateReport();
         List<SalesPojo> salesPojoList2 = salesDto.getAll();
         assertEquals(1, salesPojoList2.size());
         int count2 = salesPojoList1.get(0).getInvoicedOrderCount();

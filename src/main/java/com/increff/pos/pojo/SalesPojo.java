@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class SalesPojo extends AbstractVersionPojo{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @JsonFormat(pattern="dd-MM-yyyy ")
     @Column(nullable = false)
     private LocalDate date;

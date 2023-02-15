@@ -25,12 +25,12 @@ public class DailySalesDto {
     @Autowired
     OrderService orderService;
 
-    public void createReport() throws ApiException {
+    public void generateReport() throws ApiException {
         SalesPojo salesPojo = new SalesPojo();
 
         LocalDate date = LocalDate.now();
-        int totalItems = 0;
-        double totalRevenue = 0.0;
+        Integer totalItems = 0;
+        Double totalRevenue = 0.0;
         LocalDateTime startDate = date.atStartOfDay();
 
         LocalDateTime endDate =  LocalDateTime.of(date, LocalTime.MAX);

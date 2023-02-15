@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class UserPojo extends AbstractVersionPojo{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Column(nullable = false)
 	private String email;
 	@Column(nullable = false)

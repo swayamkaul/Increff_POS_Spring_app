@@ -56,7 +56,7 @@ public class OrderDto {
         OrderData orderData = ConvertorUtil.convert(orderPojo);
         return orderData;
     }
-    public List<OrderItemData> getItemByOrderId(int orderId) throws ApiException {
+    public List<OrderItemData> getItemByOrderId(Integer orderId) throws ApiException {
         List<OrderItemData> list = new ArrayList<OrderItemData>();
         List<OrderItemPojo> list1 = orderService.selectByOrderId(orderId);
         for (OrderItemPojo p : list1) {
@@ -66,7 +66,7 @@ public class OrderDto {
         }
         return list;
     }
-    public ResponseEntity<byte[]> getPDF(int id) throws Exception {
+    public ResponseEntity<byte[]> getPDF(Integer id) throws Exception {
         InvoiceForm invoiceForm = generateInvoiceForOrder(id);
         RestTemplate restTemplate = new RestTemplate();
         byte[] contents = Base64.getDecoder().decode(restTemplate.postForEntity(url, invoiceForm, byte[].class).getBody());
@@ -78,7 +78,7 @@ public class OrderDto {
         ResponseEntity<byte[]> response = new ResponseEntity<>(contents, headers, HttpStatus.OK);
         return response;
     }
-    public InvoiceForm generateInvoiceForOrder(int orderId) throws ApiException
+    public InvoiceForm generateInvoiceForOrder(Integer orderId) throws ApiException
     {
         InvoiceForm invoiceForm = new InvoiceForm();
         OrderPojo orderPojo = orderService.get(orderId);

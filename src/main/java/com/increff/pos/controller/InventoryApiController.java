@@ -37,7 +37,7 @@ public class InventoryApiController {
     }
     @ApiOperation(value = "Gets a Inventory by ID")
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-    public InventoryData get(@PathVariable int id) throws ApiException {
+    public InventoryData get(@PathVariable Integer id) throws ApiException {
         return dto.get(id);
     }
     @ApiOperation(value = "Gets a Inventory by Barcode")
@@ -53,12 +53,12 @@ public class InventoryApiController {
 
     @ApiOperation(value = "Updates an Inventory")
     @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
-    public void update(@PathVariable int id, @RequestBody InventoryForm f) throws ApiException {
+    public void update(@PathVariable Integer id, @RequestBody InventoryForm f) throws ApiException {
         dto.update(id, f);
     }
 
     @ApiOperation(value = "Export Product Report to CSV")
-    @RequestMapping(path = "/exportcsv", method = RequestMethod.GET)
+    @RequestMapping(path = "/export-csv", method = RequestMethod.GET)
     public void exportToCSV(HttpServletResponse response) throws IOException, ApiException {
         dto.generateCsv(response);
     }

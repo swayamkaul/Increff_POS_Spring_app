@@ -25,7 +25,7 @@ public class UserDto {
         UserPojo p = ConvertorUtil.convert(form);
         userService.add(p);
     }
-    public void delete(int id) {
+    public void delete(Integer id) {
         userService.delete(id);
     }
     public List<UserData> getAllUser() {

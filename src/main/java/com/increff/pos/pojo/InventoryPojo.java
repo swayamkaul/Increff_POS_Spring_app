@@ -13,9 +13,9 @@ import javax.validation.constraints.Min;
 //TODO clean annotations
 public class InventoryPojo extends AbstractVersionPojo{
     @Id
-    private int id;
+    private Integer id;
     @Column(nullable = false)
     @Min(value = 0)
-    private int quantity;
+    private Integer quantity;
 
 }

@@ -58,7 +58,7 @@ public class InventoryDto {
         bulkAdd(inventoryForms);
     }
 
-    public InventoryData get(int id) throws ApiException {
+    public InventoryData get(Integer id) throws ApiException {
         InventoryPojo inventoryPojo= inventoryService.getCheck(id);
         ProductPojo productPojo= productService.getCheck(id);
         BrandPojo brandPojo=brandService.getCheck(productPojo.getBrandCategory());
@@ -84,7 +84,7 @@ public class InventoryDto {
         return list2;
     }
 
-    public void update(int id, InventoryForm f) throws ApiException {
+    public void update(Integer id, InventoryForm f) throws ApiException {
         ValidateUtil.validateForms(f);
         ProductPojo productPojo = productService.getCheck(f.getBarCode());
         InventoryPojo inventoryPojo= ConvertorUtil.convert(f,productPojo.getId());
