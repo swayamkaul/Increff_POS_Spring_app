@@ -32,7 +32,7 @@ public class OrderDtoTest extends AbstractUnitTest {
     @Test(expected = ApiException.class)
     public void testEmptyListInventoryAddition() throws ApiException, JsonProcessingException {
         List<OrderItemForm> orderItemFormList = new ArrayList<>();
-        orderDto.addOrderItem(orderItemFormList);
+        orderDto.createOrder(orderItemFormList);
     }
 
     @Test
@@ -64,12 +64,12 @@ public class OrderDtoTest extends AbstractUnitTest {
 
         OrderItemForm orderItemForm =FormHelper.createOrderItem("12345678", 2, 2.00);
         orderItemFormList.add(orderItemForm);
-        orderDto.addOrderItem(orderItemFormList);
+        orderDto.createOrder(orderItemFormList);
 
         OrderItemForm orderItemForm1 = FormHelper.createOrderItem("12345679", 3, 28.00);
         orderItemFormList.add(orderItemForm1);
 
-        orderDto.addOrderItem(orderItemFormList);
+        orderDto.createOrder(orderItemFormList);
 
         List<OrderData> list = orderDto.getAll();
         assertEquals(2, list.size());
@@ -106,7 +106,7 @@ public class OrderDtoTest extends AbstractUnitTest {
         OrderItemForm orderItemForm = FormHelper.createOrderItem("12345678", 2, 23.00);
         orderItemFormList.add(orderItemForm);
         orderItemFormList.add(orderItemForm);
-        orderDto.addOrderItem(orderItemFormList);
+        orderDto.createOrder(orderItemFormList);
 
     }
 
@@ -137,7 +137,7 @@ public class OrderDtoTest extends AbstractUnitTest {
         OrderItemForm orderItemForm = FormHelper.createOrderItem("12345678", 8, 23.00);
         orderItemFormList.add(orderItemForm);
 
-        orderDto.addOrderItem(orderItemFormList);
+        orderDto.createOrder(orderItemFormList);
 
     }
     @Test(expected = ApiException.class)
@@ -167,7 +167,7 @@ public class OrderDtoTest extends AbstractUnitTest {
         OrderItemForm orderItemForm = FormHelper.createOrderItem("12345678", 8, 230.00);
         orderItemFormList.add(orderItemForm);
 
-        orderDto.addOrderItem(orderItemFormList);
+        orderDto.createOrder(orderItemFormList);
 
     }
     @Test
@@ -199,12 +199,12 @@ public class OrderDtoTest extends AbstractUnitTest {
 
         OrderItemForm orderItemForm = FormHelper.createOrderItem("12345678", 2, 23.00);
         orderItemFormList.add(orderItemForm);
-        orderDto.addOrderItem(orderItemFormList);
+        orderDto.createOrder(orderItemFormList);
 
         OrderItemForm orderItemForm1 =FormHelper.createOrderItem("12345679", 3, 28.00);
         orderItemFormList.add(orderItemForm1);
 
-        orderDto.addOrderItem(orderItemFormList);
+        orderDto.createOrder(orderItemFormList);
 
         List<OrderData> list = orderDto.getAll();
         List<OrderItemData> list1 = orderDto.getItemByOrderId(list.get(0).getId());
@@ -244,12 +244,12 @@ public class OrderDtoTest extends AbstractUnitTest {
 
         OrderItemForm orderItemForm = FormHelper.createOrderItem("12345678", 2, 23.00);
         orderItemFormList.add(orderItemForm);
-        orderDto.addOrderItem(orderItemFormList);
+        orderDto.createOrder(orderItemFormList);
 
         OrderItemForm orderItemForm1 = FormHelper.createOrderItem("12345679", 3, 28.00);
         orderItemFormList.add(orderItemForm1);
 
-        orderDto.addOrderItem(orderItemFormList);
+        orderDto.createOrder(orderItemFormList);
         List<OrderData> list = orderDto.getAll();
         assertEquals(2,list.size());
 
@@ -284,7 +284,7 @@ public class OrderDtoTest extends AbstractUnitTest {
         OrderItemForm orderItemForm = FormHelper.createOrderItem("12345678", 8, 23.00);
         orderItemFormList.add(orderItemForm);
 
-        orderDto.addOrderItem(orderItemFormList);
+        orderDto.createOrder(orderItemFormList);
 
     }
 

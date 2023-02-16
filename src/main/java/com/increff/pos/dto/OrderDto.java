@@ -48,7 +48,7 @@ public class OrderDto {
         }
         return list;
     }
-    public OrderData addOrderItem(List<OrderItemForm> orderItemFormList) throws ApiException, JsonProcessingException {
+    public OrderData createOrder(List<OrderItemForm> orderItemFormList) throws ApiException, JsonProcessingException {
         List<String> errorList = new ArrayList<String>();
         checkConstraintsAndDuplicates(orderItemFormList);
         List<OrderItemPojo> orderItemPojoList =checkSellingPriceAndInventory(orderItemFormList,errorList);
@@ -78,7 +78,7 @@ public class OrderDto {
         ResponseEntity<byte[]> response = new ResponseEntity<>(contents, headers, HttpStatus.OK);
         return response;
     }
-    public InvoiceForm generateInvoiceForOrder(Integer orderId) throws ApiException
+    public InvoiceForm generateInvoiceForOrder(Integer orderId) throws ApiException // TODO put in convertor
     {
         InvoiceForm invoiceForm = new InvoiceForm();
         OrderPojo orderPojo = orderService.get(orderId);
@@ -117,8 +117,8 @@ public class OrderDto {
         List<OrderItemPojo> orderItemPojoList=new ArrayList<>();
         for(OrderItemForm orderItemForm : forms) {
             try {
-                ProductPojo productPojo = productService.getCheck(orderItemForm.getBarCode());
-                InventoryPojo inventoryPojo=inventoryService.getCheck(productPojo.getId());
+                ProductPojo productPojo = productService.getCheck(orderItemForm.getBarCode());  //TODO get product in list
+                InventoryPojo inventoryPojo=inventoryService.getCheck(productPojo.getId());     //TODO get inventory in list
                 if(productPojo.getMrp()<orderItemForm.getSellingPrice()){
                     errorList.add("Selling Price more than MRP for Barcode: "+orderItemForm.getBarCode());
                 }

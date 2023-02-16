@@ -35,6 +35,14 @@ function isJson(str) {
 function addInventory(event){
 	//Set the values to update
 	var $form = $("#inventory-form");
+	  if(!validateForm($form)){
+          return;
+      }
+      var qty = $("#inventory-form input[name=quantity]").val();
+      if(qty.includes("-") || qty.includes("+") || qty.includes("*") || qty.includes("/") || qty.includes(".")){
+        toastr.error("Invalid Quantity");
+        return;
+      }
 	var json = toJson($form);
 	var url = getInventoryUrl();
 	wholeInventory.push(json);

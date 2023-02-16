@@ -43,7 +43,7 @@ public class InventoryDto {
             try{
                 ValidateUtil.validateForms(form);
                 NormaliseUtil.normalise(form);
-                ProductPojo productPojo= productService.getCheck(form.getBarCode());
+                ProductPojo productPojo= productService.getCheck(form.getBarCode());    // TODO inquerry bulk fetch product
                 inventoryService.checkAlreadyExist(productPojo.getId(),form.getBarCode());
             }
             catch (Exception e) {
@@ -58,14 +58,14 @@ public class InventoryDto {
         bulkAdd(inventoryForms);
     }
 
-    public InventoryData get(Integer id) throws ApiException {
+    public InventoryData getInventory(Integer id) throws ApiException {
         InventoryPojo inventoryPojo= inventoryService.getCheck(id);
         ProductPojo productPojo= productService.getCheck(id);
         BrandPojo brandPojo=brandService.getCheck(productPojo.getBrandCategory());
         return ConvertorUtil.convert(inventoryPojo,productPojo.getBarCode(),productPojo.getName(),brandPojo.getBrand(),brandPojo.getCategory());
     }
 
-    public InventoryData get(String barCode) throws ApiException {
+    public InventoryData getInventory(String barCode) throws ApiException {
         ProductPojo productPojo= productService.getCheck(barCode);
         InventoryPojo inventoryPojo= inventoryService.getCheck(productPojo.getId());
         BrandPojo brandPojo=brandService.getCheck(productPojo.getBrandCategory());
@@ -85,7 +85,7 @@ public class InventoryDto {
     }
 
     public void update(Integer id, InventoryForm f) throws ApiException {
-        ValidateUtil.validateForms(f);
+        ValidateUtil.validateForms(f);          //TODO check barcode and id belong to same product
         ProductPojo productPojo = productService.getCheck(f.getBarCode());
         InventoryPojo inventoryPojo= ConvertorUtil.convert(f,productPojo.getId());
         inventoryService.update(id,inventoryPojo);
@@ -115,11 +115,11 @@ public class InventoryDto {
     @Transactional(rollbackOn = ApiException.class)
     private void bulkAdd(List<InventoryForm> forms) throws ApiException {
         for(InventoryForm form: forms) {
-            InventoryPojo inventoryPojo = ConvertorUtil.convert(form, productService.getCheck(form.getBarCode()).getId());
+            InventoryPojo inventoryPojo = ConvertorUtil.convert(form, productService.getCheck(form.getBarCode()).getId());// TODO pass getcheck in bulk add parameter
             inventoryService.add(inventoryPojo);
         }
     }
-    JSONObject initialiseBrandErrorObject(InventoryForm inventoryForm){
+    JSONObject initialiseBrandErrorObject(InventoryForm inventoryForm){     //TODO Create class for inventory error
         JSONObject error=new JSONObject();
         error.put("barCode",inventoryForm.getBarCode());
         error.put("quantity",inventoryForm.getQuantity());

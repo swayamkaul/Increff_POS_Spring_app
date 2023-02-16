@@ -16,7 +16,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
@@ -72,7 +71,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
         String expectedBarCode = "12345678";
         Integer expectedQuantity = 3;
 
-        InventoryData data = inventoryDto.get("12345678");
+        InventoryData data = inventoryDto.getInventory("12345678");
         assertEquals(expectedBarCode, data.getBarCode());
         assertEquals(expectedName, data.getName());
         assertEquals(expectedBrandName, data.getBrand());
@@ -137,7 +136,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
         String expectedBarCode = "12345678";
         Integer expectedQuantity = 6;
 
-        InventoryData inventoryData = inventoryDto.get(inventoryDto.get(expectedBarCode).getId());
+        InventoryData inventoryData = inventoryDto.getInventory(inventoryDto.getInventory(expectedBarCode).getId());
         inventoryDto.update(inventoryData.getId(), inventoryForm1);
 
         InventoryPojo pojo = inventoryService.getCheck(inventoryData.getId());
@@ -226,7 +225,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
         inventoryDto.add(inventoryFormList);
 
         String expectedBarCode = "12345678";
-        InventoryData inventoryData = inventoryDto.get(inventoryDto.get(expectedBarCode).getId());
+        InventoryData inventoryData = inventoryDto.getInventory(inventoryDto.getInventory(expectedBarCode).getId());
         assertEquals(expectedBarCode, inventoryData.getBarCode());
     }
 

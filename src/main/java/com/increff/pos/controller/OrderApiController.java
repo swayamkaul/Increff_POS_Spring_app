@@ -25,7 +25,7 @@ public class OrderApiController {
     private OrderDto dto;
 
     @ApiOperation(value = "Gets All orders")
-    @RequestMapping(path = "/orders", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public List<OrderData> getAll() throws ApiException {
         return dto.getAll();
     }
@@ -33,9 +33,9 @@ public class OrderApiController {
     //OrderItem APIs
 
     @ApiOperation(value="Adds Order Items")
-    @RequestMapping(path="/items", method = RequestMethod.POST)
-    public OrderData addOrderItem(@RequestBody List<OrderItemForm> orderItemFormList) throws ApiException, JsonProcessingException {
-        return dto.addOrderItem(orderItemFormList);
+    @RequestMapping( method = RequestMethod.POST)
+    public OrderData createOrder(@RequestBody List<OrderItemForm> orderItemFormList) throws ApiException, JsonProcessingException {
+        return dto.createOrder(orderItemFormList);
     }
 
 

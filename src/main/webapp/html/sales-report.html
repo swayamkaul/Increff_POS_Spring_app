@@ -8,83 +8,142 @@
 
 <nav th:replace="snippets.html :: name_app_navbar"></nav>
 
-<div class="container">
+<!--<div class="container"style="padding-top: 110px;">-->
 
-    <h3>Report</h3>
+<!--    <h3>Report</h3>-->
+<!--    <hr>-->
+<!--    <h5>-->
+<!--        Brand Report-->
+<!--    </h5>-->
+<!--    <div class="row">-->
+
+<!--    </div>-->
+
+<!--    <div class="row">-->
+<!--        &nbsp;-->
+<!--        <div class="col-12">-->
+<!--            <button type="button" class="btn btn-primary" id="downloadBrandCSV">Download</button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <hr>-->
+<!--    <h5>-->
+<!--        Inventory Report-->
+<!--    </h5>-->
+<!--    <div class="row">-->
+
+<!--    </div>-->
+
+<!--    <div class="row">-->
+
+<!--        &nbsp;-->
+<!--        <div class="col-12">-->
+<!--            <button type="button" class="btn btn-primary" id="downloadInventoryCSV">Download</button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <hr>-->
+<!--    <h5>Sales Report</h5>-->
+<!--    &lt;!&ndash; Top row with form&ndash;&gt;-->
+<!--    <h6>Date Filters</h6>-->
+<!--    <div class="row">-->
+<!--        <div class="col-12">-->
+<!--            <form class="form" id="sales-report-form">-->
+<!--                <div class="form-row">-->
+<!--                    <div class="form-group col-md-4">-->
+<!--                        <label for="inputSD" class=" col-form-label">From</label>-->
+<!--                        <div>-->
+<!--                            <input type="date" id="inputSD" name="startDate" class="form-control" onchange="validateDate(this)">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group col-md-4">-->
+<!--                        <label for="inputED" class=" col-form-label">To</label>-->
+<!--                        <div>-->
+<!--                            <input type="date" id="inputED" name="endDate" class="form-control" onchange="validateDate(this)">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="form-row">-->
+
+<!--                    <div class="form-group col-md-4">-->
+<!--                        <label for="inputBrand" class=" col-form-label">Brand</label>-->
+<!--                        <div class="">-->
+<!--                            <select type="text" class="form-control" name="brand" id="inputBrand" placeholder="enter brand">-->
+<!--                                <option value="none" selected disabled hidden>Select a Brand</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group col-md-4">-->
+<!--                        <label for="inputCategory" class=" col-form-label">Category</label>-->
+<!--                        <div class="">-->
+<!--                            <select type="text" class="form-control" name="category" id="inputCategory" placeholder="enter category">-->
+<!--                                <option value="none" selected disabled hidden>Select a Category</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--            </form>-->
+<!--            <button type="button" class="btn btn-primary" id="apply-filter">Download</button>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<div class="container" style="padding-top: 110px;">
+    <h3>Reports</h3>
     <hr>
-    <h5>
-        Brand Report
-    </h5>
     <div class="row">
-
-    </div>
-
-    <div class="row">
-        &nbsp;
-        <div class="col-12">
-            <button type="button" class="btn btn-primary" id="downloadBrandCSV">Download</button>
+        <div class="col-md-6">
+            <h5>Brand Report</h5>
+            <button type="button" class="btn btn-primary" id="downloadBrandCSV"> Download</button>
         </div>
-    </div>
-    <hr>
-    <h5>
-        Inventory Report
-    </h5>
-    <div class="row">
-
-    </div>
-
-    <div class="row">
-
-        &nbsp;
-        <div class="col-12">
+        <div class="col-md-6" style="border-left: 1px solid  lightgrey;">
+            <h5>Inventory Report</h5>
             <button type="button" class="btn btn-primary" id="downloadInventoryCSV">Download</button>
         </div>
     </div>
     <hr>
-    <h5>Sales Report</h5>
-    <!-- Top row with form-->
-    <h6>Date Filters</h6>
-    <div class="row">
-        <div class="col-12">
-            <form class="form" id="sales-report-form">
-                <div class="form-row">
-                    <div class="form-group col-md-4">
-                        <label for="inputSD" class=" col-form-label">From</label>
-                        <div>
-                            <input type="date" id="inputSD" name="startDate" class="form-control" onchange="validateDate(this)">
-                        </div>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="inputED" class=" col-form-label">To</label>
-                        <div>
-                            <input type="date" id="inputED" name="endDate" class="form-control" onchange="validateDate(this)">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
+        <h5>Sales Report</h5>
+        <!-- Top row with form-->
 
-                    <div class="form-group col-md-4">
-                        <label for="inputBrand" class=" col-form-label">Brand</label>
-                        <div class="">
-                            <select type="text" class="form-control" name="brand" id="inputBrand" placeholder="enter brand">
-                                <option value="none" selected disabled hidden>Select a Brand</option>
-                            </select>
+        <div class="row">
+            <div class="col-12">
+                <form class="form" id="sales-report-form">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="inputSD" class=" col-form-label">From</label>
+                            <div>
+                                <input type="date" id="inputSD" name="startDate" class="form-control" onchange="validateDate(this)">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputED" class=" col-form-label">To</label>
+                            <div>
+                                <input type="date" id="inputED" name="endDate" class="form-control" onchange="validateDate(this)">
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group col-md-4">
-                        <label for="inputCategory" class=" col-form-label">Category</label>
-                        <div class="">
-                            <select type="text" class="form-control" name="category" id="inputCategory" placeholder="enter category">
-                                <option value="none" selected disabled hidden>Select a Category</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+                    <div class="form-row">
 
-            </form>
-            <button type="button" class="btn btn-primary" id="apply-filter">Download</button>
+                        <div class="form-group col-md-4">
+                            <label for="inputBrand" class=" col-form-label">Brand</label>
+                            <div class="">
+                                <select type="text" class="form-control" name="brand" id="inputBrand" placeholder="enter brand">
+                                    <option value="none" selected disabled hidden>Select a Brand</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputCategory" class=" col-form-label">Category</label>
+                            <div class="">
+                                <select type="text" class="form-control" name="category" id="inputCategory" placeholder="enter category">
+                                    <option value="none" selected disabled hidden>Select a Category</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+                <button type="button" class="btn btn-primary" id="apply-filter">Download</button>
+            </div>
         </div>
-    </div>
 
 
     <!-- Blank Row -->

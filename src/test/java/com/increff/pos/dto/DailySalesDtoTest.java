@@ -64,7 +64,7 @@ public class DailySalesDtoTest extends AbstractUnitTest {
 
         OrderItemForm orderItemForm = FormHelper.createOrderItem("12345678", 2, 23.00);
         orderItemFormList.add(orderItemForm);
-        orderDto.addOrderItem(orderItemFormList);
+        orderDto.createOrder(orderItemFormList);
         salesDto.generateReport();
         List<SalesPojo> salesPojoList1 = salesDto.getAll();
         assertEquals(1, salesPojoList1.size());
@@ -74,7 +74,7 @@ public class DailySalesDtoTest extends AbstractUnitTest {
         OrderItemForm orderItemForm1 = FormHelper.createOrderItem("12345679", 2, 28.00);
         orderItemFormList.add(orderItemForm1);
 
-        orderDto.addOrderItem(orderItemFormList);
+        orderDto.createOrder(orderItemFormList);
 
         salesDto.generateReport();
         List<SalesPojo> salesPojoList2 = salesDto.getAll();
@@ -114,7 +114,7 @@ public class DailySalesDtoTest extends AbstractUnitTest {
 
         OrderItemForm orderItemForm = FormHelper.createOrderItem("12345678", 2, 23.00);
         orderItemFormList.add(orderItemForm);
-        orderDto.addOrderItem(orderItemFormList);
+        orderDto.createOrder(orderItemFormList);
         salesDto.generateReport();
         List<SalesPojo> salesPojoList1 = salesDto.getAll();
         assertEquals(1, salesPojoList1.size());
@@ -124,7 +124,7 @@ public class DailySalesDtoTest extends AbstractUnitTest {
         OrderItemForm orderItemForm1 =FormHelper.createOrderItem("12345679", 3, 28.00);
         orderItemFormList.add(orderItemForm1);
 
-        orderDto.addOrderItem(orderItemFormList);
+        orderDto.createOrder(orderItemFormList);
 
         salesDto.generateReport();
         List<SalesPojo> salesPojoList2 = salesDto.getAll();

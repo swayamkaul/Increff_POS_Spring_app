@@ -18,6 +18,7 @@ public class InventoryService {
     private InventoryDao dao;
 
     public void add(InventoryPojo p) throws ApiException {
+        //TODO increase inventory if already present else put new
         dao.insert(p);
     }
 
@@ -47,8 +48,8 @@ public class InventoryService {
     }
     public void checkAlreadyExist(Integer id,String barCode) throws ApiException {
         InventoryPojo p = dao.select(id);
-        if (p != null) {
-            throw new ApiException("Inventory for Barcode: "+barCode+" Already Exists.");
+        if (p != null) {                                //TODO add to existing quantity
+            throw new ApiException("Inventory for Barcode: "+barCode+" already exists.");
         }
     }
 }

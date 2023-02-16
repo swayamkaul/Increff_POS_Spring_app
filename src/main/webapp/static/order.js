@@ -63,6 +63,10 @@ function displayOrderItemList(data) {
 
 function checkInventory(event){
    var $form = $("#order-item-form");
+   	  if(!validateForm($form)){
+             return;
+       }
+
    var json = JSON.parse(toJson($form));
    if(json.barCode=="" || json.sellingPrice=="" || json.quantity==""){
         toastr.error("All fields are mandatory!");
@@ -80,7 +84,7 @@ function checkInventory(event){
                  toastr.error("Quantity cannot be in fractions.");
                  return false;
             }
-   var url = getInventoryUrl() + "/b/"+json.barCode;
+   var url = getInventoryUrl() + "/barcode/"+json.barCode;
     let prevQuantity=0;
     if(processedItems[json.barCode]){
      prevQuantity= parseInt(processedItems[json.barCode].quantity);
@@ -106,7 +110,7 @@ $.ajax({
 }
 
 function checkMrp(json){
-     var url = getProductUrl() + "/b/"+json.barCode;
+     var url = getProductUrl() + "/barcode/"+json.barCode;
 
     $.ajax({
             url: url,
@@ -207,7 +211,7 @@ function placeOrder() {
     console.log("CompleteOrder: ");
     console.log(completeOrder);
     $.ajax({
-        url: url+"/items",
+        url: url,
         type: 'POST',
         data: JSON.stringify(completeOrder),
         headers: {
@@ -226,7 +230,7 @@ function placeOrder() {
 }
 
 function getOrderList(){
-	var url = getOrderUrl()+"/orders";
+	var url = getOrderUrl();
 	$.ajax({
 	   url: url,
 	   type: 'GET',

@@ -71,6 +71,9 @@ function hideSupervisorView(){
     }
 }
 
+function validateForm(form){
+    return form[0].reportValidity();
+}
 
 function init(){
 

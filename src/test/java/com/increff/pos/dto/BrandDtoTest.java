@@ -63,7 +63,7 @@ public class BrandDtoTest extends AbstractUnitTest {
     }
 
     @Test
-    public void testUpdateBrand() throws JsonProcessingException, ApiException {
+    public void testUpdateBrand() throws ApiException {
         List<BrandForm> brandFormList = new ArrayList<>();
         BrandForm brandForm = FormHelper.createBrand("Brand1", "CateGory1");
         brandFormList.add(brandForm);

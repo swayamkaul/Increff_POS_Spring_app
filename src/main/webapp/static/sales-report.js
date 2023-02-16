@@ -17,19 +17,19 @@ function resetForm() {
 
 function getInventoryReportUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
-	return baseUrl + "/api/inventory/export-csv";
+	return baseUrl + "/api/inventory/report";
 }
 
 function getBrandReportUrl() {
     var baseUrl = $("meta[name=baseUrl]").attr("content")
     console.log(baseUrl);
-    return baseUrl + "/api/brands/export-csv";
+    return baseUrl + "/api/brands/report";
 }
 
 function printCSVUrl() {
 var baseUrl = $("meta[name=baseUrl]").attr("content")
     console.log(baseUrl);
-    return baseUrl + "/api/sales-report/export-csv";
+    return baseUrl + "/api/sales-report/report";
 }
 
 function getFilteredList(event) {
@@ -197,8 +197,8 @@ function validateDate(input) {
   var thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(today.getDate() - 31);
   var inputDate = new Date(input.value);
-     if (inputDate < thirtyDaysAgo || inputDate > today) {
-    toastr.error("Date must be within the last 30 days to today.");
+     if (inputDate > today) {
+    toastr.error("Input date cannot be after today's date.");
     input.value = "";
   } else {
     input.setCustomValidity("");
@@ -218,9 +218,8 @@ function init() {
     var thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(today.getDate() - 30);
 
-    dateInput.setAttribute("min", thirtyDaysAgo.toISOString().substring(0, 10));
+
     dateInput.setAttribute("max", today.toISOString().substring(0, 10));
-    dateInput2.setAttribute("min", thirtyDaysAgo.toISOString().substring(0, 10));
     dateInput2.setAttribute("max", today.toISOString().substring(0, 10));
 }
 

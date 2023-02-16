@@ -58,7 +58,7 @@ public class BrandApiController {
 	}
 
 	@ApiOperation(value = "Exports to CSV")
-	@RequestMapping(path = "/export-csv", method = RequestMethod.GET)
+	@RequestMapping(path = "/report", method = RequestMethod.GET)
 	public void exportToCSV(HttpServletResponse response) throws IOException {
 		brandDto.generateCsv(response);
 	}

@@ -64,12 +64,12 @@ public class SalesReportDtoTest extends AbstractUnitTest {
 
         OrderItemForm orderItemForm = FormHelper.createOrderItem("12345678", 2, 23.00);
         orderItemFormList.add(orderItemForm);
-        orderDto.addOrderItem(orderItemFormList);
+        orderDto.createOrder(orderItemFormList);
 
         OrderItemForm orderItemForm1 = FormHelper.createOrderItem("12345679", 3, 28.00);
         orderItemFormList.add(orderItemForm1);
 
-        orderDto.addOrderItem(orderItemFormList);
+        orderDto.createOrder(orderItemFormList);
 
         SalesReportForm salesReportForm = new SalesReportForm();
         LocalDate date = LocalDate.now();
@@ -113,12 +113,12 @@ public class SalesReportDtoTest extends AbstractUnitTest {
 
         OrderItemForm orderItemForm = FormHelper.createOrderItem("12345678", 2, 23.00);
         orderItemFormList.add(orderItemForm);
-        orderDto.addOrderItem(orderItemFormList);
+        orderDto.createOrder(orderItemFormList);
 
         OrderItemForm orderItemForm1 = FormHelper.createOrderItem("12345679", 3, 28.00);
         orderItemFormList.add(orderItemForm1);
 
-        orderDto.addOrderItem(orderItemFormList);
+        orderDto.createOrder(orderItemFormList);
 
         SalesReportForm salesReportForm = new SalesReportForm();
         LocalDate date = LocalDate.now();

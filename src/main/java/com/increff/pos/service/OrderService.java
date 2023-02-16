@@ -3,7 +3,7 @@ package com.increff.pos.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.transaction.Transactional;
+
 
 import com.increff.pos.dao.OrderItemDao;
 import com.increff.pos.pojo.OrderItemPojo;
@@ -12,9 +12,10 @@ import org.springframework.stereotype.Service;
 
 import com.increff.pos.dao.OrderDao;
 import com.increff.pos.pojo.OrderPojo;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(rollbackOn = ApiException.class)
+@Transactional(rollbackFor = ApiException.class)        //TODO Check transactionals in every file should be imported through spring
 public class OrderService {
 
     @Autowired

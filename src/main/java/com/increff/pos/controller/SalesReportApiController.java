@@ -31,7 +31,7 @@ public class SalesReportApiController {
     }
 
     @ApiOperation(value = "Export Product Report to CSV")
-    @RequestMapping(path = "/export-csv", method = RequestMethod.GET)
+    @RequestMapping(path = "/report", method = RequestMethod.GET)
     public void exportToCSV(HttpServletResponse response) throws IOException {
         salesReportDto.generateCsv(response);
     }
