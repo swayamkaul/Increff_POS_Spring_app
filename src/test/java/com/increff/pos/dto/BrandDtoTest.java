@@ -29,13 +29,13 @@ public class BrandDtoTest extends AbstractUnitTest {
 
 
     @Test(expected = ApiException.class)
-    public void testEmptyListBrandAddition() throws ApiException {
+    public void testEmptyListBrandAddition() throws ApiException, JsonProcessingException {
         List<BrandForm> brandFormList = new ArrayList<>();
         brandDto.add(brandFormList);
     }
 
     @Test
-    public void testBrandAddition() throws ApiException {
+    public void testBrandAddition() throws ApiException, JsonProcessingException {
         List<BrandForm> brandFormList = new ArrayList<>();
         BrandForm brandForm = FormHelper.createBrand("BrandCheck", "CategoryCheck");
         brandFormList.add(brandForm);
@@ -51,7 +51,7 @@ public class BrandDtoTest extends AbstractUnitTest {
     }
 
     @Test
-    public void testGetAllBrands() throws ApiException {
+    public void testGetAllBrands() throws ApiException, JsonProcessingException {
         List<BrandForm> brandForms = new ArrayList<>();
         BrandForm brand1 = FormHelper.createBrand("Brand1", "Category1");
         brandForms.add(brand1);
@@ -63,7 +63,7 @@ public class BrandDtoTest extends AbstractUnitTest {
     }
 
     @Test
-    public void testUpdateBrand() throws ApiException {
+    public void testUpdateBrand() throws ApiException, JsonProcessingException {
         List<BrandForm> brandFormList = new ArrayList<>();
         BrandForm brandForm = FormHelper.createBrand("Brand1", "CateGory1");
         brandFormList.add(brandForm);

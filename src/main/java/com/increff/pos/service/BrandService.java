@@ -2,16 +2,17 @@ package com.increff.pos.service;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
+
 
 import com.increff.pos.dao.BrandDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.increff.pos.pojo.BrandPojo;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(rollbackOn = ApiException.class)
+@Transactional(rollbackFor = ApiException.class)
 public class BrandService {
 
 	@Autowired
@@ -39,7 +40,6 @@ public class BrandService {
 		}
 		return p;
 	}
-	//TODO DTO-> getcheck
 	public BrandPojo getCheck(String brand,String category) throws ApiException {
 		BrandPojo p = dao.select(brand,category);
 		if (p == null) {

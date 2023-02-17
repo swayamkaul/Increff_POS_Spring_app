@@ -1,5 +1,6 @@
 package com.increff.pos.dto;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.increff.pos.AbstractUnitTest;
 import com.increff.pos.helper.FormHelper;
 
@@ -27,13 +28,13 @@ public class ProductDtoTest extends AbstractUnitTest {
     ProductService productService;
 
     @Test(expected = ApiException.class)
-    public void testEmptyListProductAddition() throws ApiException {
+    public void testEmptyListProductAddition() throws ApiException, JsonProcessingException {
         List<ProductForm> productFormList = new ArrayList<>();
         productDto.add(productFormList);
     }
 
     @Test
-    public void testAddProduct() throws ApiException {
+    public void testAddProduct() throws ApiException, JsonProcessingException {
         List<ProductForm> productFormList = new ArrayList<>();
         List<BrandForm> brandFormList = new ArrayList<>();
         BrandForm brandForm = FormHelper.createBrand("Brand", "CateGory");
@@ -61,7 +62,7 @@ public class ProductDtoTest extends AbstractUnitTest {
     }
 
     @Test
-    public void testGetAllProduct() throws ApiException {
+    public void testGetAllProduct() throws ApiException, JsonProcessingException {
         List<ProductForm> productFormList = new ArrayList<>();
         List<BrandForm> brandFormList = new ArrayList<>();
         BrandForm brandForm = FormHelper.createBrand("Brand", "CateGory");
@@ -82,7 +83,7 @@ public class ProductDtoTest extends AbstractUnitTest {
     }
 
     @Test
-    public void testGetByBarCodeProduct() throws ApiException {
+    public void testGetByBarCodeProduct() throws ApiException, JsonProcessingException {
         List<ProductForm> productFormList = new ArrayList<>();
         List<BrandForm> brandFormList = new ArrayList<>();
         BrandForm brandForm = FormHelper.createBrand("Brand", "CateGory");
@@ -103,7 +104,7 @@ public class ProductDtoTest extends AbstractUnitTest {
 
     }
     @Test
-    public void testUpdateProduct() throws ApiException {
+    public void testUpdateProduct() throws ApiException, JsonProcessingException {
         List<ProductForm> productFormList = new ArrayList<>();
         List<BrandForm> brandFormList = new ArrayList<>();
         BrandForm brandForm = FormHelper.createBrand("Brand", "CateGory");
@@ -136,7 +137,7 @@ public class ProductDtoTest extends AbstractUnitTest {
     }
 
     @Test(expected = ApiException.class)
-    public void testAddDuplicate() throws ApiException {
+    public void testAddDuplicate() throws ApiException, JsonProcessingException {
         List<ProductForm> productFormList = new ArrayList<>();
         List<BrandForm> brandFormList = new ArrayList<>();
         BrandForm brandForm = FormHelper.createBrand("Brand", "CateGory");
@@ -153,7 +154,7 @@ public class ProductDtoTest extends AbstractUnitTest {
     }
 
     @Test(expected = ApiException.class)
-    public void testIllegalAdd() throws ApiException {
+    public void testIllegalAdd() throws ApiException, JsonProcessingException {
         List<ProductForm> productFormList = new ArrayList<>();
         List<BrandForm> brandFormList = new ArrayList<>();
         BrandForm brandForm = FormHelper.createBrand("Brand", "CateGory");

@@ -1,6 +1,8 @@
 package com.increff.pos.dto;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.increff.pos.model.BrandData;
+import com.increff.pos.model.BrandErrorData;
 import com.increff.pos.model.BrandForm;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.service.ApiException;
@@ -10,12 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 @Component
 public class BrandDto {
@@ -23,27 +23,26 @@ public class BrandDto {
     BrandService brandService;
     @Autowired
     CsvFileGenerator csvFileGenerator;
-    public void add(List<BrandForm> brandFormList) throws ApiException{
-        JSONArray errorList=new JSONArray();
-        Integer errorCount=0;
-        listEmptyCheck(brandFormList);
-        for (BrandForm brandForm : brandFormList) {
-            JSONObject error= initialiseBrandErrorObject(brandForm);
+    public void add(List<BrandForm> brandForms) throws ApiException, JsonProcessingException {
+        listEmptyCheck(brandForms);
+        List<BrandErrorData> errorData = new ArrayList<>();
+        Integer errorSize = 0;
+        for (BrandForm brandForm : brandForms) {
+            BrandErrorData brandErrorData= ConvertorUtil.convertToErrorData(brandForm);
             try {
                 ValidateUtil.validateForms(brandForm);
                 NormaliseUtil.normalise(brandForm);
                 brandService.checkAlreadyExist(brandForm.getBrand(), brandForm.getCategory());
-
             } catch (Exception e) {
-                error.put("message",e.getMessage());
-                errorCount++;
+                errorSize++;
+                brandErrorData.setMessage(e.getMessage());
             }
-            errorList.put(error);
+            errorData.add(brandErrorData);
         }
-        if(errorCount>0){
-            throw new ApiException(errorList.toString());
+        if (errorSize > 0) {
+            ErrorUtil.throwErrors(errorData);
         }
-        bulkAdd(brandFormList);
+        bulkAdd(brandForms);
     }
 
     public BrandData get(Integer id) throws ApiException {
@@ -77,19 +76,12 @@ public class BrandDto {
         csvFileGenerator.writeBrandsToCsv(brandService.getAll(), response.getWriter());
     }
 
-    @Transactional(rollbackOn = ApiException.class)
+    @Transactional(rollbackFor = ApiException.class)
     private void bulkAdd(List<BrandForm> brandForms) throws ApiException {
         for (BrandForm brandForm: brandForms){
             BrandPojo b = ConvertorUtil.convert(brandForm);
             brandService.add(b);
         }
-    }
-    JSONObject initialiseBrandErrorObject(BrandForm brandForm){
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("brand",brandForm.getBrand());
-        jsonObject.put("category",brandForm.getCategory());
-        jsonObject.put("message","");
-        return jsonObject;
     }
 
     private void listEmptyCheck(List<BrandForm> brandFormList) throws ApiException {

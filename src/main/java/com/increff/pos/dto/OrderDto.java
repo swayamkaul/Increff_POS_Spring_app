@@ -115,10 +115,14 @@ public class OrderDto {
 
     private List<OrderItemPojo>  checkSellingPriceAndInventory(List<OrderItemForm> forms,List<String> errorList) throws JsonProcessingException, ApiException {
         List<OrderItemPojo> orderItemPojoList=new ArrayList<>();
+        List<String> barCodeList=ConvertorUtil.convertOrderItemFormListToBarCodeList(forms);
+        HashMap<String,ProductPojo> productPojoHashMap=productService.selectInBarcodes(barCodeList);
+        List<Integer> idList=ConvertorUtil.convertProductPojoHashMapToInventoryIdList(productPojoHashMap);
+        HashMap<Integer,InventoryPojo> inventoryPojoHashMap=inventoryService.selectInIds(idList);
         for(OrderItemForm orderItemForm : forms) {
             try {
-                ProductPojo productPojo = productService.getCheck(orderItemForm.getBarCode());  //TODO get product in list
-                InventoryPojo inventoryPojo=inventoryService.getCheck(productPojo.getId());     //TODO get inventory in list
+                ProductPojo productPojo = productPojoHashMap.get(orderItemForm.getBarCode());  //TODO get product in list
+                InventoryPojo inventoryPojo= inventoryPojoHashMap.get(productPojo.getId());     //TODO get inventory in list
                 if(productPojo.getMrp()<orderItemForm.getSellingPrice()){
                     errorList.add("Selling Price more than MRP for Barcode: "+orderItemForm.getBarCode());
                 }

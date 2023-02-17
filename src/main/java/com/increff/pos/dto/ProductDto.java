@@ -1,7 +1,8 @@
 package com.increff.pos.dto;
 
-import com.increff.pos.model.BrandForm;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.increff.pos.model.ProductData;
+import com.increff.pos.model.ProductErrorData;
 import com.increff.pos.model.ProductForm;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.ProductPojo;
@@ -9,12 +10,10 @@ import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandService;
 import com.increff.pos.service.ProductService;
 import com.increff.pos.util.*;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,12 +24,12 @@ public class ProductDto {
     @Autowired
     BrandService brandService ;
 
-    public void add(List<ProductForm> productForms) throws ApiException{
-        JSONArray errorList=new JSONArray();
-        Integer errorCount=0;
-        listEmptyCheck(productForms);
-        for(ProductForm form: productForms) {
-            JSONObject error= initialiseBrandErrorObject(form);
+    public void add(List<ProductForm> productFormList) throws ApiException, JsonProcessingException {
+        listEmptyCheck(productFormList);
+        List<ProductErrorData> errorData = new ArrayList<>();
+        Integer errorSize = 0;
+        for(ProductForm form: productFormList) {
+            ProductErrorData productErrorData= ConvertorUtil.convertToErrorData(form);
             try{
                 ValidateUtil.validateForms(form);
                 NormaliseUtil.normalise(form);
@@ -38,16 +37,18 @@ public class ProductDto {
                 productService.checkExist(form.getBarCode());
             }
             catch (Exception e) {
-                errorCount++;
-                error.put("message",e.getMessage());
+                errorSize++;
+                productErrorData.setMessage(e.getMessage());
             }
-            errorList.put(error);
+            errorData.add(productErrorData);
         }
-        if(errorCount>0){
-            throw new ApiException(errorList.toString());
+
+        if(errorSize > 0){
+            ErrorUtil.throwErrors(errorData);
         }
-        bulkAdd(productForms);
+        bulkAdd(productFormList);
     }
+
 
     public ProductData get(Integer id) throws ApiException {
         ProductPojo productPojo= productService.getCheck(id);
@@ -74,29 +75,24 @@ public class ProductDto {
     public void update(Integer id, ProductForm f) throws ApiException {
         ValidateUtil.validateForms(f);
         NormaliseUtil.normalise(f);
+        ProductData productDataPrev=get(id);
+        if((!productDataPrev.getBarCode().equals(f.getBarCode())) ||
+           (!productDataPrev.getBrand().equals(f.getBrand()))||
+           (!productDataPrev.getCategory().equals(f.getCategory()))){
+            throw new ApiException("Barcode, Brand, Category cannot be changed!");
+        }
         BrandPojo brandPojo = brandService.getCheck(f.getBrand(),f.getCategory());
-        ProductPojo p= ConvertorUtil.convert(f,brandPojo.getId());
-        productService.update(id,p);
+        ProductPojo productPojoNew= ConvertorUtil.convert(f,brandPojo.getId());
+        productService.update(id,productPojoNew);
     }
-    @Transactional(rollbackOn = ApiException.class)
+
+    @Transactional(rollbackFor = ApiException.class)
     private void bulkAdd(List<ProductForm> forms) throws ApiException {
         for(ProductForm form: forms) {
             productService.add(ConvertorUtil.convert(form, brandService.getCheck(form.getBrand(),
                     form.getCategory()).getId()));
         }
     }
-
-    JSONObject initialiseBrandErrorObject(ProductForm productForm){
-        JSONObject error=new JSONObject();
-        error.put("barCode",productForm.getBarCode());
-        error.put("brand",productForm.getBrand());
-        error.put("category",productForm.getCategory());
-        error.put("name",productForm.getName());
-        error.put("mrp",productForm.getMrp());
-        error.put("message","");
-        return error;
-    }
-
     private void listEmptyCheck(List<ProductForm> productFormList) throws ApiException {
         if(productFormList.isEmpty())
             throw new ApiException("Product List is Empty!");

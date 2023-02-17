@@ -145,7 +145,7 @@ public class ProductServiceTest extends AbstractUnitTest {
         List<String> barCodes = new ArrayList<>();
         barCodes.add("12345678");
         barCodes.add("12345679");
-        List<ProductPojo> list = productService.selectInBarcode(barCodes);
+        List<ProductPojo> list = productService.getCheckInBarcodes(barCodes);
         assertEquals(2, list.size());
 
     }
@@ -170,7 +170,7 @@ public class ProductServiceTest extends AbstractUnitTest {
         barCodes.add("12345678");
         barCodes.add("12345679");
         barCodes.add("12345680");
-        List<ProductPojo> list = productService.selectInBarcode(barCodes);
+        List<ProductPojo> list = productService.getCheckInBarcodes(barCodes);
         assertEquals(3, list.size());
 
     }

@@ -36,13 +36,13 @@ public class InventoryDtoTest extends AbstractUnitTest {
     ProductService productService;
 
     @Test(expected = ApiException.class)
-    public void testEmptyListInventoryAddition() throws ApiException {
+    public void testEmptyListInventoryAddition() throws ApiException, JsonProcessingException {
         List<InventoryForm> inventoryFormList = new ArrayList<>();
         inventoryDto.add(inventoryFormList);
     }
 
     @Test
-    public void testAddInventory() throws ApiException {
+    public void testAddInventory() throws ApiException, JsonProcessingException {
         List<ProductForm> productFormList = new ArrayList<>();
         List<BrandForm> brandFormList = new ArrayList<>();
         List<InventoryForm> inventoryFormList = new ArrayList<>();
@@ -111,7 +111,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
     }
 
     @Test
-    public void updateTest() throws ApiException {
+    public void updateTest() throws ApiException, JsonProcessingException {
         List<ProductForm> productFormList = new ArrayList<>();
         List<BrandForm> brandFormList = new ArrayList<>();
         List<InventoryForm> inventoryFormList = new ArrayList<>();
@@ -180,7 +180,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
     }
 
     @Test(expected = ApiException.class)
-    public void addIllegal() throws ApiException {
+    public void addIllegal() throws ApiException, JsonProcessingException {
         List<ProductForm> productFormList = new ArrayList<>();
         List<BrandForm> brandFormList = new ArrayList<>();
         List<InventoryForm> inventoryFormList = new ArrayList<>();
@@ -205,7 +205,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
     }
 
     @Test
-    public void testGetByBarCode() throws ApiException {
+    public void testGetByBarCode() throws ApiException, JsonProcessingException {
         List<ProductForm> productFormList = new ArrayList<>();
         List<BrandForm> brandFormList = new ArrayList<>();
         List<InventoryForm> inventoryFormList = new ArrayList<>();

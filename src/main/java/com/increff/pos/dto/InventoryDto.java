@@ -1,5 +1,6 @@
 package com.increff.pos.dto;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.increff.pos.model.*;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.InventoryPojo;
@@ -10,13 +11,11 @@ import com.increff.pos.service.InventoryService;
 import com.increff.pos.service.ProductService;
 import com.increff.pos.util.*;
 import javafx.util.Pair;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,28 +33,33 @@ public class InventoryDto {
     @Autowired
     CsvFileGenerator csvFileGenerator;
 
-    public void add(List<InventoryForm> inventoryForms) throws ApiException{
-        JSONArray errorList=new JSONArray();
-        Integer errorCount=0;
-        listEmptyCheck(inventoryForms);
-        for(InventoryForm form: inventoryForms) {
-            JSONObject error= initialiseBrandErrorObject(form);
-            try{
+    public void add(List<InventoryForm> forms) throws ApiException, JsonProcessingException {
+        listEmptyCheck(forms);
+        List<InventoryErrorData> inventoryErrorDataList = new ArrayList<>();
+        List<String> barCodeList=ConvertorUtil.convertInventoryFormListToBarCodeList(forms);
+        HashMap<String,ProductPojo> productPojoHashMap=productService.selectInBarcodes(barCodeList);
+        Integer errorSize = 0;
+        for (InventoryForm form: forms) {
+            InventoryErrorData inventoryErrorData = ConvertorUtil.convertToErrorData(form);
+            try {
                 ValidateUtil.validateForms(form);
                 NormaliseUtil.normalise(form);
-                ProductPojo productPojo= productService.getCheck(form.getBarCode());    // TODO inquerry bulk fetch product
-                inventoryService.checkAlreadyExist(productPojo.getId(),form.getBarCode());
+                if(!productPojoHashMap.containsKey(form.getBarCode())){
+                    throw new ApiException("Product with given Barcode does not exist. Barcode: "+ form.getBarCode());
+                }
+//                productService.getCheck(form.getBarCode());     //TODO bulk fetch
             }
             catch (Exception e) {
-                errorCount++;
-                error.put("message",e.getMessage());
+                inventoryErrorData.setMessage(e.getMessage());
+                errorSize++;
             }
-            errorList.put(error);
+            inventoryErrorDataList.add(inventoryErrorData);
         }
-        if(errorCount>0){
-            throw new ApiException(errorList.toString());
+        if(errorSize > 0) {
+            ErrorUtil.throwErrors(inventoryErrorDataList);
         }
-        bulkAdd(inventoryForms);
+
+        bulkAdd(forms,productPojoHashMap);
     }
 
     public InventoryData getInventory(Integer id) throws ApiException {
@@ -86,6 +90,11 @@ public class InventoryDto {
 
     public void update(Integer id, InventoryForm f) throws ApiException {
         ValidateUtil.validateForms(f);          //TODO check barcode and id belong to same product
+        NormaliseUtil.normalise(f);
+        InventoryData inventoryData=getInventory(id);
+        if((!inventoryData.getBarCode().equals(f.getBarCode()))){
+            throw new ApiException("Barcode cannot be changed.");
+        }
         ProductPojo productPojo = productService.getCheck(f.getBarCode());
         InventoryPojo inventoryPojo= ConvertorUtil.convert(f,productPojo.getId());
         inventoryService.update(id,inventoryPojo);
@@ -112,20 +121,14 @@ public class InventoryDto {
         return inventoryItemList;
     }
 
-    @Transactional(rollbackOn = ApiException.class)
-    private void bulkAdd(List<InventoryForm> forms) throws ApiException {
+    @Transactional(rollbackFor = ApiException.class)
+    private void bulkAdd(List<InventoryForm> forms,HashMap<String,ProductPojo> productPojoHashMap) throws ApiException {
         for(InventoryForm form: forms) {
-            InventoryPojo inventoryPojo = ConvertorUtil.convert(form, productService.getCheck(form.getBarCode()).getId());// TODO pass getcheck in bulk add parameter
+            InventoryPojo inventoryPojo = ConvertorUtil.convert(form, productPojoHashMap.get(form.getBarCode()).getId());// TODO pass getcheck in bulk add parameter
             inventoryService.add(inventoryPojo);
         }
     }
-    JSONObject initialiseBrandErrorObject(InventoryForm inventoryForm){     //TODO Create class for inventory error
-        JSONObject error=new JSONObject();
-        error.put("barCode",inventoryForm.getBarCode());
-        error.put("quantity",inventoryForm.getQuantity());
-        error.put("message","");
-        return error;
-    }
+
     private void listEmptyCheck(List<InventoryForm> inventoryFormList) throws ApiException {
         if(inventoryFormList.isEmpty())
             throw new ApiException("Inventory List is Empty!");

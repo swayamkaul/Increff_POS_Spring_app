@@ -88,13 +88,5 @@ public class InventoryServiceTest extends AbstractUnitTest {
         inventoryService.reduceQuantity(1, 4);
     }
 
-    @Test (expected = ApiException.class)
-    public void testCheckAlreadyExist() throws ApiException {
-        InventoryPojo inventoryPojo = new InventoryPojo();
-        inventoryPojo.setId(1);
-        inventoryPojo.setQuantity(3);
-        inventoryService.add(inventoryPojo);
-        inventoryService.checkAlreadyExist(1,"a");
-    }
 
 }

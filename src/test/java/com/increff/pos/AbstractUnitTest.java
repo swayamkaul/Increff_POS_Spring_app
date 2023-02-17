@@ -1,6 +1,6 @@
 package com.increff.pos;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;

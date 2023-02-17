@@ -12,8 +12,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @Table(indexes ={@Index(columnList = "brand,category")},
 		uniqueConstraints = {@UniqueConstraint(columnNames = {"brand", "category"})})
-//TODO create AbstractVersionPojo, createdAt, UpdatedAt,version
-//TODO what is the use of version  (Optimistic and pessimistic locking algorithms)
+
 public class BrandPojo extends AbstractVersionPojo{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

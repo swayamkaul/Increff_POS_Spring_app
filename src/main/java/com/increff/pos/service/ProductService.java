@@ -1,19 +1,19 @@
 package com.increff.pos.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.increff.pos.dao.ProductDao;
-import com.increff.pos.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.increff.pos.pojo.ProductPojo;
 
 @Service
-@Transactional(rollbackOn = ApiException.class)
+@Transactional(rollbackFor = ApiException.class)
 public class ProductService {
 
     @Autowired
@@ -55,7 +55,16 @@ public class ProductService {
         }
 
     }
-    public List<ProductPojo> selectInBarcode(List<String> barcode) throws ApiException {
+    public HashMap<String,ProductPojo> selectInBarcodes(List<String> barcode) throws ApiException {
+        List<ProductPojo> productPojoList = productDao.selectInBarcode(barcode);
+        HashMap<String,ProductPojo> barCodeProductPojoHashMap=new HashMap<>();
+        for(ProductPojo productPojo: productPojoList){
+            barCodeProductPojoHashMap.put(productPojo.getBarCode(),productPojo);
+        }
+        return barCodeProductPojoHashMap;
+    }
+
+    public List<ProductPojo> getCheckInBarcodes(List<String> barcode) throws ApiException {
         List<ProductPojo> productPojoList = productDao.selectInBarcode(barcode);
         String error = "Following Barcode not found in Product Database: ";
         for (String s : barcode) {

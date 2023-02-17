@@ -5,12 +5,12 @@ import com.increff.pos.pojo.SalesPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
-@Transactional(rollbackOn = ApiException.class)
+@Transactional(rollbackFor = ApiException.class)
 public class SalesService {
     @Autowired
     SalesDao salesDao;

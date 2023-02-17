@@ -4,10 +4,7 @@ import com.increff.pos.model.*;
 import com.increff.pos.pojo.*;
 import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ConvertorUtil {
     public static BrandData convert(BrandPojo p) {
@@ -23,6 +20,7 @@ public class ConvertorUtil {
         p.setBrand(f.getBrand());
         return p;
     }
+
     public static ProductData convert(ProductPojo p,String brand,String category)  {
         ProductData d = new ProductData();
         d.setId(p.getId());
@@ -121,4 +119,53 @@ public class ConvertorUtil {
         return salesReportDataList;
     }
 
+    public static BrandErrorData convertToErrorData(BrandForm f) {
+        BrandErrorData brandErrorData = new BrandErrorData();
+        brandErrorData.setCategory(f.getCategory());
+        brandErrorData.setBrand(f.getBrand());
+        brandErrorData.setMessage("");
+        return brandErrorData;
+    }
+
+    public static  ProductErrorData convertToErrorData(ProductForm f)  {
+        ProductErrorData productErrorData = new ProductErrorData();
+        productErrorData.setName(f.getName());
+        productErrorData.setMrp((f.getMrp()));
+        productErrorData.setBrand((f.getBrand()));
+        productErrorData.setCategory(f.getCategory());
+        productErrorData.setBarCode(f.getBarCode());
+        productErrorData.setMessage("");
+        return productErrorData;
+    }
+    public static  InventoryErrorData convertToErrorData(InventoryForm f)  {
+        InventoryErrorData inventoryErrorData = new InventoryErrorData();
+        inventoryErrorData.setBarCode(f.getBarCode());
+        inventoryErrorData.setQuantity((f.getQuantity()));
+        inventoryErrorData.setMessage("");
+        return inventoryErrorData;
+    }
+
+    public static List<String> convertInventoryFormListToBarCodeList(List<InventoryForm> inventoryFormList) {
+        List<String> barCodeList=new ArrayList<>();
+        for(InventoryForm inventoryForm:inventoryFormList){
+            barCodeList.add(inventoryForm.getBarCode());
+        }
+        return barCodeList;
+    }
+    public static List<String> convertOrderItemFormListToBarCodeList(List<OrderItemForm> orderItemFormList) {
+        List<String> barCodeList=new ArrayList<>();
+        for(OrderItemForm orderItemForm: orderItemFormList){
+            barCodeList.add(orderItemForm.getBarCode());
+        }
+        return barCodeList;
+    }
+
+    public static List<Integer> convertProductPojoHashMapToInventoryIdList(HashMap<String, ProductPojo> productPojoHashMap) {
+        Collection<ProductPojo> productPojoList=  productPojoHashMap.values();
+        List<Integer> idList = new ArrayList<>();
+        for(ProductPojo productPojo: productPojoList){
+            idList.add(productPojo.getId());
+        }
+        return idList;
+    }
 }
