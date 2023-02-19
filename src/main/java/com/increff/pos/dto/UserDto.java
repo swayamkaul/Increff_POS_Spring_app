@@ -38,7 +38,7 @@ public class UserDto {
     }
 
     public boolean checkEmailExists(String email) throws ApiException {
-        UserPojo userPojo= userService.get(email);
+        UserPojo userPojo = userService.get(email);
         return !Objects.isNull(userPojo);
     }
 

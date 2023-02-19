@@ -29,7 +29,7 @@ public class ProductDto {
         List<ProductErrorData> errorData = new ArrayList<>();
         Integer errorSize = 0;
         for(ProductForm form: productFormList) {
-            ProductErrorData productErrorData= ConvertorUtil.convertToErrorData(form);
+            ProductErrorData productErrorData = ConvertorUtil.convertToErrorData(form);
             try{
                 ValidateUtil.validateForms(form);
                 NormaliseUtil.normalise(form);
@@ -51,14 +51,14 @@ public class ProductDto {
 
 
     public ProductData get(Integer id) throws ApiException {
-        ProductPojo productPojo= productService.getCheck(id);
-        BrandPojo brandPojo=brandService.getCheck(productPojo.getBrandCategory());
+        ProductPojo productPojo = productService.getCheck(id);
+        BrandPojo brandPojo =brandService.getCheck(productPojo.getBrandCategory());
         return ConvertorUtil.convert(productPojo,brandPojo.getBrand(),brandPojo.getCategory());
     }
 
     public ProductData get(String barCode) throws ApiException {
-        ProductPojo productPojo= productService.getCheck(barCode);
-        BrandPojo brandPojo=brandService.getCheck(productPojo.getBrandCategory());
+        ProductPojo productPojo = productService.getCheck(barCode);
+        BrandPojo brandPojo = brandService.getCheck(productPojo.getBrandCategory());
         return ConvertorUtil.convert(productPojo,brandPojo.getBrand(),brandPojo.getCategory());
     }
 

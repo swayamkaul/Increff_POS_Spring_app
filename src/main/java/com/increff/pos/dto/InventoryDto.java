@@ -33,11 +33,12 @@ public class InventoryDto {
     @Autowired
     CsvFileGenerator csvFileGenerator;
 
+    @Transactional(rollbackFor = ApiException.class)
     public void add(List<InventoryForm> forms) throws ApiException, JsonProcessingException {
         listEmptyCheck(forms);
         List<InventoryErrorData> inventoryErrorDataList = new ArrayList<>();
-        List<String> barCodeList=ConvertorUtil.convertInventoryFormListToBarCodeList(forms);
-        HashMap<String,ProductPojo> productPojoHashMap=productService.selectInBarcodes(barCodeList);
+        List<String> barCodeList = ConvertorUtil.convertInventoryFormListToBarCodeList(forms);
+        HashMap<String,ProductPojo> productPojoHashMap = productService.getProuctMapByBarcodeList(barCodeList);
         Integer errorSize = 0;
         for (InventoryForm form: forms) {
             InventoryErrorData inventoryErrorData = ConvertorUtil.convertToErrorData(form);
@@ -47,7 +48,6 @@ public class InventoryDto {
                 if(!productPojoHashMap.containsKey(form.getBarCode())){
                     throw new ApiException("Product with given Barcode does not exist. Barcode: "+ form.getBarCode());
                 }
-//                productService.getCheck(form.getBarCode());     //TODO bulk fetch
             }
             catch (Exception e) {
                 inventoryErrorData.setMessage(e.getMessage());
@@ -63,16 +63,16 @@ public class InventoryDto {
     }
 
     public InventoryData getInventory(Integer id) throws ApiException {
-        InventoryPojo inventoryPojo= inventoryService.getCheck(id);
-        ProductPojo productPojo= productService.getCheck(id);
-        BrandPojo brandPojo=brandService.getCheck(productPojo.getBrandCategory());
+        InventoryPojo inventoryPojo = inventoryService.getCheck(id);
+        ProductPojo productPojo = productService.getCheck(id);
+        BrandPojo brandPojo = brandService.getCheck(productPojo.getBrandCategory());
         return ConvertorUtil.convert(inventoryPojo,productPojo.getBarCode(),productPojo.getName(),brandPojo.getBrand(),brandPojo.getCategory());
     }
 
     public InventoryData getInventory(String barCode) throws ApiException {
-        ProductPojo productPojo= productService.getCheck(barCode);
-        InventoryPojo inventoryPojo= inventoryService.getCheck(productPojo.getId());
-        BrandPojo brandPojo=brandService.getCheck(productPojo.getBrandCategory());
+        ProductPojo productPojo = productService.getCheck(barCode);
+        InventoryPojo inventoryPojo = inventoryService.getCheck(productPojo.getId());
+        BrandPojo brandPojo = brandService.getCheck(productPojo.getBrandCategory());
         return ConvertorUtil.convert(inventoryPojo,barCode,productPojo.getName(),brandPojo.getBrand(),brandPojo.getCategory());
 
     }
@@ -81,23 +81,22 @@ public class InventoryDto {
         List<InventoryPojo> list = inventoryService.getAll();
         List<InventoryData> list2 = new ArrayList<InventoryData>();
         for (InventoryPojo inventoryPojo : list) {
-            ProductPojo productPojo= productService.getCheck(inventoryPojo.getId());
-            BrandPojo brandPojo=brandService.getCheck(productPojo.getBrandCategory());
+            ProductPojo productPojo = productService.getCheck(inventoryPojo.getId());
+            BrandPojo brandPojo = brandService.getCheck(productPojo.getBrandCategory());
             list2.add(ConvertorUtil.convert(inventoryPojo,productPojo.getBarCode(),productPojo.getName(),brandPojo.getBrand(),brandPojo.getCategory()));
         }
         return list2;
     }
 
     public void update(Integer id, InventoryForm f) throws ApiException {
-        ValidateUtil.validateForms(f);          //TODO check barcode and id belong to same product
+        ValidateUtil.validateForms(f);
         NormaliseUtil.normalise(f);
-        InventoryData inventoryData=getInventory(id);
+        InventoryData inventoryData = getInventory(id);
         if((!inventoryData.getBarCode().equals(f.getBarCode()))){
             throw new ApiException("Barcode cannot be changed.");
         }
-        ProductPojo productPojo = productService.getCheck(f.getBarCode());
-        InventoryPojo inventoryPojo= ConvertorUtil.convert(f,productPojo.getId());
-        inventoryService.update(id,inventoryPojo);
+
+        inventoryService.updateInventoryQuantity(id, f.getQuantity());
     }
 
     public void generateCsv(HttpServletResponse response) throws IOException, ApiException {
@@ -121,10 +120,9 @@ public class InventoryDto {
         return inventoryItemList;
     }
 
-    @Transactional(rollbackFor = ApiException.class)
     private void bulkAdd(List<InventoryForm> forms,HashMap<String,ProductPojo> productPojoHashMap) throws ApiException {
         for(InventoryForm form: forms) {
-            InventoryPojo inventoryPojo = ConvertorUtil.convert(form, productPojoHashMap.get(form.getBarCode()).getId());// TODO pass getcheck in bulk add parameter
+            InventoryPojo inventoryPojo = ConvertorUtil.convert(form, productPojoHashMap.get(form.getBarCode()).getId());
             inventoryService.add(inventoryPojo);
         }
     }

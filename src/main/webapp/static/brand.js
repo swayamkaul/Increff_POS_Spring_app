@@ -18,6 +18,7 @@ function arrayToJson() {
     }
     return JSON.stringify(json);
 }
+
 function isJson(str) {
     try {
         JSON.parse(str);
@@ -65,7 +66,7 @@ function addBrand(event){
 	        }
 	       }
            wholeBrand=[];
-           resetForm();
+
 	   }
 	});
 

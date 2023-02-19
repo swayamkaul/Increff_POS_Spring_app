@@ -27,7 +27,7 @@ public class OrderApiController {
     @ApiOperation(value = "Gets All orders")
     @RequestMapping(method = RequestMethod.GET)
     public List<OrderData> getAll() throws ApiException {
-        return dto.getAll();
+        return dto.getAllOrders();
     }
 
     //OrderItem APIs

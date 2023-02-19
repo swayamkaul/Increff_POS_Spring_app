@@ -88,7 +88,7 @@ function addProduct(event){
          	        }
          	       }
                     wholeProduct=[];
-                    resetForm();
+
       }
    });
 

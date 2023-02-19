@@ -49,7 +49,6 @@ public class AppRestControllerAdvice {
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public MessageData handleException(HttpMessageNotReadableException e) {
-
 		MessageData data = new MessageData();
 		data.setMessage("Invalid inputs. Could not parse the request body.");
 		return data;

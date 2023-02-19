@@ -12,30 +12,26 @@ import java.util.List;
 @Transactional
 public class SalesDao extends AbstractDao{
 
-    private final String select_by_date = "select p from SalesPojo p where date=:date";
-    private final String select_all_by_date = "select p from SalesPojo p where date>=:startDate and date<=:endDate";
-    private final String select_all = "select p from SalesPojo p order by date desc";
+    private static final String SELECT_BY_DATE = "select p from SalesPojo p where date=:date";
+    private static final String SELECT_ALL_BY_DATE = "select p from SalesPojo p where date>=:startDate and date<=:endDate";
+    private static final String SELECT_ALL = "select p from SalesPojo p order by date desc";
 
-
-    public void insert(SalesPojo p) {
-        em().persist(p);
-    }
 
     public SalesPojo selectByDate(LocalDate date) {
-        TypedQuery<SalesPojo> query = getQuery(select_by_date, SalesPojo.class);
+        TypedQuery<SalesPojo> query = getQuery(SELECT_BY_DATE, SalesPojo.class);
         query.setParameter("date", date);
         return query.getResultStream().findFirst().orElse(null);
     }
 
     public List<SalesPojo> getAllByDate(LocalDate startDate, LocalDate endDate) {
-        TypedQuery<SalesPojo> query = getQuery(select_all_by_date, SalesPojo.class);
+        TypedQuery<SalesPojo> query = getQuery(SELECT_ALL_BY_DATE, SalesPojo.class);
         query.setParameter("startDate", startDate);
         query.setParameter("endDate", endDate);
         return query.getResultList();
     }
 
     public List<SalesPojo> selectAllDesc() {
-        TypedQuery<SalesPojo> query = getQuery(select_all, SalesPojo.class);
+        TypedQuery<SalesPojo> query = getQuery(SELECT_ALL, SalesPojo.class);
         return query.getResultList();
     }
 }

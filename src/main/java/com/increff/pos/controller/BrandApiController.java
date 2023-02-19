@@ -31,7 +31,7 @@ public class BrandApiController {
 	private BrandDto brandDto;
 
 	@ApiOperation(value = "Adds a Brand")
-	@RequestMapping(path = "", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public void add(@RequestBody List<BrandForm> form) throws ApiException, JsonProcessingException {
 		brandDto.add(form);
 	}
@@ -46,7 +46,7 @@ public class BrandApiController {
 		return brandDto.get(brand,category);
 	}
 	@ApiOperation(value = "Gets list of all brand")
-	@RequestMapping(path = "", method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	public List<BrandData> getAll() {
 		return brandDto.getAll();
 	}
@@ -57,9 +57,9 @@ public class BrandApiController {
 		brandDto.update(id, f);
 	}
 
-	@ApiOperation(value = "Exports to CSV")
+	@ApiOperation(value = "Gets report in CSV")
 	@RequestMapping(path = "/report", method = RequestMethod.GET)
-	public void exportToCSV(HttpServletResponse response) throws IOException {
+	public void getCsvReport(HttpServletResponse response) throws IOException {
 		brandDto.generateCsv(response);
 	}
 

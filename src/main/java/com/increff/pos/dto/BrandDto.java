@@ -28,7 +28,7 @@ public class BrandDto {
         List<BrandErrorData> errorData = new ArrayList<>();
         Integer errorSize = 0;
         for (BrandForm brandForm : brandForms) {
-            BrandErrorData brandErrorData= ConvertorUtil.convertToErrorData(brandForm);
+            BrandErrorData brandErrorData = ConvertorUtil.convertToErrorData(brandForm);
             try {
                 ValidateUtil.validateForms(brandForm);
                 NormaliseUtil.normalise(brandForm);
@@ -46,11 +46,11 @@ public class BrandDto {
     }
 
     public BrandData get(Integer id) throws ApiException {
-       BrandPojo p= brandService.getCheck(id);
+       BrandPojo p = brandService.getCheck(id);
        return ConvertorUtil.convert(p);
     }
     public BrandData get(String brand,String category) throws ApiException {
-        BrandPojo p= brandService.getCheck(brand,category);
+        BrandPojo p = brandService.getCheck(brand,category);
         return ConvertorUtil.convert(p);
     }
 
@@ -66,7 +66,7 @@ public class BrandDto {
     public void update(Integer id, BrandForm f) throws ApiException {
         ValidateUtil.validateForms(f);
         NormaliseUtil.normalise(f);
-        BrandPojo p= ConvertorUtil.convert(f);
+        BrandPojo p = ConvertorUtil.convert(f);
         brandService.update(id,p);
     }
 

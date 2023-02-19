@@ -71,7 +71,7 @@ public class OrderDtoTest extends AbstractUnitTest {
 
         orderDto.createOrder(orderItemFormList);
 
-        List<OrderData> list = orderDto.getAll();
+        List<OrderData> list = orderDto.getAllOrders();
         assertEquals(2, list.size());
         List<InventoryData> inventoryDataList = inventoryDto.getAll();
         assertEquals(2, inventoryDataList.size());
@@ -206,7 +206,7 @@ public class OrderDtoTest extends AbstractUnitTest {
 
         orderDto.createOrder(orderItemFormList);
 
-        List<OrderData> list = orderDto.getAll();
+        List<OrderData> list = orderDto.getAllOrders();
         List<OrderItemData> list1 = orderDto.getItemByOrderId(list.get(0).getId());
         List<OrderItemData> list2 = orderDto.getItemByOrderId(list.get(1).getId());
 
@@ -250,7 +250,7 @@ public class OrderDtoTest extends AbstractUnitTest {
         orderItemFormList.add(orderItemForm1);
 
         orderDto.createOrder(orderItemFormList);
-        List<OrderData> list = orderDto.getAll();
+        List<OrderData> list = orderDto.getAllOrders();
         assertEquals(2,list.size());
 
         ResponseEntity<byte[]> response= orderDto.getPDF(list.get(0).getId());

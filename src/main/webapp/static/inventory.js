@@ -79,7 +79,7 @@ function addInventory(event){
         	        }
         	       }
                    wholeInventory=[];
-                   resetForm();
+
 		}
 	});
 
@@ -87,7 +87,7 @@ function addInventory(event){
 }
 
 function updateInventory(event){
-	$('#edit-inventory-modal').modal('toggle');
+
 	//Get the ID
 	var id = $("#inventory-edit-form input[name=id]").val();
 	var url = getInventoryUrl() + "/" + id;
@@ -95,8 +95,17 @@ function updateInventory(event){
 
 	//Set the values to update
 	var $form = $("#inventory-edit-form");
-	var json = toJson($form);
+    if(!validateForm($form)){
+      return;
+    }
 
+    var qty = $("#inventory-edit-form input[name=quantity]").val();
+    if(qty.includes("-") || qty.includes("+") || qty.includes("*") || qty.includes("/") || qty.includes(".")){
+      toastr.error("Invalid Quantity");
+      return;
+    }
+
+	var json = toJson($form);
 
 	$.ajax({
 	   url: url,
@@ -108,6 +117,7 @@ function updateInventory(event){
 		success: function (response) {
 			toastr.success("Inventory updated Successfully", "Success : ");
 	   		getInventoryList();
+	   		$('#edit-inventory-modal').modal('toggle');
 	   },
 	   error: handleAjaxError
 	});
@@ -128,18 +138,6 @@ function getInventoryList(){
 }
 
 
-function deleteInventory(id){
-	var url = getInventoryUrl() + "/" + id;
-
-	$.ajax({
-	   url: url,
-	   type: 'DELETE',
-	   success: function(data) {
-			getInventoryList();
-	   },
-	   error: handleAjaxError
-	});
-}
 
 // FILE UPLOAD METHODS
 var fileData = [];
@@ -214,6 +212,11 @@ function uploadRows(){
             }
             else {
 			var resp = JSON.parse(response.responseText);
+			console.log(resp);
+			 if(!isJson(resp.message)){
+                toastr.error(resp.message, "Error : ");
+                return false;
+             }
 			var jsonObj = JSON.parse(resp.message);
 			console.log(jsonObj);
 	        errorData = jsonObj;

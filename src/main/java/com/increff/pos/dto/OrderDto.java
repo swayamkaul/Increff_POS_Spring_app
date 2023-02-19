@@ -39,7 +39,7 @@ public class OrderDto {
     @Value("${invoice.url}")
     private String url;
 
-    public List<OrderData> getAll() {
+    public List<OrderData> getAllOrders() {
         List<OrderData> list = new ArrayList<OrderData>();
         List<OrderPojo> list1 = orderService.getAll();
         for (OrderPojo p : list1) {
@@ -51,7 +51,7 @@ public class OrderDto {
     public OrderData createOrder(List<OrderItemForm> orderItemFormList) throws ApiException, JsonProcessingException {
         List<String> errorList = new ArrayList<String>();
         checkConstraintsAndDuplicates(orderItemFormList);
-        List<OrderItemPojo> orderItemPojoList =checkSellingPriceAndInventory(orderItemFormList,errorList);
+        List<OrderItemPojo> orderItemPojoList = checkSellingPriceAndInventory(orderItemFormList,errorList);
         OrderPojo orderPojo = orderService.addOrderItemListToOrder(orderItemPojoList);
         OrderData orderData = ConvertorUtil.convert(orderPojo);
         return orderData;
@@ -78,7 +78,7 @@ public class OrderDto {
         ResponseEntity<byte[]> response = new ResponseEntity<>(contents, headers, HttpStatus.OK);
         return response;
     }
-    public InvoiceForm generateInvoiceForOrder(Integer orderId) throws ApiException // TODO put in convertor
+    public InvoiceForm generateInvoiceForOrder(Integer orderId) throws ApiException
     {
         InvoiceForm invoiceForm = new InvoiceForm();
         OrderPojo orderPojo = orderService.get(orderId);
@@ -116,17 +116,20 @@ public class OrderDto {
     private List<OrderItemPojo>  checkSellingPriceAndInventory(List<OrderItemForm> forms,List<String> errorList) throws JsonProcessingException, ApiException {
         List<OrderItemPojo> orderItemPojoList=new ArrayList<>();
         List<String> barCodeList=ConvertorUtil.convertOrderItemFormListToBarCodeList(forms);
-        HashMap<String,ProductPojo> productPojoHashMap=productService.selectInBarcodes(barCodeList);
+        HashMap<String,ProductPojo> productPojoHashMap = productService.getProuctMapByBarcodeList(barCodeList);
         List<Integer> idList=ConvertorUtil.convertProductPojoHashMapToInventoryIdList(productPojoHashMap);
-        HashMap<Integer,InventoryPojo> inventoryPojoHashMap=inventoryService.selectInIds(idList);
+        HashMap<Integer,InventoryPojo> inventoryPojoHashMap = inventoryService.getInventoryMapByIdList(idList);
         for(OrderItemForm orderItemForm : forms) {
             try {
-                ProductPojo productPojo = productPojoHashMap.get(orderItemForm.getBarCode());  //TODO get product in list
-                InventoryPojo inventoryPojo= inventoryPojoHashMap.get(productPojo.getId());     //TODO get inventory in list
-                if(productPojo.getMrp()<orderItemForm.getSellingPrice()){
+                if(!productPojoHashMap.containsKey(orderItemForm.getBarCode())){
+                    throw new ApiException("Product with given Barcode does not exist. Barcode: "+ orderItemForm.getBarCode());
+                }
+                ProductPojo productPojo = productPojoHashMap.get(orderItemForm.getBarCode());
+                InventoryPojo inventoryPojo = inventoryPojoHashMap.get(productPojo.getId());
+                if(productPojo.getMrp() < orderItemForm.getSellingPrice()){
                     errorList.add("Selling Price more than MRP for Barcode: "+orderItemForm.getBarCode());
                 }
-                if(inventoryPojo.getQuantity()<orderItemForm.getQuantity()){
+                if(Objects.isNull(inventoryPojo) || inventoryPojo.getQuantity() < orderItemForm.getQuantity()){
                     errorList.add("Insufficient Inventory for Barcode: "+orderItemForm.getBarCode());
                 }
                 OrderItemPojo p = ConvertorUtil.convert(orderItemForm, productPojo.getId());

@@ -15,7 +15,7 @@ import com.increff.pos.pojo.OrderPojo;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(rollbackFor = ApiException.class)        //TODO Check transactionals in every file should be imported through spring
+@Transactional(rollbackFor = ApiException.class)
 public class OrderService {
 
     @Autowired

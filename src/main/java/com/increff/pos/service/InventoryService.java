@@ -20,7 +20,6 @@ public class InventoryService {
     private InventoryDao inventoryDao;
 
     public void add(InventoryPojo inventoryPojo) throws ApiException {
-        //TODO increase inventory if already present else put new
         InventoryPojo inventoryPojoCheck = get(inventoryPojo.getId());
         if(Objects.isNull(inventoryPojoCheck)) {
             inventoryDao.insert(inventoryPojo);
@@ -28,7 +27,7 @@ public class InventoryService {
         else {
             Integer prevQuantity = inventoryPojoCheck.getQuantity();
             Integer newQuantity = prevQuantity + inventoryPojo.getQuantity();
-            inventoryPojoCheck .setQuantity(newQuantity);
+            inventoryPojoCheck.setQuantity(newQuantity);
         }
     }
 
@@ -36,9 +35,9 @@ public class InventoryService {
         return inventoryDao.selectAll();
     }
 
-    public void update(Integer id, InventoryPojo p) throws ApiException {
+    public void updateInventoryQuantity(Integer id, Integer quantity) throws ApiException {
         InventoryPojo ex = getCheck(id);
-        ex.setQuantity(p.getQuantity());
+        ex.setQuantity(quantity);
         inventoryDao.update(ex);
     }
     public InventoryPojo getCheck(Integer id) throws ApiException {
@@ -60,8 +59,8 @@ public class InventoryService {
         }
         p.setQuantity(p.getQuantity()-quantity);
     }
-    public HashMap<Integer, InventoryPojo> selectInIds(List<Integer> idList) throws ApiException {
-        List<InventoryPojo> inventoryPojoList = inventoryDao.selectInIds(idList);
+    public HashMap<Integer, InventoryPojo> getInventoryMapByIdList(List<Integer> idList) throws ApiException {
+        List<InventoryPojo> inventoryPojoList = inventoryDao.selectByIdList(idList);
         HashMap<Integer,InventoryPojo> idInventoryPojoHashMap=new HashMap<>();
         for(InventoryPojo inventoryPojo: inventoryPojoList){
             idInventoryPojoHashMap.put(inventoryPojo.getId(),inventoryPojo);

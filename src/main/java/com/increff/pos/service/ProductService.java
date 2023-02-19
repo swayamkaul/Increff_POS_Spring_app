@@ -55,8 +55,8 @@ public class ProductService {
         }
 
     }
-    public HashMap<String,ProductPojo> selectInBarcodes(List<String> barcode) throws ApiException {
-        List<ProductPojo> productPojoList = productDao.selectInBarcode(barcode);
+    public HashMap<String,ProductPojo> getProuctMapByBarcodeList(List<String> barcodes) {
+        List<ProductPojo> productPojoList = productDao.selectByBarcodeList(barcodes);
         HashMap<String,ProductPojo> barCodeProductPojoHashMap=new HashMap<>();
         for(ProductPojo productPojo: productPojoList){
             barCodeProductPojoHashMap.put(productPojo.getBarCode(),productPojo);
@@ -65,7 +65,7 @@ public class ProductService {
     }
 
     public List<ProductPojo> getCheckInBarcodes(List<String> barcode) throws ApiException {
-        List<ProductPojo> productPojoList = productDao.selectInBarcode(barcode);
+        List<ProductPojo> productPojoList = productDao.selectByBarcodeList(barcode);
         String error = "Following Barcode not found in Product Database: ";
         for (String s : barcode) {
             if (!productPojoList.stream().anyMatch(productPojo -> productPojo.getBarCode().contentEquals(s))) {

@@ -2,9 +2,6 @@ package com.increff.pos.dao;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,39 +13,25 @@ import com.increff.pos.pojo.OrderItemPojo;
 @Transactional
 public class OrderItemDao extends AbstractDao {
 
-    private static String delete_id = "delete from OrderItemPojo p where id=:id";
-    private static String select_id = "select p from OrderItemPojo p where id=:id";
-    private static String select_oid = "select p from OrderItemPojo p where orderId=:orderId";
-    private static String select_all = "select p from OrderItemPojo p";
+    private static final String SELECT_ID = "select p from OrderItemPojo p where id=:id";
+    private static final String SELECT_OID = "select p from OrderItemPojo p where orderId=:orderId";
+    private static final String SELECT_ALL = "select p from OrderItemPojo p";
 
-    @PersistenceContext
-    private EntityManager em;
-
-
-    public void insert(OrderItemPojo p) {
-        em.persist(p);
-    }
-
-    public Integer delete(Integer id) {
-        Query query = em.createQuery(delete_id);
-        query.setParameter("id", id);
-        return query.executeUpdate();
-    }
 
     public OrderItemPojo select(Integer id) {
-        TypedQuery<OrderItemPojo> query = getQuery(select_id, OrderItemPojo.class);
+        TypedQuery<OrderItemPojo> query = getQuery(SELECT_ID, OrderItemPojo.class);
         query.setParameter("id", id);
         return getSingle(query);
     }
 
     public List<OrderItemPojo> selectByOrderId(Integer orderId) {
-        TypedQuery<OrderItemPojo> query = getQuery(select_oid, OrderItemPojo.class);
+        TypedQuery<OrderItemPojo> query = getQuery(SELECT_OID, OrderItemPojo.class);
         query.setParameter("orderId", orderId);
         return query.getResultList();
     }
 
     public List<OrderItemPojo> selectAll() {
-        TypedQuery<OrderItemPojo> query = getQuery(select_all, OrderItemPojo.class);
+        TypedQuery<OrderItemPojo> query = getQuery(SELECT_ALL, OrderItemPojo.class);
         return query.getResultList();
     }
 

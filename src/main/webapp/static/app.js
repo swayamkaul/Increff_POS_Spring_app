@@ -12,15 +12,8 @@ function toJson($form){
     return json;
 }
 
-
-//function handleAjaxError(response){
-//	var response = JSON.parse(response.responseText);
-//	alert(response.message);
-//}
 function handleAjaxError(response){
-    console.log(response);
    var response = JSON.parse(response.responseText);
-   console.log(response);
    toastr.error(response.message, "Error: ", {
        "closeButton": true,
        "timeOut": "0",
