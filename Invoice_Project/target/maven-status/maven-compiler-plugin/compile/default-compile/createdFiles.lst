@@ -1,0 +1,10 @@
+com/increff/invoiceapp/spring/WebInitializer.class
+com/increff/invoiceapp/spring/SpringConfig.class
+com/increff/invoiceapp/spring/ControllerConfig.class
+com/increff/invoiceapp/dto/InvoiceDto.class
+com/increff/invoiceapp/service/GenerateInvoiceService.class
+com/increff/invoiceapp/service/CreateXMLFileJava.class
+com/increff/invoiceapp/service/PDFFromFOP.class
+com/increff/invoiceapp/model/OrderItem.class
+com/increff/invoiceapp/controller/GenerateInvoiceController.class
+com/increff/invoiceapp/model/InvoiceForm.class
