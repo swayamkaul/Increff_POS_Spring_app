@@ -53,9 +53,6 @@ function isJson(str) {
 function addProduct(event){
    //Set the values to update
    var $form = $("#product-form");
-   if(!validateForm($form)){
-           return;
-       }
    var json = toJson($form);
    var url = getProductUrl();
    wholeProduct.push(json);
@@ -105,9 +102,6 @@ function updateProduct(event){
 
    //Set the values to update
    var $form = $("#product-edit-form");
-   if(!validateForm($form)){
-           return;
-       }
    var json = toJson($form);
        console.log(url);
        console.log(json)

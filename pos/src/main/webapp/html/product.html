@@ -16,13 +16,13 @@
         <div class="form-row">
           <div class="form-group col-2">
             <label for="inputBrand">Brand</label>
-            <select type="text" class="form-control" name="brand" id="inputBrand" placeholder="Enter brand">
+            <select type="text" class="form-control" name="brand" id="inputBrand" placeholder="Enter brand" required>
               <option value="none" selected disabled hidden>Select Brand</option>
             </select>
           </div>
           <div class="form-group col-2.5">
             <label for="inputCategory">Category</label>
-            <select type="text" class="form-control" name="category" id="inputCategory" placeholder="Enter category">
+            <select type="text" class="form-control" name="category" id="inputCategory" placeholder="Enter category" required>
               <option value="none" selected disabled hidden>Select Category</option>
             </select>
           </div>
@@ -30,21 +30,21 @@
           <div class="form-group col-2" >
             <label for="inputProduct" class="col-md-3 ">Product</label>
             <div >
-              <input type="text" class="form-control" name="name" placeholder="Enter name">
+              <input type="text" class="form-control" name="name" placeholder="Enter name" required>
             </div>
           </div>
 
         <div class="form-group col-2">
           <label for="inputBarcode" class="col-3 ">Barcode</label>
           <div >
-            <input type="text" class="form-control" name="barCode" placeholder="Enter barcode">
+            <input type="text" class="form-control" name="barCode" placeholder="Enter barcode" required>
           </div>
         </div>
 
         <div class="form-group">
           <label for="inputMrp" class="col-2 ">MRP</label>
           <div>
-            <input type="number" class="form-control" name="mrp" placeholder="Enter MRP">
+            <input type="number" class="form-control"  min="0.00"  step="0.01" name="mrp" placeholder="Enter MRP" required>
           </div>
         </div>
 
@@ -126,14 +126,14 @@
             <div class="form-group">
               <label for="inputProduct" class="col-md-4 col-form-label">Product Name</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" name="name" placeholder="Enter name">
+                <input type="text" class="form-control" name="name" placeholder="Enter name"required>
               </div>
             </div>
 
             <div class="form-group">
               <label for="inputMrp" class="col-md-4 ">MRP</label>
               <div class="col-sm-10">
-                <input type="number" class="form-control" name="mrp" placeholder="Enter MRP">
+                <input type="number" class="form-control" min="0.00"  step="0.01" name="mrp" placeholder="Enter MRP" required>
               </div>
             </div>
 
