@@ -10,6 +10,8 @@ import com.increff.pos.model.MessageData;
 import com.increff.pos.service.ApiException;
 
 import javax.validation.ConstraintViolationException;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,25 +26,23 @@ public class AppRestControllerAdvice {
 		return data;
 	}
 
-	@ExceptionHandler(Throwable.class)
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public MessageData handle(Throwable e) {
-		MessageData data = new MessageData();
-		data.setMessage("An unknown error has occurred - " + e.getMessage());
-		return data;
-	}
-
 	@ExceptionHandler(ConstraintViolationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public final MessageData handleConstraintViolation(ConstraintViolationException ex) {
 		List<String> details = ex.getConstraintViolations()
 				.parallelStream()
-				.map(e -> e.getPropertyPath() +" "	+ e.getMessage())
+				.map(e -> e.getPropertyPath() +" " + e.getMessage())
 				.collect(Collectors.toList());
-
 		MessageData data = new MessageData();
-
-		data.setMessage(details.toString());
+		String detailsString = details.toString();
+		detailsString = detailsString.replace("[","").replace("]", "");
+		String[] stringArray = detailsString.split(",");
+		Arrays.parallelSetAll(stringArray, (i) -> stringArray[i].trim());
+		HashSet<String> stringHashSet = new HashSet<>(Arrays.asList(stringArray));
+		final StringBuilder finalString = new StringBuilder();
+		stringHashSet.forEach((String string)-> finalString.append(", ").append(string));
+		String resultString = finalString.substring(2);
+		data.setMessage(resultString);
 		return data;
 	}
 
@@ -51,6 +51,14 @@ public class AppRestControllerAdvice {
 	public MessageData handleException(HttpMessageNotReadableException e) {
 		MessageData data = new MessageData();
 		data.setMessage("Invalid inputs. Could not parse the request body.");
+		return data;
+	}
+
+	@ExceptionHandler(Throwable.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public MessageData handle(Throwable e) {
+		MessageData data = new MessageData();
+		data.setMessage("An unknown error has occurred - " + e.getMessage());
 		return data;
 	}
 }

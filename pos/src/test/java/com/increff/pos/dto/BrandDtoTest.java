@@ -7,7 +7,6 @@ import com.increff.pos.model.BrandData;
 import com.increff.pos.model.BrandForm;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.service.ApiException;
-import com.increff.pos.dto.BrandDto;
 import com.increff.pos.service.BrandService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,7 @@ public class BrandDtoTest extends AbstractUnitTest {
     @Test(expected = ApiException.class)
     public void testEmptyListBrandAddition() throws ApiException, JsonProcessingException {
         List<BrandForm> brandFormList = new ArrayList<>();
-        brandDto.add(brandFormList);
+        brandDto.addBrandList(brandFormList);
     }
 
     @Test
@@ -40,7 +39,7 @@ public class BrandDtoTest extends AbstractUnitTest {
         BrandForm brandForm = FormHelper.createBrand("BrandCheck", "CategoryCheck");
         brandFormList.add(brandForm);
 
-        brandDto.add(brandFormList);
+        brandDto.addBrandList(brandFormList);
 
         String expectedBrandName = "brandcheck";
         String expectedCategory = "categorycheck";
@@ -57,8 +56,8 @@ public class BrandDtoTest extends AbstractUnitTest {
         brandForms.add(brand1);
         BrandForm brand2 = FormHelper.createBrand("Brand2", "Category2");
         brandForms.add(brand2);
-        brandDto.add(brandForms);
-        List<BrandData> allBrands = brandDto.getAll();
+        brandDto.addBrandList(brandForms);
+        List<BrandData> allBrands = brandDto.getAllBrands();
         assertEquals(2, allBrands.size());
     }
 
@@ -68,7 +67,7 @@ public class BrandDtoTest extends AbstractUnitTest {
         BrandForm brandForm = FormHelper.createBrand("Brand1", "CateGory1");
         brandFormList.add(brandForm);
 
-        brandDto.add(brandFormList);
+        brandDto.addBrandList(brandFormList);
 
         String expectedBrand = "brand1";
         String expectedCategory = "category1";
@@ -79,7 +78,7 @@ public class BrandDtoTest extends AbstractUnitTest {
         String newCategory = "catogory2";
         brandForm.setBrand(newBrand);
         brandForm.setCategory(newCategory);
-        brandDto.update(brandPojo.getId(),brandForm);
+        brandDto.updateBrand(brandPojo.getId(),brandForm);
 
         BrandPojo pojo = brandService.getCheck(brandPojo.getId());
         assertEquals(newBrand, pojo.getBrand());
@@ -92,14 +91,14 @@ public class BrandDtoTest extends AbstractUnitTest {
         BrandForm brandForm = FormHelper.createBrand("Brand", "CateGory");
         brandFormList.add(brandForm);
 
-        brandDto.add(brandFormList);
+        brandDto.addBrandList(brandFormList);
 
         String expectedBrand = "brand";
         String expectedCategory = "category";
 
         BrandPojo brandPojo =brandService.getCheck(expectedBrand,expectedCategory);
 
-        BrandData brandDataById = brandDto.get(brandPojo.getId());
+        BrandData brandDataById = brandDto.getBrand(brandPojo.getId());
         assertEquals(brandDataById.getBrand(), brandPojo.getBrand());
         assertEquals(brandDataById.getCategory(), brandPojo.getCategory());
 
@@ -110,13 +109,13 @@ public class BrandDtoTest extends AbstractUnitTest {
         BrandForm brandForm = FormHelper.createBrand("Brand", "CateGory");
         brandFormList.add(brandForm);
 
-        brandDto.add(brandFormList);
+        brandDto.addBrandList(brandFormList);
 
         String expectedBrand = "brand";
         String expectedCategory = "category";
 
         BrandPojo brandPojo =brandService.getCheck(expectedBrand,expectedCategory);
-        BrandData brandDataByBrandAndCategory = brandDto.get(brandPojo.getBrand(),brandPojo.getCategory());
+        BrandData brandDataByBrandAndCategory = brandDto.getBrand(brandPojo.getBrand(),brandPojo.getCategory());
 
         assertEquals(brandDataByBrandAndCategory.getBrand(), brandPojo.getBrand());
         assertEquals(brandDataByBrandAndCategory.getCategory(), brandPojo.getCategory());
@@ -128,9 +127,9 @@ public class BrandDtoTest extends AbstractUnitTest {
         BrandForm brandForm = FormHelper.createBrand("Brand", "CateGory");
         brandFormList.add(brandForm);
 
-        brandDto.add(brandFormList);
+        brandDto.addBrandList(brandFormList);
         MockHttpServletResponse response = new MockHttpServletResponse();
-        brandDto.generateCsv(response);
+        brandDto.getCsvReport(response);
         assertEquals("text/csv", response.getContentType());
     }
 
@@ -140,8 +139,8 @@ public class BrandDtoTest extends AbstractUnitTest {
         BrandForm brandForm = FormHelper.createBrand("Brand", "CateGory");
         brandFormList.add(brandForm);
 
-        brandDto.add(brandFormList);
-        brandDto.add(brandFormList);
+        brandDto.addBrandList(brandFormList);
+        brandDto.addBrandList(brandFormList);
     }
 
     @Test(expected = ApiException.class)
@@ -150,7 +149,7 @@ public class BrandDtoTest extends AbstractUnitTest {
         BrandForm brandForm = FormHelper.createBrand("", "CateGory");
         brandFormList.add(brandForm);
 
-        brandDto.add(brandFormList);
+        brandDto.addBrandList(brandFormList);
     }
 
 }

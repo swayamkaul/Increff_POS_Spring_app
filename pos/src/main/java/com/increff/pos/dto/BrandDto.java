@@ -23,7 +23,7 @@ public class BrandDto {
     BrandService brandService;
     @Autowired
     CsvFileGenerator csvFileGenerator;
-    public void add(List<BrandForm> brandForms) throws ApiException, JsonProcessingException {
+    public void addBrandList(List<BrandForm> brandForms) throws ApiException, JsonProcessingException {
         listEmptyCheck(brandForms);
         List<BrandErrorData> errorData = new ArrayList<>();
         Integer errorSize = 0;
@@ -45,32 +45,32 @@ public class BrandDto {
         bulkAdd(brandForms);
     }
 
-    public BrandData get(Integer id) throws ApiException {
-       BrandPojo p = brandService.getCheck(id);
-       return ConvertorUtil.convert(p);
+    public BrandData getBrand(Integer id) throws ApiException {
+       BrandPojo brandPojo = brandService.getCheck(id);
+       return ConvertorUtil.convert(brandPojo);
     }
-    public BrandData get(String brand,String category) throws ApiException {
-        BrandPojo p = brandService.getCheck(brand,category);
-        return ConvertorUtil.convert(p);
+    public BrandData getBrand(String brand, String category) throws ApiException {
+        BrandPojo brandPojo = brandService.getCheck(brand,category);
+        return ConvertorUtil.convert(brandPojo);
     }
 
-    public List<BrandData> getAll() {
-        List<BrandPojo> list = brandService.getAll();
-        List<BrandData> list2 = new ArrayList<BrandData>();
-        for (BrandPojo p : list) {
-            list2.add(ConvertorUtil.convert(p));
+    public List<BrandData> getAllBrands() {
+        List<BrandPojo> brandPojoList = brandService.getAll();
+        List<BrandData> brandDataList = new ArrayList<BrandData>();
+        for (BrandPojo p : brandPojoList) {
+            brandDataList.add(ConvertorUtil.convert(p));
         }
-        return list2;
+        return brandDataList;
     }
 
-    public void update(Integer id, BrandForm f) throws ApiException {
+    public void updateBrand(Integer id, BrandForm f) throws ApiException {
         ValidateUtil.validateForms(f);
         NormaliseUtil.normalise(f);
         BrandPojo p = ConvertorUtil.convert(f);
         brandService.update(id,p);
     }
 
-    public void generateCsv(HttpServletResponse response) throws IOException {
+    public void getCsvReport(HttpServletResponse response) throws IOException {
         response.setContentType("text/csv");
         response.addHeader("Content-Disposition", "attachment; filename=\"BrandReport.csv\"");
         csvFileGenerator.writeBrandsToCsv(brandService.getAll(), response.getWriter());

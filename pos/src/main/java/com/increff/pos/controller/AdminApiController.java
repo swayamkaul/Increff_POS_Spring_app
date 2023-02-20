@@ -38,7 +38,7 @@ public class AdminApiController {
 
 
 	@ApiOperation(value = "Gets list of all users")
-	@RequestMapping(path = "", method = RequestMethod.GET)
+	@RequestMapping( method = RequestMethod.GET)
 	public List<UserData> getAllUser() {
 		return userDto.getAllUser();
 	}

@@ -32,35 +32,35 @@ public class BrandApiController {
 
 	@ApiOperation(value = "Adds a Brand")
 	@RequestMapping(method = RequestMethod.POST)
-	public void add(@RequestBody List<BrandForm> form) throws ApiException, JsonProcessingException {
-		brandDto.add(form);
+	public void addBrandList(@RequestBody List<BrandForm> form) throws ApiException, JsonProcessingException {
+		brandDto.addBrandList(form);
 	}
 	@ApiOperation(value = "Gets a brand by ID")
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
-	public BrandData get(@PathVariable Integer id) throws ApiException {
-		return brandDto.get(id);
+	public BrandData getBrand(@PathVariable Integer id) throws ApiException {
+		return brandDto.getBrand(id);
 	}
 	@ApiOperation(value = "Gets a brand by brand and category")
 	@RequestMapping(path = "/{brand}/{category}", method = RequestMethod.GET)
-	public BrandData get(@PathVariable String brand, @PathVariable String category) throws ApiException {
-		return brandDto.get(brand,category);
+	public BrandData getBrand(@PathVariable String brand, @PathVariable String category) throws ApiException {
+		return brandDto.getBrand(brand,category);
 	}
 	@ApiOperation(value = "Gets list of all brand")
 	@RequestMapping(method = RequestMethod.GET)
-	public List<BrandData> getAll() {
-		return brandDto.getAll();
+	public List<BrandData> getAllBrands() {
+		return brandDto.getAllBrands();
 	}
 
 	@ApiOperation(value = "Updates an brand")
 	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
-	public void update(@PathVariable Integer id, @RequestBody BrandForm f) throws ApiException {
-		brandDto.update(id, f);
+	public void updateBrand(@PathVariable Integer id, @RequestBody BrandForm f) throws ApiException {
+		brandDto.updateBrand(id, f);
 	}
 
 	@ApiOperation(value = "Gets report in CSV")
 	@RequestMapping(path = "/report", method = RequestMethod.GET)
 	public void getCsvReport(HttpServletResponse response) throws IOException {
-		brandDto.generateCsv(response);
+		brandDto.getCsvReport(response);
 	}
 
 

@@ -40,7 +40,7 @@ public class ProductDtoTest extends AbstractUnitTest {
         BrandForm brandForm = FormHelper.createBrand("Brand", "CateGory");
         brandFormList.add(brandForm);
 
-        brandDto.add(brandFormList);
+        brandDto.addBrandList(brandFormList);
 
         ProductForm productForm = FormHelper.createProduct("12345678", "name", "brand", "category", 11.00);
         productFormList.add(productForm);
@@ -68,7 +68,7 @@ public class ProductDtoTest extends AbstractUnitTest {
         BrandForm brandForm = FormHelper.createBrand("Brand", "CateGory");
         brandFormList.add(brandForm);
 
-        brandDto.add(brandFormList);
+        brandDto.addBrandList(brandFormList);
 
         ProductForm productForm = FormHelper.createProduct("12345678", "first product", "brand", "category", 11.00);
         productFormList.add(productForm);
@@ -89,7 +89,7 @@ public class ProductDtoTest extends AbstractUnitTest {
         BrandForm brandForm = FormHelper.createBrand("Brand", "CateGory");
         brandFormList.add(brandForm);
 
-        brandDto.add(brandFormList);
+        brandDto.addBrandList(brandFormList);
 
         ProductForm productForm = FormHelper.createProduct("12345678", "first product", "brand", "category", 11.00);
         productFormList.add(productForm);
@@ -110,7 +110,7 @@ public class ProductDtoTest extends AbstractUnitTest {
         BrandForm brandForm = FormHelper.createBrand("Brand", "CateGory");
         brandFormList.add(brandForm);
 
-        brandDto.add(brandFormList);
+        brandDto.addBrandList(brandFormList);
 
         ProductForm productForm = FormHelper.createProduct("12345678", "name", "brand", "category", 23.00);
         productFormList.add(productForm);
@@ -144,7 +144,7 @@ public class ProductDtoTest extends AbstractUnitTest {
         brandFormList.add(brandForm);
 
 
-        brandDto.add(brandFormList);
+        brandDto.addBrandList(brandFormList);
 
         ProductForm productForm = FormHelper.createProduct("12345678", "name", "brand", "category", 23.00);
         productFormList.add(productForm);
@@ -161,7 +161,7 @@ public class ProductDtoTest extends AbstractUnitTest {
         brandFormList.add(brandForm);
 
 
-        brandDto.add(brandFormList);
+        brandDto.addBrandList(brandFormList);
 
         ProductForm productForm = FormHelper.createProduct("12345678", "name", "brand2", "category3", 23.00);
         productFormList.add(productForm);
