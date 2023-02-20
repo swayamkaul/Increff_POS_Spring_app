@@ -92,7 +92,7 @@ public class    SalesReportDto {
         for (Integer productId: productIdList) {
             barcodes.add(productService.getCheck(productId).getBarCode());
         }
-        List<ProductPojo> productPojoList = productService.getCheckInBarcodes(barcodes);
+        List<ProductPojo> productPojoList = productService.getCheckBarcodeList(barcodes);
         for (ProductPojo productPojo: productPojoList) {
             productMap.put(productPojo.getId(), productPojo);
         }

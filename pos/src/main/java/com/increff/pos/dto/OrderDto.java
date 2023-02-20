@@ -66,38 +66,7 @@ public class OrderDto {
         }
         return list;
     }
-    public ResponseEntity<byte[]> getInvoicePDF(Integer id) throws Exception {
-        InvoiceForm invoiceForm = generateInvoiceForOrder(id);
-        RestTemplate restTemplate = new RestTemplate();
-        byte[] contents = Base64.getDecoder().decode(restTemplate.postForEntity(url, invoiceForm, byte[].class).getBody());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        String filename = "invoice.pdf";
-        headers.setContentDispositionFormData(filename, filename);
-        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-        ResponseEntity<byte[]> response = new ResponseEntity<>(contents, headers, HttpStatus.OK);
-        return response;
-    }
-    public InvoiceForm generateInvoiceForOrder(Integer orderId) throws ApiException
-    {
-        InvoiceForm invoiceForm = new InvoiceForm();
-        OrderPojo orderPojo = orderService.get(orderId);
-        invoiceForm.setOrderId(orderPojo.getId());
-        invoiceForm.setPlacedDate(orderPojo.getCreatedAt().toString());
-        List<OrderItemPojo> orderItemPojoList = orderService.selectByOrderId(orderPojo.getId());
-        List<OrderItem> orderItemList = new ArrayList<>();
-        for(OrderItemPojo p: orderItemPojoList) {
-            OrderItem orderItem = new OrderItem();
-            orderItem.setOrderItemId(p.getId());
-            String productName = productService.getCheck(p.getProductId()).getName();
-            orderItem.setProductName(productName);
-            orderItem.setQuantity(p.getQuantity());
-            orderItem.setSellingPrice(p.getSellingPrice());
-            orderItemList.add(orderItem);
-        }
-        invoiceForm.setOrderItemList(orderItemList);
-        return invoiceForm;
-    }
+
     private void checkConstraintsAndDuplicates(List<OrderItemForm> forms) throws ApiException {
         if(forms.isEmpty()){
             throw new ApiException("Cart Empty!");
@@ -145,5 +114,38 @@ public class OrderDto {
         if(!errorlist.isEmpty()){
             ErrorUtil.throwErrors(errorlist);
         }
+    }
+
+    public ResponseEntity<byte[]> getInvoicePDF(Integer id) throws Exception {
+        InvoiceForm invoiceForm = generateInvoiceForOrder(id);
+        RestTemplate restTemplate = new RestTemplate();
+        byte[] contents = Base64.getDecoder().decode(restTemplate.postForEntity(url, invoiceForm, byte[].class).getBody());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        String filename = "invoice.pdf";
+        headers.setContentDispositionFormData(filename, filename);
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        ResponseEntity<byte[]> response = new ResponseEntity<>(contents, headers, HttpStatus.OK);
+        return response;
+    }
+    public InvoiceForm generateInvoiceForOrder(Integer orderId) throws ApiException
+    {
+        InvoiceForm invoiceForm = new InvoiceForm();
+        OrderPojo orderPojo = orderService.get(orderId);
+        invoiceForm.setOrderId(orderPojo.getId());
+        invoiceForm.setPlacedDate(orderPojo.getCreatedAt().toString());
+        List<OrderItemPojo> orderItemPojoList = orderService.selectByOrderId(orderPojo.getId());
+        List<OrderItem> orderItemList = new ArrayList<>();
+        for(OrderItemPojo p: orderItemPojoList) {
+            OrderItem orderItem = new OrderItem();
+            orderItem.setOrderItemId(p.getId());
+            String productName = productService.getCheck(p.getProductId()).getName();
+            orderItem.setProductName(productName);
+            orderItem.setQuantity(p.getQuantity());
+            orderItem.setSellingPrice(p.getSellingPrice());
+            orderItemList.add(orderItem);
+        }
+        invoiceForm.setOrderItemList(orderItemList);
+        return invoiceForm;
     }
 }

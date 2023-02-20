@@ -19,7 +19,7 @@ public class UserDtoTest extends AbstractUnitTest {
     @Test
     public void userTest() throws ApiException {
         UserForm userForm = FormHelper.createUser("swayameron@gmail.com", "1234", "supervisor");
-        userDto.add(userForm);
+        userDto.addUser(userForm);
 
         List<UserData> userDataList = userDto.getAllUser();
         assertEquals(1, userDataList.size());
@@ -28,12 +28,12 @@ public class UserDtoTest extends AbstractUnitTest {
     @Test
     public void userDeleteTest() throws ApiException {
         UserForm userForm = FormHelper.createUser("swayameron@gmail.com", "1234", "supervisor");
-        userDto.add(userForm);
+        userDto.addUser(userForm);
 
         List<UserData> userDataList = userDto.getAllUser();
         assertEquals(1, userDataList.size());
 
-        userDto.delete(userDataList.get(0).getId());
+        userDto.deleteUser(userDataList.get(0).getId());
         List<UserData> userDataList2 = userDto.getAllUser();
         assertEquals(0, userDataList2.size());
 
@@ -42,7 +42,7 @@ public class UserDtoTest extends AbstractUnitTest {
     @Test
     public void userGetTest() throws ApiException {
         UserForm userForm = FormHelper.createUser("swayameron@gmail.com", "1234", "supervisor");
-        userDto.add(userForm);
+        userDto.addUser(userForm);
 
         List<UserData> userDataList = userDto.getAllUser();
         assertEquals(1, userDataList.size());
@@ -53,7 +53,7 @@ public class UserDtoTest extends AbstractUnitTest {
     @Test
     public void checkIllegalEmailTest() throws ApiException {
         UserForm userForm = FormHelper.createUser("swayameron@gmail.com", "1234", "supervisor");
-        userDto.add(userForm);
+        userDto.addUser(userForm);
 
         assertEquals(false, userDto.checkEmailExists("random@gmail.com"));
     }

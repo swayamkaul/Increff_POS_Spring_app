@@ -28,12 +28,12 @@ public class AdminApiController {
 	@ApiOperation(value = "Adds a user")
 	@RequestMapping(path = "", method = RequestMethod.POST)
 	public void addUser(@RequestBody UserForm form) throws ApiException {
-		userDto.add(form);
+		userDto.addUser(form);
 	}
 	@ApiOperation(value = "Deletes a user")
 	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
 	public void deleteUser(@PathVariable Integer id) {
-		userDto.delete(id);
+		userDto.deleteUser(id);
 	}
 
 

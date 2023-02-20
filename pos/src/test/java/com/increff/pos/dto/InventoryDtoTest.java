@@ -137,7 +137,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
         Integer expectedQuantity = 6;
 
         InventoryData inventoryData = inventoryDto.getInventory(inventoryDto.getInventory(expectedBarCode).getId());
-        inventoryDto.update(inventoryData.getId(), inventoryForm1);
+        inventoryDto.updateInventory(inventoryData.getId(), inventoryForm1);
 
         InventoryPojo pojo = inventoryService.getCheck(inventoryData.getId());
         assertEquals(expectedQuantity, pojo.getQuantity());
@@ -170,7 +170,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
 
         inventoryDto.addInventoryList(inventoryFormList);
         MockHttpServletResponse response = new MockHttpServletResponse();
-        inventoryDto.generateCsv(response);
+        inventoryDto.getInventoryReportCsv(response);
         assertEquals("text/csv", response.getContentType());
 
         List<InventoryReportData> list= inventoryDto.getAllItem();

@@ -83,14 +83,6 @@ public class ConvertorUtil {
         return orderData;
     }
 
-    public static InventoryReportData convertMapToItem(Map.Entry<Pair<String,String>, Integer> mapElement) {
-        Pair<String, String> p = mapElement.getKey();
-        InventoryReportData inventoryItem = new InventoryReportData();
-        inventoryItem.setBrand(p.getKey());
-        inventoryItem.setCategory(p.getValue());
-        inventoryItem.setQuantity(mapElement.getValue());
-        return inventoryItem;
-    }
     public static UserData convert(UserPojo p) {
         UserData d = new UserData();
         d.setEmail(p.getEmail());
@@ -167,5 +159,13 @@ public class ConvertorUtil {
             idList.add(productPojo.getId());
         }
         return idList;
+    }
+    public static InventoryReportData convertMapToItem(Map.Entry<Pair<String,String>, Integer> mapElement) {
+        Pair<String, String> p = mapElement.getKey();
+        InventoryReportData inventoryItem = new InventoryReportData();
+        inventoryItem.setBrand(p.getKey());
+        inventoryItem.setCategory(p.getValue());
+        inventoryItem.setQuantity(mapElement.getValue());
+        return inventoryItem;
     }
 }

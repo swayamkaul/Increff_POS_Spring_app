@@ -13,31 +13,31 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
 	@Autowired
-	private UserDao dao;
+	private UserDao userDao;
 
 	@Transactional
 	public void add(UserPojo p) throws ApiException {
 		normalize(p);
-		UserPojo existing = dao.select(p.getEmail());
+		UserPojo existing = userDao.select(p.getEmail());
 		if (existing != null) {
 			throw new ApiException("User with given email already exists");
 		}
-		dao.insert(p);
+		userDao.insert(p);
 	}
 
 	@Transactional(rollbackFor = ApiException.class)
 	public UserPojo get(String email) throws ApiException {
-		return dao.select(email);
+		return userDao.select(email);
 	}
 
 	@Transactional
 	public List<UserPojo> getAll() {
-		return dao.selectAll();
+		return userDao.selectAll();
 	}
 
 	@Transactional
 	public void delete(Integer id) {
-		dao.delete(id);
+		userDao.delete(id);
 	}
 
 	protected static void normalize(UserPojo p) {

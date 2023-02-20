@@ -15,12 +15,6 @@ public class NormaliseUtil {
         p.setName(StringUtil.toLowerCase(p.getName()));
     }
 
-    public static void normalise(List<OrderItemForm> orderItemFormList){
-        for (OrderItemForm f : orderItemFormList) {
-            f.setBarCode(StringUtil.doTrim(f.getBarCode()));
-        }
-
-    }
     public static void normalise(OrderItemForm orderItemForm) {
         orderItemForm.setBarCode(StringUtil.toLowerCase(orderItemForm.getBarCode()).trim());
     }
@@ -30,11 +24,8 @@ public class NormaliseUtil {
     public static void normalise(UserForm userForm) {
         userForm.setEmail(StringUtil.toLowerCase(userForm.getEmail()).trim());
     }
-
     public static void normalise(SalesReportForm salesReportForm) {
         salesReportForm.setBrand(StringUtil.toLowerCase(salesReportForm.getBrand()).trim());
         salesReportForm.setCategory(StringUtil.toLowerCase(salesReportForm.getCategory()).trim());
     }
-
-
 }

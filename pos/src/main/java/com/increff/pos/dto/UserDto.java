@@ -19,13 +19,13 @@ import java.util.Objects;
 public class UserDto {
     @Autowired
     private UserService userService;
-    public void add(UserForm form) throws ApiException {
+    public void addUser(UserForm form) throws ApiException {
         ValidateUtil.validateForms(form);
         NormaliseUtil.normalise(form);
         UserPojo p = ConvertorUtil.convert(form);
         userService.add(p);
     }
-    public void delete(Integer id) {
+    public void deleteUser(Integer id) {
         userService.delete(id);
     }
     public List<UserData> getAllUser() {

@@ -16,14 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class BrandService {
 
 	@Autowired
-	private BrandDao dao;
+	private BrandDao brandDao;
 
 	public void add(BrandPojo p) throws ApiException {
-		dao.insert(p);
+		brandDao.insert(p);
 	}
 
 	public List<BrandPojo> getAll() {
-		return dao.selectAll();
+		return brandDao.selectAll();
 	}
 
 	public void update(Integer id, BrandPojo p) throws ApiException {
@@ -31,17 +31,17 @@ public class BrandService {
 		checkAlreadyExist(p.getBrand(), p.getCategory());
 		brandPojo.setCategory(p.getCategory());
 		brandPojo.setBrand(p.getBrand());
-		dao.update(brandPojo);
+		brandDao.update(brandPojo);
 	}
 	public BrandPojo getCheck(Integer id) throws ApiException {
-		BrandPojo p = dao.select(id);
+		BrandPojo p = brandDao.select(id);
 		if (p == null) {
 			throw new ApiException("Brand with given ID does not exist, id: " + id);
 		}
 		return p;
 	}
 	public BrandPojo getCheck(String brand,String category) throws ApiException {
-		BrandPojo p = dao.select(brand,category);
+		BrandPojo p = brandDao.select(brand,category);
 		if (p == null) {
 			throw new ApiException("Given Brand and Category does not exist, Brand: " + brand+", Category: "+category);
 		}
@@ -49,7 +49,7 @@ public class BrandService {
 	}
 
 	public void checkAlreadyExist(String brand,String category) throws ApiException {
-		BrandPojo p = dao.select(brand,category);
+		BrandPojo p = brandDao.select(brand,category);
 		if (p != null) {
 			throw new ApiException("Given Brand and Category already exist, Brand: " + brand+", Category: "+category);
 		}

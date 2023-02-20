@@ -51,13 +51,13 @@ public class InitApiController extends AbstractUiController {
 		else if(Objects.equals(form.getEmail(), admin_email))
 		{
 			form.setRole("supervisor");
-			userDto.add(form);
+			userDto.addUser(form);
 			info.setMessage("Signed Up Successfully, you can login now");
 		}
 		else
 		{
 			form.setRole("operator");
-			userDto.add(form);
+			userDto.addUser(form);
 			info.setMessage("Signed Up Successfully, you can login now");
 		}
 		return mav("init.html");

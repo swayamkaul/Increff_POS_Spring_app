@@ -28,39 +28,39 @@ import javax.servlet.http.HttpServletResponse;
 public class InventoryApiController {
 
     @Autowired
-    private InventoryDto dto;
+    private InventoryDto inventoryDto;
 
     @ApiOperation(value = "Adds Inventory List")
     @RequestMapping(method = RequestMethod.POST)
     public void addInventoryLsit(@RequestBody List<InventoryForm> form) throws ApiException, JsonProcessingException {
-        dto.addInventoryList(form);
+        inventoryDto.addInventoryList(form);
     }
     @ApiOperation(value = "Gets a Inventory by ID")
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
     public InventoryData getInventory(@PathVariable Integer id) throws ApiException {
-        return dto.getInventory(id);
+        return inventoryDto.getInventory(id);
     }
     @ApiOperation(value = "Gets a Inventory by Barcode")
     @RequestMapping(path = "/barcode/{barCode}", method = RequestMethod.GET)
     public InventoryData getInventory(@PathVariable String barCode) throws ApiException {
-        return dto.getInventory(barCode);
+        return inventoryDto.getInventory(barCode);
     }
     @ApiOperation(value = "Gets list of all Inventories")
     @RequestMapping(method = RequestMethod.GET)
     public List<InventoryData> getAllInventories() throws ApiException {
-        return dto.getAllInventories();
+        return inventoryDto.getAllInventories();
     }
 
     @ApiOperation(value = "Updates an Inventory")
     @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
-    public void update(@PathVariable Integer id, @RequestBody InventoryForm f) throws ApiException {
-        dto.update(id, f);
+    public void updateInventory(@PathVariable Integer id, @RequestBody InventoryForm f) throws ApiException {
+        inventoryDto.updateInventory(id, f);
     }
 
     @ApiOperation(value = "Export Inventory Report to CSV")
     @RequestMapping(path = "/report", method = RequestMethod.GET)
     public void getInventoryReport(HttpServletResponse response) throws IOException, ApiException {
-        dto.generateCsv(response);
+        inventoryDto.getInventoryReportCsv(response);
     }
 
 

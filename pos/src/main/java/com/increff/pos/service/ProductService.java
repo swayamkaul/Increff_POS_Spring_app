@@ -64,7 +64,7 @@ public class ProductService {
         return barCodeProductPojoHashMap;
     }
 
-    public List<ProductPojo> getCheckInBarcodes(List<String> barcode) throws ApiException {
+    public List<ProductPojo> getCheckBarcodeList(List<String> barcode) throws ApiException {
         List<ProductPojo> productPojoList = productDao.selectByBarcodeList(barcode);
         String error = "Following Barcode not found in Product Database: ";
         for (String s : barcode) {

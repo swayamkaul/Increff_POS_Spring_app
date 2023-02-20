@@ -88,7 +88,7 @@ public class InventoryDto {
         return list2;
     }
 
-    public void update(Integer id, InventoryForm f) throws ApiException {
+    public void updateInventory(Integer id, InventoryForm f) throws ApiException {
         ValidateUtil.validateForms(f);
         NormaliseUtil.normalise(f);
         InventoryData inventoryData = getInventory(id);
@@ -99,7 +99,7 @@ public class InventoryDto {
         inventoryService.updateInventoryQuantity(id, f.getQuantity());
     }
 
-    public void generateCsv(HttpServletResponse response) throws IOException, ApiException {
+    public void getInventoryReportCsv(HttpServletResponse response) throws IOException, ApiException {
         response.setContentType("text/csv");
         response.addHeader("Content-Disposition", "attachment; filename=\"InventoryReport.csv\"");
         csvFileGenerator.writeInventoryToCsv(getAllItem(), response.getWriter());
