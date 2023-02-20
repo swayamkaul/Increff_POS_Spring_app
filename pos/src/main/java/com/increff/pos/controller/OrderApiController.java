@@ -26,7 +26,7 @@ public class OrderApiController {
 
     @ApiOperation(value = "Gets All orders")
     @RequestMapping(method = RequestMethod.GET)
-    public List<OrderData> getAll() throws ApiException {
+    public List<OrderData> getAllOrders(){
         return dto.getAllOrders();
     }
 
@@ -38,7 +38,6 @@ public class OrderApiController {
         return dto.createOrder(orderItemFormList);
     }
 
-
     @ApiOperation(value="Get Order Items by order id")
     @RequestMapping(path="/{id}/items", method = RequestMethod.GET)
     public List<OrderItemData> getItemByOrderId(@PathVariable Integer id) throws ApiException{
@@ -47,7 +46,7 @@ public class OrderApiController {
 
     @ApiOperation(value = "Download Invoice")
     @GetMapping(path = "/invoice/{id}")
-    public ResponseEntity<byte[]> getPDF(@PathVariable Integer id) throws Exception{
-        return dto.getPDF(id);
+    public ResponseEntity<byte[]> getInvoicePDF(@PathVariable Integer id) throws Exception{
+        return dto.getInvoicePDF(id);
     }
 }

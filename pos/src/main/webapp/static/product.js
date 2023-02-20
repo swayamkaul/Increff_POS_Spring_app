@@ -53,6 +53,9 @@ function isJson(str) {
 function addProduct(event){
    //Set the values to update
    var $form = $("#product-form");
+   if(!validateForm($form)){
+           return;
+       }
    var json = toJson($form);
    var url = getProductUrl();
    wholeProduct.push(json);
@@ -96,13 +99,15 @@ function addProduct(event){
 }
 
 function updateProduct(event){
-   $('#edit-product-modal').modal('toggle');
    //Get the ID
    var id = $("#product-edit-form input[name=id]").val();
    var url = getProductUrl() + "/" + id;
 
    //Set the values to update
    var $form = $("#product-edit-form");
+   if(!validateForm($form)){
+           return;
+       }
    var json = toJson($form);
        console.log(url);
        console.log(json)
@@ -115,6 +120,7 @@ function updateProduct(event){
            'Content-Type': 'application/json'
        },
       success: function (response) {
+         $('#edit-product-modal').modal('toggle');
          toastr.success("Product Updated Successfully", "Success : ");
          getProductList();
       },

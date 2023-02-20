@@ -71,7 +71,7 @@ public class    SalesReportDto {
         return salesList;
     }
 
-    public void generateCsv(HttpServletResponse response) throws  IOException {
+    public void getSalesReportCsv(HttpServletResponse response) throws  IOException {
         response.setContentType("text/csv");
         response.addHeader("Content-Disposition", "attachment; filename=\"salesReport.csv\"");
 
@@ -127,7 +127,7 @@ public class    SalesReportDto {
 
                 SalesReportData salesReportData = map.get(brandId);
                 salesReportData.setQuantity(salesReportData.getQuantity() + orderItemPojo.getQuantity());
-                double revenue = salesReportData.getRevenue() +
+                Double revenue = salesReportData.getRevenue() +
                         (orderItemPojo.getQuantity() * orderItemPojo.getSellingPrice());
                 salesReportData.setRevenue(Double.parseDouble(df.format(revenue)));
             }

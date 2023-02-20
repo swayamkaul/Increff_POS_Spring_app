@@ -52,7 +52,7 @@ public class DailySalesDtoTest extends AbstractUnitTest {
         ProductForm productForm1 = FormHelper.createProduct("12345679", "name1", "brand", "category", 28.00);
         productFormList.add(productForm1);
 
-        productDto.add(productFormList);
+        productDto.addProductList(productFormList);
 
         InventoryForm inventoryForm = FormHelper.createInventory("12345678", 7);
         inventoryFormList.add(inventoryForm);
@@ -60,7 +60,7 @@ public class DailySalesDtoTest extends AbstractUnitTest {
         InventoryForm form = FormHelper.createInventory("12345679", 8);
         inventoryFormList.add(form);
 
-        inventoryDto.add(inventoryFormList);
+        inventoryDto.addInventoryList(inventoryFormList);
 
         OrderItemForm orderItemForm = FormHelper.createOrderItem("12345678", 2, 23.00);
         orderItemFormList.add(orderItemForm);
@@ -102,7 +102,7 @@ public class DailySalesDtoTest extends AbstractUnitTest {
         ProductForm productForm1 = FormHelper.createProduct("12345679", "name1", "brand", "category", 28.00);
         productFormList.add(productForm1);
 
-        productDto.add(productFormList);
+        productDto.addProductList(productFormList);
 
         InventoryForm inventoryForm = FormHelper.createInventory("12345678", 7);
         inventoryFormList.add(inventoryForm);
@@ -110,7 +110,7 @@ public class DailySalesDtoTest extends AbstractUnitTest {
         InventoryForm form = FormHelper.createInventory("12345679", 8);
         inventoryFormList.add(form);
 
-        inventoryDto.add(inventoryFormList);
+        inventoryDto.addInventoryList(inventoryFormList);
 
         OrderItemForm orderItemForm = FormHelper.createOrderItem("12345678", 2, 23.00);
         orderItemFormList.add(orderItemForm);

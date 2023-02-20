@@ -27,31 +27,31 @@ public class ProductApiController {
     @Autowired
     private ProductDto dto;
 
-    @ApiOperation(value = "Adds a Product")
-    @RequestMapping(path = "", method = RequestMethod.POST)
-    public void add(@RequestBody List<ProductForm> form) throws ApiException, JsonProcessingException {
-        dto.add(form);
+    @ApiOperation(value = "Adds Product List")
+    @RequestMapping( method = RequestMethod.POST)
+    public void addProductList(@RequestBody List<ProductForm> form) throws ApiException, JsonProcessingException {
+        dto.addProductList(form);
     }
     @ApiOperation(value = "Gets a Product by ID")
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-    public ProductData get(@PathVariable Integer id) throws ApiException {
-        return dto.get(id);
+    public ProductData getProduct(@PathVariable Integer id) throws ApiException {
+        return dto.getProduct(id);
     }
     @ApiOperation(value = "Gets a Product by Barcode")
     @RequestMapping(path = "/barcode/{barCode}", method = RequestMethod.GET)
-    public ProductData get(@PathVariable String barCode) throws ApiException {
-        return dto.get(barCode);
+    public ProductData getProduct(@PathVariable String barCode) throws ApiException {
+        return dto.getProduct(barCode);
     }
     @ApiOperation(value = "Gets list of all Product")
-    @RequestMapping(path = "", method = RequestMethod.GET)
-    public List<ProductData> getAll() throws ApiException {
-        return dto.getAll();
+    @RequestMapping(method = RequestMethod.GET)
+    public List<ProductData> getAllProducts() throws ApiException {
+        return dto.getAllProducts();
     }
 
-    @ApiOperation(value = "Updates an Product")
+    @ApiOperation(value = "Updates a Product")
     @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
-    public void update(@PathVariable Integer id, @RequestBody ProductForm f) throws ApiException {
-        dto.update(id, f);
+    public void updateProduct(@PathVariable Integer id, @RequestBody ProductForm f) throws ApiException {
+        dto.updateProduct(id, f);
     }
 
 

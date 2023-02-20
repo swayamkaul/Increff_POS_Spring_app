@@ -24,7 +24,7 @@ public class ProductDto {
     @Autowired
     BrandService brandService ;
 
-    public void add(List<ProductForm> productFormList) throws ApiException, JsonProcessingException {
+    public void addProductList(List<ProductForm> productFormList) throws ApiException, JsonProcessingException {
         listEmptyCheck(productFormList);
         List<ProductErrorData> errorData = new ArrayList<>();
         Integer errorSize = 0;
@@ -50,19 +50,19 @@ public class ProductDto {
     }
 
 
-    public ProductData get(Integer id) throws ApiException {
+    public ProductData getProduct(Integer id) throws ApiException {
         ProductPojo productPojo = productService.getCheck(id);
         BrandPojo brandPojo =brandService.getCheck(productPojo.getBrandCategory());
         return ConvertorUtil.convert(productPojo,brandPojo.getBrand(),brandPojo.getCategory());
     }
 
-    public ProductData get(String barCode) throws ApiException {
+    public ProductData getProduct(String barCode) throws ApiException {
         ProductPojo productPojo = productService.getCheck(barCode);
         BrandPojo brandPojo = brandService.getCheck(productPojo.getBrandCategory());
         return ConvertorUtil.convert(productPojo,brandPojo.getBrand(),brandPojo.getCategory());
     }
 
-    public List<ProductData> getAll() throws ApiException {
+    public List<ProductData> getAllProducts() throws ApiException {
         List<ProductPojo> list = productService.getAll();
         List<ProductData> list2 = new ArrayList<ProductData>();
         for (ProductPojo p : list) {
@@ -72,10 +72,10 @@ public class ProductDto {
         return list2;
     }
 
-    public void update(Integer id, ProductForm f) throws ApiException {
+    public void updateProduct(Integer id, ProductForm f) throws ApiException {
         ValidateUtil.validateForms(f);
         NormaliseUtil.normalise(f);
-        ProductData productDataPrev=get(id);
+        ProductData productDataPrev= getProduct(id);
         if((!productDataPrev.getBarCode().equals(f.getBarCode())) ||
            (!productDataPrev.getBrand().equals(f.getBrand()))||
            (!productDataPrev.getCategory().equals(f.getCategory()))){

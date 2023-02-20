@@ -19,6 +19,6 @@ public class OrderItemForm {
     @Min(value=1)
     private Integer quantity;
     @NotNull
-    @Min(value=1)
-    private double sellingPrice;
+    @Min(value=0)
+    private Double sellingPrice;
 }

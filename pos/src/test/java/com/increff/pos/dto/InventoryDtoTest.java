@@ -38,7 +38,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
     @Test(expected = ApiException.class)
     public void testEmptyListInventoryAddition() throws ApiException, JsonProcessingException {
         List<InventoryForm> inventoryFormList = new ArrayList<>();
-        inventoryDto.add(inventoryFormList);
+        inventoryDto.addInventoryList(inventoryFormList);
     }
 
     @Test
@@ -54,13 +54,13 @@ public class InventoryDtoTest extends AbstractUnitTest {
         ProductForm productForm = FormHelper.createProduct("12345678", "name", "brand", "category", 23.00);
         productFormList.add(productForm);
 
-        productDto.add(productFormList);
+        productDto.addProductList(productFormList);
         List<ProductPojo> productPojoList = productService.getAll();
         assertEquals(1, productPojoList.size());
         InventoryForm inventoryForm = FormHelper.createInventory("12345678", 3);
         inventoryFormList.add(inventoryForm);
 
-        inventoryDto.add(inventoryFormList);
+        inventoryDto.addInventoryList(inventoryFormList);
         List<InventoryPojo> inventoryPojoList = inventoryService.getAll();
 
 
@@ -95,7 +95,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
         ProductForm productForm1 = FormHelper.createProduct("12345679", "name", "brand", "category", 23.00);
         productFormList.add(productForm1);
 
-        productDto.add(productFormList);
+        productDto.addProductList(productFormList);
 
         InventoryForm inventoryForm = FormHelper.createInventory("12345678", 3);
         inventoryFormList.add(inventoryForm);
@@ -103,9 +103,9 @@ public class InventoryDtoTest extends AbstractUnitTest {
         InventoryForm form = FormHelper.createInventory("12345679", 3);
         inventoryFormList.add(form);
 
-        inventoryDto.add(inventoryFormList);
+        inventoryDto.addInventoryList(inventoryFormList);
 
-        List<InventoryData> list = inventoryDto.getAll();
+        List<InventoryData> list = inventoryDto.getAllInventories();
 
         assertEquals(2, list.size());
     }
@@ -123,12 +123,12 @@ public class InventoryDtoTest extends AbstractUnitTest {
         ProductForm productForm = FormHelper.createProduct("12345678", "name", "brand", "category", 23.00);
         productFormList.add(productForm);
 
-        productDto.add(productFormList);
+        productDto.addProductList(productFormList);
 
         InventoryForm inventoryForm = FormHelper.createInventory("12345678", 3);
         inventoryFormList.add(inventoryForm);
 
-        inventoryDto.add(inventoryFormList);
+        inventoryDto.addInventoryList(inventoryFormList);
 
         InventoryForm inventoryForm1 = FormHelper.createInventory("12345678", 6);
 
@@ -160,7 +160,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
         ProductForm productForm1 = FormHelper.createProduct("12345679", "name", "brand", "category", 23.00);
         productFormList.add(productForm1);
 
-        productDto.add(productFormList);
+        productDto.addProductList(productFormList);
 
         InventoryForm inventoryForm = FormHelper.createInventory("12345678", 3);
         inventoryFormList.add(inventoryForm);
@@ -168,7 +168,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
         InventoryForm form = FormHelper.createInventory("12345679", 3);
         inventoryFormList.add(form);
 
-        inventoryDto.add(inventoryFormList);
+        inventoryDto.addInventoryList(inventoryFormList);
         MockHttpServletResponse response = new MockHttpServletResponse();
         inventoryDto.generateCsv(response);
         assertEquals("text/csv", response.getContentType());
@@ -192,7 +192,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
         ProductForm productForm = FormHelper.createProduct("12345678", "name", "brand", "category", 23.00);
         productFormList.add(productForm);
 
-        productDto.add(productFormList);
+        productDto.addProductList(productFormList);
 
         InventoryForm inventoryForm = FormHelper.createInventory("12345678", 3);
         inventoryFormList.add(inventoryForm);
@@ -200,7 +200,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
         InventoryForm form = FormHelper.createInventory("12345679", 3);
         inventoryFormList.add(form);
 
-        inventoryDto.add(inventoryFormList);
+        inventoryDto.addInventoryList(inventoryFormList);
 
     }
 
@@ -217,12 +217,12 @@ public class InventoryDtoTest extends AbstractUnitTest {
         ProductForm productForm = FormHelper.createProduct("12345678", "name", "brand", "category", 23.00);
         productFormList.add(productForm);
 
-        productDto.add(productFormList);
+        productDto.addProductList(productFormList);
 
         InventoryForm inventoryForm = FormHelper.createInventory("12345678", 3);
         inventoryFormList.add(inventoryForm);
 
-        inventoryDto.add(inventoryFormList);
+        inventoryDto.addInventoryList(inventoryFormList);
 
         String expectedBarCode = "12345678";
         InventoryData inventoryData = inventoryDto.getInventory(inventoryDto.getInventory(expectedBarCode).getId());

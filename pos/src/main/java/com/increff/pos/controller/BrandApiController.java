@@ -30,7 +30,7 @@ public class BrandApiController {
 	@Autowired
 	private BrandDto brandDto;
 
-	@ApiOperation(value = "Adds a Brand")
+	@ApiOperation(value = "Adds Brand List")
 	@RequestMapping(method = RequestMethod.POST)
 	public void addBrandList(@RequestBody List<BrandForm> form) throws ApiException, JsonProcessingException {
 		brandDto.addBrandList(form);
@@ -51,7 +51,7 @@ public class BrandApiController {
 		return brandDto.getAllBrands();
 	}
 
-	@ApiOperation(value = "Updates an brand")
+	@ApiOperation(value = "Updates a brand")
 	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
 	public void updateBrand(@PathVariable Integer id, @RequestBody BrandForm f) throws ApiException {
 		brandDto.updateBrand(id, f);

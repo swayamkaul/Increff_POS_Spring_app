@@ -66,7 +66,7 @@ public class OrderDto {
         }
         return list;
     }
-    public ResponseEntity<byte[]> getPDF(Integer id) throws Exception {
+    public ResponseEntity<byte[]> getInvoicePDF(Integer id) throws Exception {
         InvoiceForm invoiceForm = generateInvoiceForOrder(id);
         RestTemplate restTemplate = new RestTemplate();
         byte[] contents = Base64.getDecoder().decode(restTemplate.postForEntity(url, invoiceForm, byte[].class).getBody());

@@ -30,7 +30,7 @@ public class ProductDtoTest extends AbstractUnitTest {
     @Test(expected = ApiException.class)
     public void testEmptyListProductAddition() throws ApiException, JsonProcessingException {
         List<ProductForm> productFormList = new ArrayList<>();
-        productDto.add(productFormList);
+        productDto.addProductList(productFormList);
     }
 
     @Test
@@ -45,7 +45,7 @@ public class ProductDtoTest extends AbstractUnitTest {
         ProductForm productForm = FormHelper.createProduct("12345678", "name", "brand", "category", 11.00);
         productFormList.add(productForm);
 
-        productDto.add(productFormList);
+        productDto.addProductList(productFormList);
 
         String expectedBrandName = "brand";
         String expectedCategoryName = "category";
@@ -53,7 +53,7 @@ public class ProductDtoTest extends AbstractUnitTest {
         Double expectedMrp = 11.00;
         String expectedBarcode = "12345678";
 
-        ProductData data = productDto.get(productService.getCheck(expectedBarcode).getId());
+        ProductData data = productDto.getProduct(productService.getCheck(expectedBarcode).getId());
         assertEquals(expectedBarcode, data.getBarCode());
         assertEquals(expectedName, data.getName());
         assertEquals(expectedBrandName, data.getBrand());
@@ -76,9 +76,9 @@ public class ProductDtoTest extends AbstractUnitTest {
         ProductForm productForm1 = FormHelper.createProduct("123456789","second product","brand","category",88.0);
         productFormList.add(productForm1);
 
-        productDto.add(productFormList);
+        productDto.addProductList(productFormList);
 
-        List<ProductData> list = productDto.getAll();
+        List<ProductData> list = productDto.getAllProducts();
         assertEquals(2, list.size());
     }
 
@@ -94,9 +94,9 @@ public class ProductDtoTest extends AbstractUnitTest {
         ProductForm productForm = FormHelper.createProduct("12345678", "first product", "brand", "category", 11.00);
         productFormList.add(productForm);
 
-        productDto.add(productFormList);
+        productDto.addProductList(productFormList);
 
-        ProductData productData = productDto.get("12345678");
+        ProductData productData = productDto.getProduct("12345678");
         assertEquals(productData.getName(),productForm.getName());
         assertEquals(productData.getBrand(),productForm.getBrand());
         assertEquals(productData.getCategory(),productForm.getCategory());
@@ -115,7 +115,7 @@ public class ProductDtoTest extends AbstractUnitTest {
         ProductForm productForm = FormHelper.createProduct("12345678", "name", "brand", "category", 23.00);
         productFormList.add(productForm);
 
-        productDto.add(productFormList);
+        productDto.addProductList(productFormList);
 
         ProductForm productForm1 = FormHelper.createProduct("12345678", "name", "brand", "category", 27.00);
 
@@ -125,9 +125,9 @@ public class ProductDtoTest extends AbstractUnitTest {
         Double expectedMrp = 27.00;
         String expectedBarcode = "12345678";
 
-        productDto.update(productService.getCheck(expectedBarcode).getId(), productForm1);
+        productDto.updateProduct(productService.getCheck(expectedBarcode).getId(), productForm1);
 
-        ProductData data = productDto.get(productService.getCheck(expectedBarcode).getId());
+        ProductData data = productDto.getProduct(productService.getCheck(expectedBarcode).getId());
         assertEquals(expectedBarcode, data.getBarCode());
         assertEquals(expectedName, data.getName());
         assertEquals(expectedBrandName, data.getBrand());
@@ -149,8 +149,8 @@ public class ProductDtoTest extends AbstractUnitTest {
         ProductForm productForm = FormHelper.createProduct("12345678", "name", "brand", "category", 23.00);
         productFormList.add(productForm);
 
-        productDto.add(productFormList);
-        productDto.add(productFormList);
+        productDto.addProductList(productFormList);
+        productDto.addProductList(productFormList);
     }
 
     @Test(expected = ApiException.class)
@@ -166,6 +166,6 @@ public class ProductDtoTest extends AbstractUnitTest {
         ProductForm productForm = FormHelper.createProduct("12345678", "name", "brand2", "category3", 23.00);
         productFormList.add(productForm);
 
-        productDto.add(productFormList);
+        productDto.addProductList(productFormList);
     }
 }

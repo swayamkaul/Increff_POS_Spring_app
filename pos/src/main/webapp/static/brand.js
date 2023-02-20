@@ -31,6 +31,9 @@ function isJson(str) {
 function addBrand(event){
 	//Set the values to update
 	var $form = $("#brand-form");
+	if(!validateForm($form)){
+            return;
+        }
 	var json = toJson($form);
 	wholeBrand.push(json)
 	var url = getBrandUrl();
@@ -74,13 +77,15 @@ function addBrand(event){
 }
 
 function updateBrand(event){
-	$('#edit-brand-modal').modal('toggle');
 	//Get the ID
 	var id = $("#brand-edit-form input[name=id]").val();
 	var url = getBrandUrl() + "/" + id;
 
 	//Set the values to update
 	var $form = $("#brand-edit-form");
+	if(!validateForm($form)){
+            return;
+        }
 	var json = toJson($form);
 
 	$.ajax({
@@ -91,6 +96,7 @@ function updateBrand(event){
        	'Content-Type': 'application/json'
        },
 	   success: function(response) {
+	        $('#edit-brand-modal').modal('toggle');
 	        toastr.success("Brand Updated Successfully", "Success : ");
 			getBrandList();
 	   },

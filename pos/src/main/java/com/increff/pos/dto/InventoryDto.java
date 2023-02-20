@@ -34,7 +34,7 @@ public class InventoryDto {
     CsvFileGenerator csvFileGenerator;
 
     @Transactional(rollbackFor = ApiException.class)
-    public void add(List<InventoryForm> forms) throws ApiException, JsonProcessingException {
+    public void addInventoryList(List<InventoryForm> forms) throws ApiException, JsonProcessingException {
         listEmptyCheck(forms);
         List<InventoryErrorData> inventoryErrorDataList = new ArrayList<>();
         List<String> barCodeList = ConvertorUtil.convertInventoryFormListToBarCodeList(forms);
@@ -77,7 +77,7 @@ public class InventoryDto {
 
     }
 
-    public List<InventoryData> getAll() throws ApiException {   //Product wise inventory
+    public List<InventoryData> getAllInventories() throws ApiException {   //Product wise inventory
         List<InventoryPojo> list = inventoryService.getAll();
         List<InventoryData> list2 = new ArrayList<InventoryData>();
         for (InventoryPojo inventoryPojo : list) {
@@ -106,7 +106,7 @@ public class InventoryDto {
     }
 
     public List<InventoryReportData> getAllItem() throws ApiException {   //Brand Category wise inventory
-        List<InventoryData> inventoryDataList = getAll();
+        List<InventoryData> inventoryDataList = getAllInventories();
         List<InventoryReportData> inventoryItemList = new ArrayList<>();
         Map<Pair<String, String>, Integer> map = new HashMap<>();
         for (InventoryData inventoryData : inventoryDataList) {

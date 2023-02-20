@@ -34,14 +34,14 @@ public class InitApiController extends AbstractUiController {
 	private String admin_email;
 
 	@ApiOperation(value = "Initializes application")
-	@RequestMapping(path = "", method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView showPage(UserForm form) {
 		info.setMessage("");
 		return mav("init.html");
 	}
 
 	@ApiOperation(value = "Initializes application")
-	@RequestMapping(path = "", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView initSite(UserForm form) throws ApiException {
 		ValidateUtil.validateForms(form);
 		NormaliseUtil.normalise(form);

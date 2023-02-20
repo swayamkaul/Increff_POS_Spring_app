@@ -147,7 +147,12 @@ var processCount = 0;
 
 function processData(){
 	var file = $('#inventoryFile')[0].files[0];
-	readFileData(file, readFileDataCallback);
+	    	if(file.name.split('.').pop() != "tsv"){
+        	    toastr.error("file format is not tsv, Not Allowed");
+        	}
+        	else {
+        	readFileData(file, readFileDataCallback);
+        	}
 }
 
 function readFileDataCallback(results){

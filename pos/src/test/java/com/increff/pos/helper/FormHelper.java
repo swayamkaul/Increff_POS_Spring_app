@@ -11,7 +11,7 @@ public class FormHelper {
         return brandForm;
     }
 
-    public static ProductForm createProduct(String productBarcode, String productName, String brandName, String category, double productMrp) {
+    public static ProductForm createProduct(String productBarcode, String productName, String brandName, String category, Double productMrp) {
         ProductForm productForm = new ProductForm();
         productForm.setBrand(brandName);
         productForm.setCategory(category);
@@ -35,7 +35,7 @@ public class FormHelper {
         return userForm;
     }
 
-    public static OrderItemForm createOrderItem(String barCode, Integer quantity, double sellingPrice) {
+    public static OrderItemForm createOrderItem(String barCode, Integer quantity, Double sellingPrice) {
         OrderItemForm orderItemForm = new OrderItemForm();
         orderItemForm.setQuantity(quantity);
         orderItemForm.setBarCode(barCode);
