@@ -91,7 +91,7 @@ public class OrderDto {
         for(OrderItemForm orderItemForm : forms) {
             try {
                 if(!productPojoHashMap.containsKey(orderItemForm.getBarCode())){
-                    throw new ApiException("Product with given Barcode does not exist. Barcode: "+ orderItemForm.getBarCode());
+                    errorList.add("Product with given Barcode does not exist. Barcode: "+ orderItemForm.getBarCode());
                 }
                 ProductPojo productPojo = productPojoHashMap.get(orderItemForm.getBarCode());
                 InventoryPojo inventoryPojo = inventoryPojoHashMap.get(productPojo.getId());

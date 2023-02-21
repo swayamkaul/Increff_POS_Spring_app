@@ -43,7 +43,7 @@ public class InventoryService {
     public InventoryPojo getCheck(Integer id) throws ApiException {
         InventoryPojo p = inventoryDao.select(id);
         if (p == null) {
-            throw new ApiException("Inventory with given ID does not exist, id: " + id);
+            throw new ApiException("Insufficient inventory!");
         }
         return p;
     }
