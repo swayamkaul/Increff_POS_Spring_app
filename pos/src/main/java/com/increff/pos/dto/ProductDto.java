@@ -63,13 +63,13 @@ public class ProductDto {
     }
 
     public List<ProductData> getAllProducts() throws ApiException {
-        List<ProductPojo> list = productService.getAll();
-        List<ProductData> list2 = new ArrayList<ProductData>();
-        for (ProductPojo p : list) {
+        List<ProductPojo> productPojoList = productService.getAll();
+        List<ProductData> productDataList = new ArrayList<ProductData>();
+        for (ProductPojo p : productPojoList) {
             BrandPojo brandPojo=brandService.getCheck(p.getBrandCategory());
-            list2.add(ConvertorUtil.convert(p,brandPojo.getBrand(),brandPojo.getCategory()));
+            productDataList.add(ConvertorUtil.convert(p,brandPojo.getBrand(),brandPojo.getCategory()));
         }
-        return list2;
+        return productDataList;
     }
 
     public void updateProduct(Integer id, ProductForm f) throws ApiException {

@@ -78,14 +78,14 @@ public class InventoryDto {
     }
 
     public List<InventoryData> getAllInventories() throws ApiException {   //Product wise inventory
-        List<InventoryPojo> list = inventoryService.getAll();
-        List<InventoryData> list2 = new ArrayList<InventoryData>();
-        for (InventoryPojo inventoryPojo : list) {
+        List<InventoryPojo> inventoryPojoList = inventoryService.getAll();
+        List<InventoryData> inventoryDataList = new ArrayList<InventoryData>();
+        for (InventoryPojo inventoryPojo : inventoryPojoList) {
             ProductPojo productPojo = productService.getCheck(inventoryPojo.getId());
             BrandPojo brandPojo = brandService.getCheck(productPojo.getBrandCategory());
-            list2.add(ConvertorUtil.convert(inventoryPojo,productPojo.getBarCode(),productPojo.getName(),brandPojo.getBrand(),brandPojo.getCategory()));
+            inventoryDataList.add(ConvertorUtil.convert(inventoryPojo,productPojo.getBarCode(),productPojo.getName(),brandPojo.getBrand(),brandPojo.getCategory()));
         }
-        return list2;
+        return inventoryDataList;
     }
 
     public void updateInventory(Integer id, InventoryForm f) throws ApiException {

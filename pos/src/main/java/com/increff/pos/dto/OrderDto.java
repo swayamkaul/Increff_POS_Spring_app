@@ -40,13 +40,13 @@ public class OrderDto {
     private String url;
 
     public List<OrderData> getAllOrders() {
-        List<OrderData> list = new ArrayList<OrderData>();
-        List<OrderPojo> list1 = orderService.getAll();
-        for (OrderPojo p : list1) {
+        List<OrderData> orderDataList = new ArrayList<OrderData>();
+        List<OrderPojo> orderPojoList = orderService.getAll();
+        for (OrderPojo p : orderPojoList) {
             OrderData data = ConvertorUtil.convert(p);
-            list.add(data);
+            orderDataList.add(data);
         }
-        return list;
+        return orderDataList;
     }
     public OrderData createOrder(List<OrderItemForm> orderItemFormList) throws ApiException, JsonProcessingException {
         List<String> errorList = new ArrayList<String>();
@@ -57,14 +57,14 @@ public class OrderDto {
         return orderData;
     }
     public List<OrderItemData> getItemByOrderId(Integer orderId) throws ApiException {
-        List<OrderItemData> list = new ArrayList<OrderItemData>();
-        List<OrderItemPojo> list1 = orderService.selectByOrderId(orderId);
-        for (OrderItemPojo p : list1) {
+        List<OrderItemData> orderItemDataList = new ArrayList<OrderItemData>();
+        List<OrderItemPojo> orderItemPojoList = orderService.selectByOrderId(orderId);
+        for (OrderItemPojo p : orderItemPojoList) {
             ProductPojo product = productService.getCheck(p.getProductId());
             OrderItemData data = ConvertorUtil.convert(p, product.getBarCode());
-            list.add(data);
+            orderItemDataList.add(data);
         }
-        return list;
+        return orderItemDataList;
     }
 
     private void checkConstraintsAndDuplicates(List<OrderItemForm> forms) throws ApiException {
